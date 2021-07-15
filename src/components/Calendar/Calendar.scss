@@ -1,0 +1,41 @@
+.calendar-div {
+    width: 70vw;
+    // border: 1px solid red;
+    margin: 30px auto 0px auto;
+}
+
+// table {
+//     box-shadow: 3px 3px 10px gray;
+//     padding: 30px;
+//     border-radius: 20px;
+// }
+
+.weekday-head {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: white;
+    box-shadow: 5px 5px 20px gray;
+    border: 1px solid red;
+}
+
+
+.week-day {
+    width: 10vw;
+    font-size: 25px;
+    padding: 20px 0px 20px 0px;
+    font-family: 'Oswald';   
+}
+
+.calendar-day {
+    height: 10vh;
+    font-family: 'Oswald';
+    font-size: 1.1rem;
+    padding: 5px;
+}
+
+.calendar-day:hover {
+    background-color: #006AB3;
+        color: white;
+        box-shadow: 3px 3px 10px gray;
+        transition: 0.5s;
+}
