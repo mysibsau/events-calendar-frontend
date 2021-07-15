@@ -1,0 +1,31 @@
+.header-container {
+    width: 100vw;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 3px 3px 10px #ddd;
+
+    h3 {
+        font-family: 'Oswald';
+        font-size: 3rem;
+        height: 80px;
+        color: #006AB3;
+        margin: 0px 0px 0px 30px;
+        vertical-align: middle;
+    }
+
+    .button-container {
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-right: 30px;
+
+        .button {
+            background-color: #006AB3;
+            font-weight: 600;
+            color: white;
+        }
+    }
+}
