@@ -15,7 +15,6 @@
     border-top-right-radius: 20px;
     background-color: white;
     box-shadow: 5px 5px 20px gray;
-    border: 1px solid red;
 }
 
 
@@ -28,27 +27,15 @@
 
 .calendar-day {
     height: 10vh;
-    // width: 10vh;
+    width: 10vw;
+    max-width: 10vw;
+    resize: none;
     font-family: 'Oswald';
     font-size: 1.1rem;
-    padding: 5px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: 0.1s;
+    border: 1px solid #ddd;
 }
 
-.calendar-day:hover {
-    background-color: #006AB3;
-        color: white;
-        box-shadow: 3px 3px 10px gray;
-        transition: 0.5s;
-        
 
-    
-}
-
-.empty:hover {
-    background-color: white;
-    box-shadow: 0px 0px 0px white;
-    cursor: default;
+table {
+    border-collapse: collapse;
 }
