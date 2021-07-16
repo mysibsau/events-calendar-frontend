@@ -1,6 +1,7 @@
 import React from 'react';
 import Days from './Days/Days'
 import Months from './Months/Months';
+import Years from './Years/Years';
 import './Calendar.scss';
 
 
@@ -11,7 +12,10 @@ export default function Calendar() {
     return(
       <div style={{width: '70vw', alignSelf: 'center'}}>
         <div>
-          <Months month={new Date().getMonth()} onMonthChange={m => setMonth(m)}/>
+          <Months onMonthChange={m => setMonth(m)}/>
+          <Years onYearChange={y => {
+            console.log(y)
+            setYear(y)}}/>
         </div>
         <Days month={month} year={year}/>
       </div>

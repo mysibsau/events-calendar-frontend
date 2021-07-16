@@ -11,6 +11,11 @@ export default function Days({month, year}) {
         generateDays();
     }, [month, year])
 
+    // React.useEffect(() => {
+    //   alert(year)
+    //   generateDays();
+    // }, [year])
+
     const firstDayOfMonth = () => {
         return new Date(year, month, 1).getDay();
     };
