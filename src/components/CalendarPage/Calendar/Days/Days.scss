@@ -28,9 +28,13 @@
 
 .calendar-day {
     height: 10vh;
+    // width: 10vh;
     font-family: 'Oswald';
     font-size: 1.1rem;
     padding: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.1s;
 }
 
 .calendar-day:hover {
@@ -38,4 +42,13 @@
         color: white;
         box-shadow: 3px 3px 10px gray;
         transition: 0.5s;
+        
+
+    
+}
+
+.empty:hover {
+    background-color: white;
+    box-shadow: 0px 0px 0px white;
+    cursor: default;
 }

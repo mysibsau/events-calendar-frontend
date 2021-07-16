@@ -1,27 +1,21 @@
 import React from 'react';
-import moment from 'moment';
-import './Calendar.scss';
+import './Days.scss';
 
 const weekdayshort = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
 
-export default function Calendar() {
-    const [dateObject, setDateObject] = React.useState(moment());
+
+export default function Days({month, year}) {
     const [daysInMonth, setDaysInMonth] = React.useState(null)
 
     React.useEffect(() => {
         generateDays();
-    }, [])
+    }, [month, year])
 
     const firstDayOfMonth = () => {
-        let firstDay = moment(dateObject)
-                     .startOf("month")
-                     .format("d"); 
-       return firstDay;
+        return new Date(year, month, 1).getDay();
     };
 
     const daysCount =  (month, year) =>  {
-        console.log(month, year);
-        console.log(new Date(year, month, 0).getDate())
         return new Date(year, month, 0).getDate();
     }
 
@@ -32,7 +26,7 @@ export default function Calendar() {
                 <td className="calendar-day empty">{""}</td>
             );
         }
-
+    
         let daysInMonth = [];
         for (let d = 1; d <= daysCount(new Date().getMonth(), new Date().getFullYear()); d++) {
         daysInMonth.push(
@@ -66,9 +60,11 @@ export default function Calendar() {
         setDaysInMonth(daysinmonth);
     }
 
+
     return(
-      <table className="calendar-div">
+        <table className="calendar-div">
         <thead className="weekday-head">
+            <tr>
           {weekdayshort.map(day => {
             return(
               <th key={day} className="week-day">
@@ -76,10 +72,11 @@ export default function Calendar() {
               </th>
             )
           })}
+          </tr>
         </thead>
         <tbody>
             {daysInMonth}
         </tbody>
       </table>
-    )
+    );
 }
