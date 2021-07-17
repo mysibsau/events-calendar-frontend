@@ -28,6 +28,7 @@
 .calendar-day {
     height: 10vh;
     width: 10vw;
+    padding: 5px;
     max-width: 10vw;
     resize: none;
     font-family: 'Oswald';
@@ -35,7 +36,23 @@
     border: 1px solid #ddd;
 }
 
+.event-div {
+    width: 10vw;
+    height: 30px;
+    overflow: visible;
+    white-space: nowrap;
+    color: white;
+    padding: 5px;
+    position: absolute;
+    margin-left: -5px;
+    cursor: pointer;
+    transform: scale(1);
+}
+
+
 
 table {
     border-collapse: collapse;
+    margin-bottom: 100px;
+    margin-top: 40px;
 }
