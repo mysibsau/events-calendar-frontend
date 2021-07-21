@@ -22,7 +22,6 @@ export const getEventData = async (id) => {
 }
 
 export const editEvent = async (id, name, date, place, count, direction, organization) => {
-    console.log(id, name, date, place, count, direction, organization)
     try {
         const token = localStorage.getItem('token')
         const response = await axios.put(`/event/${id}/`, {

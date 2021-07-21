@@ -86,7 +86,7 @@ export default function Days({events, month, year}){
     function hashCode(str) { // java String#hashCode
         var hash = 0;
         for (var i = 0; i < str.length; i++) {
-           hash = str.charCodeAt(i) + ((hash << 3) - hash);
+           hash = str.charCodeAt(i) + ((hash << 1) - hash);
         }
         return hash;
       } 

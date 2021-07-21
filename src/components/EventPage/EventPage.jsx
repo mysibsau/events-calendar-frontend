@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import './EventPage.scss';
 import { editEvent, getEventData } from '../../api/events';
-import { TextField, CircularProgress, Select, MenuItem, InputLabel, Button } from '@material-ui/core';
+import { TextField, CircularProgress, MenuItem, Button } from '@material-ui/core';
 import { useReferences } from '../../api/references';
 import Header from '../Header/Header';
 import { getAddVerifyRight } from '../../api/rights';
@@ -39,8 +39,8 @@ export default function EventPage(props) {
             setDate(response.start_date)
             setPlace(response.place)
             setCount(response.coverage_participants_plan)
-            setDirection(0)
-            setOrganization(0)
+            setDirection(response.direction)
+            setOrganization(response.organization)
             setLoaded(true)
         } else {
             // setIsError(true)
@@ -96,7 +96,7 @@ export default function EventPage(props) {
                 {/* <p>Уровень мероприятия: {levels.filter(item => item.id === event.level)[0].name}</p> */}
                 {/* <p>Роль СибГУ: {roles.filter(item => item.id === event.role)[0].name}</p> */}
                 {/* <p>Формат мероприятия: {formats.filter(item => item.id === event.format)[0].name}</p> */}
-                <p>Направление: {event.direction}</p>
+                <p>Направление: {directions.filter(item => item.id === event.direction)[0].name}</p>
                 </>}
                 {!event.verified && isStaff &&
                 <div className={'done-button'}>
@@ -111,13 +111,13 @@ export default function EventPage(props) {
                 <TextField id={'place'} className={'edit-input'} defaultValue={event.place} onChange={e => setPlace(e.target.value)} label={'Место проведения'} variant={'outlined'} type={'text'}/>
                 <TextField id={'count'} className={'edit-input'} defaultValue={event.coverage_participants_plan} onChange={e => setCount(e.target.value)} label={'Охват участников (план)'} variant={'outlined'} type={'number'}/>
                 {/* <InputLabel id="label">Направление</InputLabel> */}
-                <TextField select id={'direction'} className={'edit-input'} label={'Направление'} onChange={e => setDirection(e.target.value)} defaultValue={directions.filter(item => item.name === event.direction)[0].id} variant={'outlined'}>
+                <TextField select id={'direction'} className={'edit-input'} label={'Направление'} onChange={e => setDirection(e.target.value)} defaultValue={event.direction} variant={'outlined'}>
                     {directions.map(item => {
                         return(<MenuItem value={String(item.id)}>{item.name}</MenuItem>)
                     })}
                 </TextField>
                 {/* <InputLabel id="label">Организация</InputLabel> */}
-                <TextField select id={'organization'} className={'edit-input'} label={'Организация'} onChange={e => setOrganization(e.target.value)} defaultValue={organizations.filter(item => item.name === event.organization)[0].id} variant={'outlined'}>
+                <TextField select id={'organization'} className={'edit-input'} label={'Организация'} onChange={e => setOrganization(e.target.value)} defaultValue={event.organization} variant={'outlined'}>
                     {organizations.map(item => {
                         return(<MenuItem value={String(item.id)}>{item.name}</MenuItem>)
                     })}
