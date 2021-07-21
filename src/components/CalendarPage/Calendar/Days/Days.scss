@@ -11,12 +11,14 @@
 // }
 
 .weekday-head {
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    // border-top-left-radius: 20px;
+    // border-top-right-radius: 20px;
+    // border-radius: 15px;
     background-color: white;
-    box-shadow: 5px 5px 20px gray;
+    // box-shadow: 5px 5px 20px gray;
 }
 
+.weekday-head
 
 .week-day {
     width: 10vw;
@@ -49,10 +51,104 @@
     transform: scale(1);
 }
 
+.plus-button {
+    background-color: #006AB3;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    position: 'absolute';
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    box-shadow: 3px 3px 3px #ddd;
+    opacity: 0;
+    transition: ease-out 0.3s;    
+    rigth: 5px
+}
 
+.calendar-day:hover .plus-button {
+    opacity: 1;
+    transition: ease-out 0.3s;
+}
 
 table {
     border-collapse: collapse;
     margin-bottom: 100px;
     margin-top: 40px;
+
+    -webkit-animation: fadeInFromNone 0.5s ease-out;
+    -moz-animation: fadeInFromNone 0.5s ease-out;
+    -o-animation: fadeInFromNone 0.5s ease-out;
+    animation: fadeInFromNone 0.5s ease-out;
+}
+
+@-webkit-keyframes fadeInFromNone {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    1% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeInFromNone {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    1% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeInFromNone {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    1% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
+}
+
+
+@keyframes fadeInFromNone {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    // 1% {
+    //     display: block;
+    //     opacity: 0;
+    // }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
 }

@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://test-calendar-mysibsau.herokuapp.com/v1/';
+axios.defaults.baseURL = 'https://test-calendar-mysibsau.herokuapp.com/v1';
 
 ReactDOM.render(
   <React.StrictMode>

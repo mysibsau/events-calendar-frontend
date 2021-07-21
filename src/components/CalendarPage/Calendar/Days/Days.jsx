@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Days.scss'
 
 const weekdayshort = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
@@ -8,16 +9,16 @@ export default function Days({events, month, year}){
     const [weeks, setWeeks] = React.useState([])
 
     React.useEffect(() => {
-        console.log(events)
         generateDays();
-    }, [])
+    }, [month])
 
     const firstDayOfMonth = () => {
-        return new Date(year, month, 1).getDay();
+        const firstDay = {'0': 7, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6}
+        return firstDay[String(new Date(`${String(year)}-${String(month + 1).length === 1 ? '0' + String(month + 1) : String(month + 1)}-01`).getDay())];
     };
 
     const daysCount = () =>  {
-        return new Date(year, month, 0).getDate();
+        return new Date(year, month + 1, 0).getDate();
     }
 
     const getWeekEventsCount = (week) => {
@@ -25,8 +26,8 @@ export default function Days({events, month, year}){
         events.map(item => {
             let start = new Date(`${item.start_date}T00:00:00`)
             let stop = new Date(`${item.stop_date}T00:00:00`)
-            if ((week.start_date > start &&
-                week.start_date < stop) || 
+            if ((week.start_date >= start &&
+                week.start_date <= stop) || 
                 (week.stop_date > start && week.stop_date < stop) ||
                 (start >= week.start_date && stop <= week.stop_date)){
                 eventsCount++;
@@ -45,7 +46,7 @@ export default function Days({events, month, year}){
             weekList.push(null)
         }
 
-        for (let i = 0; i <= daysCount(); i++){
+        for (let i = 0; i < daysCount(); i++){
             weekList.push(new Date(`${year}-${String(month + 1).length === 1 ? '0' + (month + 1) : month + 1}-${String(i + 1).length === 1 ? '0' + (i + 1) : i + 1}T00:00:00`));
             if (weekList.length === 7){
                 for (let j = 0; j < 7; j++){
@@ -107,9 +108,11 @@ export default function Days({events, month, year}){
           <tbody>
             {weeks.map(item => {
                 let eventsCount = getWeekEventsCount(item)
+                // console.log(eventsCount)
                 let weekEvents = events.filter(event => {
                     let start = new Date(`${event.start_date}T00:00:00`)
                     let stop = new Date(`${event.stop_date}T00:00:00`)
+                    // console.log(item.start_date, start, item.stop_date, stop)
                     if ((item.start_date > start &&
                         item.start_date < stop) || 
                         (item.stop_date > start && item.stop_date < stop) ||
@@ -117,24 +120,29 @@ export default function Days({events, month, year}){
                         return event
                     }
                 })
-                console.log(weekEvents)
+                // console.log(weekEvents)
+                
                 return(
                     <tr style={{height: (eventsCount <= 1 ? 100 : eventsCount * 50 + 20)}}>
                         {item.list.map(d => {
                             if(d)
                                 return (<td valign='top' className="calendar-day" style={{overflow: 'visible'}}>
-                                    {d.getDate()}
+                                    
+                                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                                        {d.getDate()}
+                                        <Link style={{textDecoration: 'none'}}><div className="plus-button">+</div></Link>
+                                    </div>
                                     {weekEvents.map(event => {
                                         let start = new Date(`${event.start_date}T00:00:00`)
                                         let stop = new Date(`${event.stop_date}T00:00:00`)
                                         if (d.valueOf() === start.valueOf() && d.valueOf() === stop.valueOf()){
-                                            return (<div className="event-div" style={{ borderRadius: 15, backgroundColor: '#' +  intToRGB(hashCode(event.name)), padding: 5, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div>)
+                                            return (<Link to={`/event/${event.id}`}><div className="event-div" style={{ borderRadius: 15, backgroundColor: '#' +  intToRGB(hashCode(event.name)), padding: 5, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div></Link>)
                                           } else if(d.valueOf() === start.valueOf()){
-                                            return <div className="event-div" style={{ borderTopLeftRadius: 15, zIndex: 3, backgroundColor: '#' +  intToRGB(hashCode(event.name)), borderBottomLeftRadius: 15, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div>
+                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{ borderTopLeftRadius: 15, zIndex: 3, backgroundColor: '#' +  intToRGB(hashCode(event.name)), borderBottomLeftRadius: 15, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div></Link>
                                           } else if(d.valueOf() === stop.valueOf()) {
-                                            return <div className="event-div" style={{borderTopRightRadius: 15, borderBottomRightRadius: 15, backgroundColor: '#' +  intToRGB(hashCode(event.name)), marginTop: weekEvents.indexOf(event) * 45 + 5}}></div>
+                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{borderTopRightRadius: 15, borderBottomRightRadius: 15, backgroundColor: '#' +  intToRGB(hashCode(event.name)), marginTop: weekEvents.indexOf(event) * 45 + 5}}></div></Link>
                                           } else if(d.valueOf() > start.valueOf() && stop.valueOf() > d.valueOf() ){
-                                            return <div className="event-div" style={{backgroundColor: '#' +  intToRGB(hashCode(event.name)), marginTop: weekEvents.indexOf(event) * 45 + 5}}></div>
+                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{backgroundColor: '#' +  intToRGB(hashCode(event.name)), marginTop: weekEvents.indexOf(event) * 45 + 5}}></div></Link>
                                           }
                                     })}
                                     </td>)
