@@ -9,9 +9,9 @@ export default function Years({onYearChange}){
         <FormControl style={{marginTop: 40, marginBottom: -20, marginLeft: 20}}>
         <InputLabel style={{fontFamily: 'Oswald', position: 'absolute', top: -20, fontSize: 16}}>Год</InputLabel>
         <Select onChange={e => onYearChange(e.target.value)} defaultValue={now.getFullYear()} variant={'outlined'} style={{fontFamily: 'Oswald'}}>
+            <MenuItem style={{fontFamily: 'Oswald'}} value={now.getFullYear() - 1}>{now.getFullYear() - 1}</MenuItem>
             <MenuItem style={{fontFamily: 'Oswald'}} value={now.getFullYear()}>{now.getFullYear()}</MenuItem>
             <MenuItem style={{fontFamily: 'Oswald'}} value={now.getFullYear() + 1}>{now.getFullYear() + 1}</MenuItem>
-            <MenuItem style={{fontFamily: 'Oswald'}} value={now.getFullYear() + 2}>{now.getFullYear() + 2}</MenuItem>
         </Select>
         </FormControl>
     )

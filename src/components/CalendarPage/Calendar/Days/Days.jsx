@@ -144,7 +144,7 @@ export default function Days({events, month, year}){
                                           } else if(d.valueOf() === start.valueOf()){
                                             return <Link to={`/event/${event.id}`}><div className="event-div" style={{ borderTopLeftRadius: 15, zIndex: 3, backgroundColor: '#' +  intToRGB(hashCode(event.name)), borderBottomLeftRadius: 15, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div></Link>
                                           } else if(d.valueOf() === stop.valueOf()) {
-                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{borderTopRightRadius: 15, borderBottomRightRadius: 15, backgroundColor: '#' +  intToRGB(hashCode(event.name)), marginTop: weekEvents.indexOf(event) * 45 + 5}}></div></Link>
+                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{borderTopRightRadius: 15, borderBottomRightRadius: 15, backgroundColor: '#' +  intToRGB(hashCode(event.name)), marginTop: weekEvents.indexOf(event) * 45 + 5}}>{start.getMonth() < month && event.name}</div></Link>
                                           } else if(d.valueOf() > start.valueOf() && stop.valueOf() > d.valueOf() ){
                                             return <Link to={`/event/${event.id}`}><div className="event-div" style={{backgroundColor: '#' +  intToRGB(hashCode(event.name)), marginTop: weekEvents.indexOf(event) * 45 + 5}}></div></Link>
                                           }

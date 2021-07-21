@@ -31,10 +31,9 @@ export const editEvent = async (id, name, date, place, count, direction, organiz
             start_date: date, 
             place: place, 
             coverage_participants_plan: Number(count)}, {headers: {Authorization: `Token ${token}`}})
-            
+
         return response.data;
     } catch (err) {
-        console.log(err)
-        return false
+        return {error: err.response.data[Object.keys(err.response.data)[0]][0]}
     }
 }; 

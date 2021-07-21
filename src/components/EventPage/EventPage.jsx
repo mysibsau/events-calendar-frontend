@@ -3,16 +3,25 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import './EventPage.scss';
 import { editEvent, getEventData } from '../../api/events';
-import { TextField, CircularProgress, MenuItem, Button } from '@material-ui/core';
+import { TextField, CircularProgress, MenuItem, Button, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert'
 import { useReferences } from '../../api/references';
 import Header from '../Header/Header';
 import { getAddVerifyRight } from '../../api/rights';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
 
 export default function EventPage(props) {
     const [event, setEvent] = React.useState({});
     const [loaded, setLoaded] = React.useState(false)
     const [isDisable, setIsDisable] = React.useState(true)
+
+    const [errorTitle, setErrorTitle] = React.useState('')
+    const [showError, setShowError] = React.useState(false)
+
     const {directions, organizations, formats, levels, roles, isReferenceLoaded} = useReferences()
 
     const [isStaff, setIsStaff] = React.useState(false);
@@ -55,17 +64,23 @@ export default function EventPage(props) {
     const editCurrentEvent = async (e) => {
         e.preventDefault();
         const data = await editEvent(params.id, name, date, place, count, direction, organization)
-        if (data){
+        if (!data.error){
             setEvent(data)
             setIsDisable(true)
         } else {
-            setIsDisable(true)
+            setErrorTitle(data.error)
+            setShowError(true)
         }
     };
 
     return(
     <>
     <Header />
+    <Snackbar open={showError} autoHideDuration={4000} onClose={() => setShowError(false)}>
+        <Alert severity="warning">
+            {errorTitle}
+        </Alert>
+    </Snackbar>
     <div className={'eventPage'}>
         <div className={'back-button'}>
             <Link to={'/'} style={{display: 'flex', flexDirection: 'row', textDecoration: 'none', color: '#006AB3', margin: 10}}>
