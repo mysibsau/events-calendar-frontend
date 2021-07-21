@@ -2,59 +2,133 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import './EventPage.scss';
-import { getEventData } from '../../api/events';
-import { TextField, CircularProgress } from '@material-ui/core';
+import { editEvent, getEventData } from '../../api/events';
+import { TextField, CircularProgress, Select, MenuItem, InputLabel, Button } from '@material-ui/core';
 import { useReferences } from '../../api/references';
+import Header from '../Header/Header';
+import { getAddVerifyRight } from '../../api/rights';
 
 
 export default function EventPage(props) {
     const [event, setEvent] = React.useState({});
     const [loaded, setLoaded] = React.useState(false)
-    const [isError, setIsError] = React.useState(false);
     const [isDisable, setIsDisable] = React.useState(true)
-    const {directions, formats, levels, organizations, roles, isReferenceLoaded} = useReferences()
+    const {directions, organizations, formats, levels, roles, isReferenceLoaded} = useReferences()
+
+    const [isStaff, setIsStaff] = React.useState(false);
+
+    const [name, setName] = React.useState('');
+    const [date, setDate] = React.useState('');
+    const [place, setPlace] = React.useState('');
+    const [count, setCount] = React.useState(0)
+    const [direction, setDirection] = React.useState(0)
+    const [organization, setOrganization] = React.useState(0)
+
     const params = useParams()
 
     React.useEffect(() => {
+        getIsStaff();
         getEvent()
     }, [])
 
     const getEvent = async () => {
         const response = await getEventData(params.id)
         if (response) {
-            console.log(response)
             setEvent(response)
+            setName(response.name)
+            setDate(response.start_date)
+            setPlace(response.place)
+            setCount(response.coverage_participants_plan)
+            setDirection(0)
+            setOrganization(0)
             setLoaded(true)
         } else {
-            setIsError(true)
+            // setIsError(true)
         }
-    }
+    };
+
+    const getIsStaff = async() => {
+        const data = await getAddVerifyRight();
+        setIsStaff(data.is_staff)
+    };
+
+    const editCurrentEvent = async (e) => {
+        e.preventDefault();
+        const data = await editEvent(params.id, name, date, place, count, direction, organization)
+        if (data){
+            setEvent(data)
+            setIsDisable(true)
+        } else {
+            setIsDisable(true)
+        }
+    };
 
     return(
-    <div>
-        <header>
+    <>
+    <Header />
+    <div className={'eventPage'}>
+        <div className={'back-button'}>
             <Link to={'/'} style={{display: 'flex', flexDirection: 'row', textDecoration: 'none', color: '#006AB3', margin: 10}}>
-                <img src="https://img.icons8.com/ios-filled/50/000000/long-arrow-left.png" style={{marginRight: 15, width: 60}}/>
+                {/* <img src="https://img.icons8.com/ios-filled/50/000000/long-arrow-left.png" style={{marginRight: 15, width: 60}}/> */}
                 <h3>Вернуться к календарю</h3>
             </Link>
-        </header>
+        </div>
         {loaded ? <div>
             {isDisable ? 
-            <div>
-                <h2 className="event-title">{event.name}</h2>
-                <p className="event-info">Ответственный: {event.responsible}</p>
-                <p className="event-info">Даты проведения: {event.start_date.split('-').reverse().join('/')}-{event.stop_date.split('-').reverse().join('/')}</p>
+            <div className={'eventInfo'}>
+                <div className={'event-title-div'}>
+                    <h2 className="event-title">{event.name}</h2>
+                    {event.can_edit &&
+                    <div className={'button-div'}>
+                    <div onClick={() => setIsDisable(false)} className={'edit-button'}>
+                        <img src="https://img.icons8.com/material-rounded/48/4a90e2/edit--v1.png"/>
+                        <p>Редактировать</p>
+                    </div>
+                    </div>}
+                </div>
+                {/* <p className="event-info">Ответственный: {event.responsible}</p> */}
+                <p className="event-info">Дата проведения: {event.start_date.split('-').reverse().join('/')}</p>
                 <p className="event-info">Место проведения: {event.place}</p>
+                <p>Охват участников (план): {event.coverage_participants_plan}</p>
                 {isReferenceLoaded &&
                 <>
-                <p>Организация: {event.organization}</p>
-                <p>Уровень мероприятия: {levels.filter(item => item.id === event.level)[0].name}</p>
-                <p>Роль СибГУ: {roles.filter(item => item.id === event.role)[0].name}</p>
-                <p>Формат мероприятия: {formats.filter(item => item.id === event.format)[0].name}</p>
+                {/* <p>Организация: {event.organization}</p> */}
+                {/* <p>Уровень мероприятия: {levels.filter(item => item.id === event.level)[0].name}</p> */}
+                {/* <p>Роль СибГУ: {roles.filter(item => item.id === event.role)[0].name}</p> */}
+                {/* <p>Формат мероприятия: {formats.filter(item => item.id === event.format)[0].name}</p> */}
                 <p>Направление: {event.direction}</p>
                 </>}
-            </div> : <div></div>}
+                {!event.verified && isStaff &&
+                <div className={'done-button'}>
+                    <img src="https://img.icons8.com/ios-glyphs/60/26e07f/ok.png"/>
+                    {/* <img src="https://img.icons8.com/ios-glyphs/50/26e07f/checkmark--v1.png"/> */}
+                    <p>Верифицировать</p>
+                </div>}
+            </div> : 
+            <form className={'edit-form'} onSubmit={editCurrentEvent}>
+                <TextField id={'name'} className={'edit-input'} defaultValue={event.name} onChange={e => setName(e.target.value)} label={'Название мероприятия'} variant={'outlined'} type={'text'}/>
+                <TextField id={'date'} className={'edit-input'} defaultValue={event.start_date} onChange={e => setDate(e.target.value)} label={'Дата начала'} variant={'outlined'} type={'date'}/>
+                <TextField id={'place'} className={'edit-input'} defaultValue={event.place} onChange={e => setPlace(e.target.value)} label={'Место проведения'} variant={'outlined'} type={'text'}/>
+                <TextField id={'count'} className={'edit-input'} defaultValue={event.coverage_participants_plan} onChange={e => setCount(e.target.value)} label={'Охват участников (план)'} variant={'outlined'} type={'number'}/>
+                {/* <InputLabel id="label">Направление</InputLabel> */}
+                <TextField select id={'direction'} className={'edit-input'} label={'Направление'} onChange={e => setDirection(e.target.value)} defaultValue={directions.filter(item => item.name === event.direction)[0].id} variant={'outlined'}>
+                    {directions.map(item => {
+                        return(<MenuItem value={String(item.id)}>{item.name}</MenuItem>)
+                    })}
+                </TextField>
+                {/* <InputLabel id="label">Организация</InputLabel> */}
+                <TextField select id={'organization'} className={'edit-input'} label={'Организация'} onChange={e => setOrganization(e.target.value)} defaultValue={organizations.filter(item => item.name === event.organization)[0].id} variant={'outlined'}>
+                    {organizations.map(item => {
+                        return(<MenuItem value={String(item.id)}>{item.name}</MenuItem>)
+                    })}
+                </TextField>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', marginTop: 20}}>
+                    <Button className={'form-button cancel'} onClick={() => setIsDisable(true)}>Отмена</Button>
+                    <Button type={'submit'} onSubmit={editCurrentEvent} className={'form-button accept'}>Подтвердить</Button>
+                </div>
+            </form>}
         </div> :
-        <CircularProgress style={{borderColor: '#006AB3', position: 'absolute', left: '50%', top: '50%'}}/>}
-    </div>)
+        <CircularProgress style={{borderColor: '#006AB3', position: 'absolute', left: '50%', top: '45%'}}/>}
+    </div>
+    </>)
 }

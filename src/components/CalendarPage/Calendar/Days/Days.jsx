@@ -1,16 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getAddVerifyRight } from '../../../../api/rights';
 import './Days.scss'
-
 const weekdayshort = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
 
 
 export default function Days({events, month, year}){
     const [weeks, setWeeks] = React.useState([])
+    const [isConfirmed, setIsConfirmed] = React.useState(false)
 
     React.useEffect(() => {
+        getRights();
         generateDays();
     }, [month])
+
+    const getRights = async () => {
+        const data = await getAddVerifyRight();
+        setIsConfirmed(data.confirmed)
+    }
 
     const firstDayOfMonth = () => {
         const firstDay = {'0': 7, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6}
@@ -108,11 +115,9 @@ export default function Days({events, month, year}){
           <tbody>
             {weeks.map(item => {
                 let eventsCount = getWeekEventsCount(item)
-                console.log(eventsCount)
                 let weekEvents = events.filter(event => {
                     let start = new Date(`${event.start_date}T00:00:00`)
                     let stop = new Date(`${event.stop_date}T00:00:00`)
-                    console.log(item.start_date, start, item.stop_date, stop)
                     if ((item.start_date >= start &&
                         item.start_date <= stop) || 
                         (item.stop_date >= start && item.stop_date <= stop) ||
@@ -120,8 +125,7 @@ export default function Days({events, month, year}){
                         return event
                     }
                 })
-                console.log(weekEvents)
-                
+
                 return(
                     <tr style={{height: (eventsCount <= 1 ? 100 : eventsCount * 50 + 20)}}>
                         {item.list.map(d => {
@@ -130,7 +134,7 @@ export default function Days({events, month, year}){
                                     
                                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                         {d.getDate()}
-                                        <Link style={{textDecoration: 'none'}}><div className="plus-button">+</div></Link>
+                                        {isConfirmed && <Link to={'/add_event'} style={{textDecoration: 'none'}}><div className="plus-button">+</div></Link>}
                                     </div>
                                     {weekEvents.map(event => {
                                         let start = new Date(`${event.start_date}T00:00:00`)

@@ -1,0 +1,143 @@
+.eventPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h3 {
+        font-family: 'Oswald';
+        font-size: large;
+    }
+
+    h2 {
+        font-family: 'Oswald';
+        font-size: 30px;
+    }
+
+    p {
+        font-family: 'Oswald';
+        font-size: large;
+        padding-left: 20px;
+    }
+
+    .done-button {
+        display: flex;
+        padding: 0;
+        flex-direction: row;
+        height: 40px;
+        width: 40px;
+        border: 1px solid #26E07F;
+        border-radius: 20px;
+        justify-self: center;
+        overflow: hidden;
+        transition: 0.5s;
+        cursor: pointer;
+        margin-left: 280px;
+
+        &:hover{
+            width: 190px;
+            margin-left: 205px;
+            transition: 0.5s;
+        }
+
+        img {
+            height: 55px;
+            width: 55px;
+            margin-left: -7px;
+            margin-top: -8px;
+        }
+
+        p {
+            height: 40px;
+            margin: 0;
+            vertical-align: middle;
+            padding-top: 5px;
+            margin-left: -10px;
+        }
+    }
+
+    .back-button {
+        align-self: flex-start;
+        border-radius: 15px;
+        margin: 15px;
+        transition: 0.5s;
+        cursor: pointer;
+        
+        &:hover {
+            box-shadow: 3px 3px 3px #ddd;
+            transition: 0.5s;
+        }
+    }
+
+    .event-title-div{
+        display: flex;
+        flex-direction: row;
+        justify-content: baseline;
+
+        .button-div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 20px;
+            padding-top: 5px;
+        }
+
+    }
+
+    .eventInfo {
+        width: 600px;
+        align-self: center;
+    }
+
+    .edit-button {
+        border: 1px solid #006AB3;
+        padding: 0px;
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.5s;
+        display: flex;
+        flex-direction: row;
+        cursor: pointer;
+
+        img {
+            width: 30px;
+            height: 30px;
+        }
+
+        p {
+            height: 30px;
+            margin: 0px;
+        }
+
+        &:hover {
+            width: 160px;
+            transition: 0.5s;
+        }
+    }
+
+    .edit-form {
+        display: flex;
+        flex-direction: column;
+
+        .edit-input {
+            width: 400px;
+            margin: 10px;
+        }
+
+        .form-button {
+            width: 150px;
+            color: white;
+            font-weight: 700;
+
+            &.cancel {
+                background-color:orangered;
+            }
+
+            &.accept {
+                background-color: #006AB3;
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 import './Header.scss';
+import { Link } from 'react-router-dom';
 
 
 export default function Header() {
@@ -17,7 +18,7 @@ export default function Header() {
 
     return(
         <div className={'header-container'}>
-            <h3>Календарь событий СибГУ</h3>
+            <Link to={'/'} style={{textDecoration: 'none'}}><h3>Календарь событий СибГУ</h3></Link>
             <div style={{display: 'flex', flexDirection: 'row'}}>
              <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginRight: 20, fontFamily: 'Oswald', fontSize: 20}}>
              Привет, {name}

@@ -7,9 +7,12 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import CalendarPage from "./components/CalendarPage/CalendarPage";
 import EventPage from "./components/EventPage/EventPage";
 import { ReferenceManager } from "./api/references";
+import {CookiesProvider} from 'react-cookie';
 
 function App() {
   return (
+    // <RightsManager>
+    <CookiesProvider>
     <ReferenceManager>
     <Router>
       {localStorage.getItem('token') !== null ? 
@@ -28,6 +31,8 @@ function App() {
         </Switch>}
     </Router>
     </ReferenceManager>
+    </CookiesProvider>
+    // </RightsManager>
   );
 }
 
