@@ -108,19 +108,19 @@ export default function Days({events, month, year}){
           <tbody>
             {weeks.map(item => {
                 let eventsCount = getWeekEventsCount(item)
-                // console.log(eventsCount)
+                console.log(eventsCount)
                 let weekEvents = events.filter(event => {
                     let start = new Date(`${event.start_date}T00:00:00`)
                     let stop = new Date(`${event.stop_date}T00:00:00`)
-                    // console.log(item.start_date, start, item.stop_date, stop)
-                    if ((item.start_date > start &&
-                        item.start_date < stop) || 
-                        (item.stop_date > start && item.stop_date < stop) ||
+                    console.log(item.start_date, start, item.stop_date, stop)
+                    if ((item.start_date >= start &&
+                        item.start_date <= stop) || 
+                        (item.stop_date >= start && item.stop_date <= stop) ||
                         (start >= item.start_date && stop <= item.stop_date)){
                         return event
                     }
                 })
-                // console.log(weekEvents)
+                console.log(weekEvents)
                 
                 return(
                     <tr style={{height: (eventsCount <= 1 ? 100 : eventsCount * 50 + 20)}}>
