@@ -83,12 +83,14 @@ export default function Days({events, month, year}){
         setWeeks(weeks);
     }
 
-    function hashCode(str) { // java String#hashCode
+    function hashCode(str) {
         var hash = 0;
         for (var i = 0; i < str.length; i++) {
-           hash = str.charCodeAt(i) + ((hash << 1) - hash);
+           hash = str.charCodeAt(i) + ((hash << 3) - hash);
         }
-        return hash;
+
+        console.log(Math.floor(hash / 100))
+        return Math.floor(hash);
       } 
     
       function intToRGB(i){
@@ -96,6 +98,7 @@ export default function Days({events, month, year}){
               .toString(16)
               .toUpperCase();
       
+        //   console.log("00000".substring(0, 6 - c.length) + c)
           return "00000".substring(0, 6 - c.length) + c;
       }
 
