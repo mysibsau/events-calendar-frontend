@@ -137,7 +137,10 @@ export default function Days({events, month, year}){
                                     
                                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                         {d.getDate()}
-                                        {isConfirmed && <Link to={'/add_event'} style={{textDecoration: 'none'}}><div className="plus-button">+</div></Link>}
+                                        {isConfirmed && <Link to={`/add-event/${d.getFullYear()}-${String(d.getMonth() + 1).length === 1 ? 
+                                            '0' + String(d.getMonth() + 1) : String(d.getMonth() + 1)}-${String(d.getDate()).length === 1 ? '0' + String(d.getDate()) : 
+                                        String(d.getDate())}`} 
+                                            style={{textDecoration: 'none'}}><div className="plus-button">+</div></Link>}
                                     </div>
                                     {weekEvents.map(event => {
                                         let start = new Date(`${event.start_date}T00:00:00`)

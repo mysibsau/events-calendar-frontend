@@ -37,3 +37,21 @@ export const editEvent = async (id, name, date, place, count, direction, organiz
         return {error: err.response.data[Object.keys(err.response.data)[0]][0]}
     }
 }; 
+
+export const addEvent = async (name, date, place, count, direction, organization) => {
+    try {
+        console.log(name, date, place, count, direction, organization)
+        const token = localStorage.getItem('token')
+        const response = await axios.post('/event/', {
+            direction_id: Number(direction), 
+            organization_id: Number(organization), 
+            name: name, 
+            start_date: date, 
+            place: place, 
+            coverage_participants_plan: Number(count)}, {headers: {Authorization: `Token ${token}`}})
+
+        return response.data;
+    } catch(err) {
+        return {error: err.response.data[Object.keys(err.response.data)[0]][0]}
+    }
+}

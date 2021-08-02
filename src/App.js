@@ -7,6 +7,7 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import CalendarPage from "./components/CalendarPage/CalendarPage";
 import EventPage from "./components/EventPage/EventPage";
 import { ReferenceManager } from "./api/references";
+import AddEventPage from "./components/AddEventPage/AddEventPage";
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
     <Router>
       {localStorage.getItem('token') !== null ? 
       <Switch>
+        <Route path={'/add-event/:date'}>
+          <AddEventPage />
+        </Route>
         <Route path={'/event/:id'}>
           <EventPage />
         </Route>
