@@ -14,6 +14,7 @@ export const getEventData = async (id) => {
     try {
         const token = localStorage.getItem('token')
         const response = await axios.get(`/event/${id}/`, {headers: {Authorization: `Token ${token}`}})
+        console.log(response.data)
         return response.data;
     } catch (err) {
         console.log(err);
@@ -21,14 +22,15 @@ export const getEventData = async (id) => {
     }
 }
 
-export const editEvent = async (id, name, date, place, count, direction, organization) => {
+export const editEvent = async (id, name, date, stopDate, place, count, direction, organization) => {
     try {
         const token = localStorage.getItem('token')
         const response = await axios.put(`/event/${id}/`, {
-            direction_id: Number(direction), 
-            organization_id: Number(organization), 
+            direction: Number(direction), 
+            organization: Number(organization), 
             name: name, 
             start_date: date, 
+            stop_date: stopDate,
             place: place, 
             coverage_participants_plan: Number(count)}, {headers: {Authorization: `Token ${token}`}})
 
@@ -38,15 +40,15 @@ export const editEvent = async (id, name, date, place, count, direction, organiz
     }
 }; 
 
-export const addEvent = async (name, date, place, count, direction, organization) => {
+export const addEvent = async (name, date, stopDate, place, count, direction, organization) => {
     try {
-        console.log(name, date, place, count, direction, organization)
         const token = localStorage.getItem('token')
         const response = await axios.post('/event/', {
-            direction_id: Number(direction), 
-            organization_id: Number(organization), 
+            direction: Number(direction), 
+            organization: Number(organization), 
             name: name, 
             start_date: date, 
+            stop_date: stopDate,
             place: place, 
             coverage_participants_plan: Number(count)}, {headers: {Authorization: `Token ${token}`}})
 

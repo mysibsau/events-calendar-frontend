@@ -19,7 +19,8 @@ export default function AddEventPage(){
     const history = useHistory();
 
     const [name, setName] = React.useState('');
-    const [date, setDate] = React.useState('');
+    const [date, setDate] = React.useState(dateParams.date);
+    const [endDate, setEndDate] = React.useState(dateParams.date)
     const [place, setPlace] = React.useState('');
     const [count, setCount] = React.useState('');
     const [direction, setDirection] = React.useState('');
@@ -30,7 +31,7 @@ export default function AddEventPage(){
 
     const addEventOnDate = async (e) => {
         e.preventDefault();
-        const res = await addEvent(name, date, place, count, direction, organization)
+        const res = await addEvent(name, date, endDate, place, count, direction, organization)
         if (!res.error) {
             history.push('/')
             window.location.reload()
@@ -56,7 +57,8 @@ export default function AddEventPage(){
             </div>
             <form className={'edit-form'} onSubmit={addEventOnDate}>
                 <TextField id={'name'} className={'edit-input'} value={name} onChange={e => setName(e.target.value)} label={'Название мероприятия'} variant={'outlined'} type={'text'}/>
-                <TextField id={'date'} className={'edit-input'} value={date} onChange={e => setDate(e.target.value)} label={'Дата начала'} variant={'outlined'} type={'date'}/>
+                <TextField id={'date'} className={'edit-input'} defaultValue={dateParams} value={date} onChange={e => setDate(e.target.value)}  variant={'outlined'} type={'date'}/>
+                <TextField id={'date'} className={'edit-input'} defaultValue={dateParams} value={endDate} onChange={e => setEndDate(e.target.value)}  variant={'outlined'} type={'date'}/>
                 <TextField id={'place'} className={'edit-input'} value={place} onChange={e => setPlace(e.target.value)} label={'Место проведения'} variant={'outlined'} type={'text'}/>
                 <TextField id={'count'} className={'edit-input'} value={count} onChange={e => setCount(e.target.value)} label={'Охват участников (план)'} variant={'outlined'} type={'number'}/>
                 <TextField select id={'direction'} className={'edit-input'} value={direction}  onChange={e => setDirection(e.target.value)} label={'Направление'} variant={'outlined'}>

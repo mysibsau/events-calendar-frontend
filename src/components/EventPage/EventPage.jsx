@@ -28,6 +28,7 @@ export default function EventPage(props) {
 
     const [name, setName] = React.useState('');
     const [date, setDate] = React.useState('');
+    const [stopDate, setStopDate] = React.useState('');
     const [place, setPlace] = React.useState('');
     const [count, setCount] = React.useState(0)
     const [direction, setDirection] = React.useState(0)
@@ -46,6 +47,7 @@ export default function EventPage(props) {
             setEvent(response)
             setName(response.name)
             setDate(response.start_date)
+            setStopDate(response.stop_date)
             setPlace(response.place)
             setCount(response.coverage_participants_plan)
             setDirection(response.direction)
@@ -63,7 +65,7 @@ export default function EventPage(props) {
 
     const editCurrentEvent = async (e) => {
         e.preventDefault();
-        const data = await editEvent(params.id, name, date, place, count, direction, organization)
+        const data = await editEvent(params.id, name, date, stopDate, place, count, direction, organization)
         if (!data.error){
             setEvent(data)
             setIsDisable(true)
@@ -111,7 +113,7 @@ export default function EventPage(props) {
                 {/* <p>Уровень мероприятия: {levels.filter(item => item.id === event.level)[0].name}</p> */}
                 {/* <p>Роль СибГУ: {roles.filter(item => item.id === event.role)[0].name}</p> */}
                 {/* <p>Формат мероприятия: {formats.filter(item => item.id === event.format)[0].name}</p> */}
-                <p>Направление: {directions.filter(item => item.id === event.direction)[0].name}</p>
+                {/* <p>Направление: {directions.filter(item => item.id === event.direction)[0].name}</p> */}
                 </>}
                 {!event.verified && isStaff &&
                 <div className={'done-button'}>
@@ -123,6 +125,7 @@ export default function EventPage(props) {
             <form className={'edit-form'} onSubmit={editCurrentEvent}>
                 <TextField id={'name'} className={'edit-input'} defaultValue={event.name} onChange={e => setName(e.target.value)} label={'Название мероприятия'} variant={'outlined'} type={'text'}/>
                 <TextField id={'date'} className={'edit-input'} defaultValue={event.start_date} onChange={e => setDate(e.target.value)} label={'Дата начала'} variant={'outlined'} type={'date'}/>
+                <TextField id={'date'} className={'edit-input'} defaultValue={event.stop_date} onChange={e => setStopDate(e.target.value)} label={'Дата окончания'} variant={'outlined'} type={'date'}/>
                 <TextField id={'place'} className={'edit-input'} defaultValue={event.place} onChange={e => setPlace(e.target.value)} label={'Место проведения'} variant={'outlined'} type={'text'}/>
                 <TextField id={'count'} className={'edit-input'} defaultValue={event.coverage_participants_plan} onChange={e => setCount(e.target.value)} label={'Охват участников (план)'} variant={'outlined'} type={'number'}/>
                 {/* <InputLabel id="label">Направление</InputLabel> */}

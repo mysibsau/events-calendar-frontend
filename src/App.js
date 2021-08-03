@@ -2,6 +2,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from "react-router-dom";
 import LoginPage from "./components/LoginPage/LoginPage";
 import CalendarPage from "./components/CalendarPage/CalendarPage";
@@ -25,11 +26,13 @@ function App() {
         <Route path={'/'}>
           <CalendarPage />
         </Route>
+        <Redirect to="/" />
       </Switch> : 
       <Switch>
         <Route path={'/'}>
           <LoginPage />
         </Route>
+        <Redirect to="/" />
         </Switch>}
     </Router>
     </ReferenceManager>
