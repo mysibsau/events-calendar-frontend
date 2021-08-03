@@ -104,7 +104,7 @@ export default function EventPage(props) {
                     </div>}
                 </div>
                 {/* <p className="event-info">Ответственный: {event.responsible}</p> */}
-                <p className="event-info">Дата проведения: {event.start_date.split('-').reverse().join('/')}</p>
+                <p className="event-info">Дата проведения: {event.start_date.split('-').reverse().join('/')} - {event.stop_date.split('-').reverse().join('/')}</p>
                 <p className="event-info">Место проведения: {event.place}</p>
                 <p>Охват участников (план): {event.coverage_participants_plan}</p>
                 {isReferenceLoaded &&
