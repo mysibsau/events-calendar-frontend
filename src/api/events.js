@@ -57,3 +57,24 @@ export const addEvent = async (name, date, stopDate, place, count, direction, or
         return {error: err.response.data[Object.keys(err.response.data)[0]][0]}
     }
 }
+
+export const verificateEvent = async (id) => {
+    try {
+        const token = localStorage.getItem('token')
+        await axios.post(`/event/vereficate/${id}`, {}, {headers: {Authorization: `Token ${token}`}})
+        return true;
+    } catch(err) {
+        console.log(err)
+        return false;
+    }
+}
+
+export const unvereficateEvent = async (id) => {
+    try {
+        const token = localStorage.getItem('token')
+        await axios.delete(`/event/vereficate/${id}`, {headers: {Authorization: `Token ${token}`}})
+        return true;
+    } catch(err) {
+        return false;
+    }
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import './EventPage.scss';
-import { editEvent, getEventData } from '../../api/events';
+import { editEvent, getEventData, unvereficateEvent, verificateEvent } from '../../api/events';
 import { TextField, CircularProgress, MenuItem, Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert'
 import { useReferences } from '../../api/references';
@@ -75,6 +75,16 @@ export default function EventPage(props) {
         }
     };
 
+    const verifyEvent = async () => {
+        if (!event.verified) {
+            verificateEvent(event.id)
+            window.location.reload()
+        } else {
+            unvereficateEvent(event.id)
+            window.location.reload()
+        }
+    }
+
     return(
     <>
     <Header />
@@ -116,12 +126,18 @@ export default function EventPage(props) {
                 {/* <p>Формат мероприятия: {formats.filter(item => item.id === event.format)[0].name}</p> */}
                 <p>Направление: {directions.filter(item => item.id === event.direction)[0].name}</p>
                 </>}
-                {!event.verified && isStaff &&
-                <div className={'done-button'}>
+                {!event.verified && isStaff ?
+                <div className={'done-button'} onClick={() => verifyEvent()}>
                     <img src="https://img.icons8.com/ios-glyphs/60/26e07f/ok.png"/>
                     {/* <img src="https://img.icons8.com/ios-glyphs/50/26e07f/checkmark--v1.png"/> */}
                     <p>Верифицировать</p>
-                </div>}
+                </div> : 
+                <div className={'done-button__cancel'} onClick={() => verifyEvent()}>
+                <img src="https://img.icons8.com/color/60/000000/cancel--v1.png"/>
+                {/* <img src="https://img.icons8.com/ios-glyphs/50/26e07f/checkmark--v1.png"/> */}
+                <p>Отменить</p>
+            </div>}
+
             </div> : 
             <form className={'edit-form'} onSubmit={editCurrentEvent}>
                 <TextField id={'name'} className={'edit-input'} defaultValue={event.name} onChange={e => setName(e.target.value)} label={'Название мероприятия'} variant={'outlined'} type={'text'}/>

@@ -33,6 +33,43 @@
         cursor: pointer;
         margin-left: 280px;
 
+        &__cancel {
+            display: flex;
+            padding: 0;
+            flex-direction: row;
+            height: 40px;
+            width: 40px;
+            border: 1px solid ;
+            border-color: lightcoral;
+            border-radius: 20px;
+            justify-self: center;
+            overflow: hidden;
+            transition: 0.5s;
+            cursor: pointer;
+            margin-left: 280px;
+
+            img {
+                height: 55px;
+                width: 55px;
+                margin-left: -7px;
+                margin-top: -8px;
+            }
+
+            &:hover{
+                width: 150px;
+                margin-left: 205px;
+                transition: 0.5s;
+            }
+
+            p {
+                height: 40px;
+                margin: 0;
+                vertical-align: middle;
+                padding-top: 5px;
+                margin-left: -10px;
+            }
+        }
+
         &:hover{
             width: 190px;
             margin-left: 205px;
