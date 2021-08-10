@@ -77,10 +77,10 @@ export default function EventPage(props) {
 
     const verifyEvent = async () => {
         if (!event.verified) {
-            verificateEvent(event.id)
+            await verificateEvent(event.id)
             window.location.reload()
         } else {
-            unvereficateEvent(event.id)
+            await unvereficateEvent(event.id)
             window.location.reload()
         }
     }
