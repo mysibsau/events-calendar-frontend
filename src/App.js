@@ -11,6 +11,7 @@ import { ReferenceManager } from "./api/references";
 import AddEventPage from "./components/AddEventPage/AddEventPage";
 import Header from "./components/Header/Header";
 import { RightsManager } from "./helpers/UserRightsContext";
+import UsersPage from "./components/UsersPage/UsersPage";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
       <Header />
       <Switch>
         <Route path={'/users'}>
-          
+          <UsersPage />
         </Route>
         <Route path={'/add-event/:date'}>
           <AddEventPage />

@@ -8,6 +8,7 @@ import MuiAlert from '@material-ui/lab/Alert'
 import { useReferences } from '../../api/references';
 import { getAddVerifyRight } from '../../api/rights';
 import CommentBlock from './CommentsBlock/CommentBlock';
+import { useRights } from '../../helpers/UserRightsContext';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -24,7 +25,7 @@ export default function EventPage(props) {
 
     const {directions, organizations, formats, levels, roles, isReferenceLoaded} = useReferences()
 
-    const [isStaff, setIsStaff] = React.useState(false);
+    const {isStaff} = useRights();
 
     const [name, setName] = React.useState('');
     const [date, setDate] = React.useState('');
@@ -37,7 +38,6 @@ export default function EventPage(props) {
     const params = useParams()
 
     React.useEffect(() => {
-        getIsStaff();
         getEvent()
     }, [])
 
@@ -58,10 +58,6 @@ export default function EventPage(props) {
         }
     };
 
-    const getIsStaff = async() => {
-        const data = await getAddVerifyRight();
-        setIsStaff(data.is_staff)
-    };
 
     const editCurrentEvent = async (e) => {
         e.preventDefault();
