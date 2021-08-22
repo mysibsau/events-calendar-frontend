@@ -10,17 +10,20 @@ import EventPage from "./components/EventPage/EventPage";
 import { ReferenceManager } from "./api/references";
 import AddEventPage from "./components/AddEventPage/AddEventPage";
 import Header from "./components/Header/Header";
+import { RightsManager } from "./helpers/UserRightsContext";
 
 function App() {
   return (
-    // <RightsManager>
+    <RightsManager>
     <ReferenceManager>
     <Router>
       {localStorage.getItem('token') !== null ? 
       <>
       <Header />
       <Switch>
-        
+        <Route path={'/users'}>
+          
+        </Route>
         <Route path={'/add-event/:date'}>
           <AddEventPage />
         </Route>
@@ -40,7 +43,7 @@ function App() {
         </Switch>}
     </Router>
     </ReferenceManager>
-    // </RightsManager>
+    </RightsManager>
   );
 }
 

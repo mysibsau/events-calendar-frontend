@@ -40,7 +40,7 @@ export default function Days({events, month, year}){
                 eventsCount++;
             }
         })
-        console.log(week, eventsCount)
+        
         return eventsCount;
     }
 

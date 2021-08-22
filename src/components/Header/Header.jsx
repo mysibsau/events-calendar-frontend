@@ -2,9 +2,11 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import './Header.scss';
 import { Link } from 'react-router-dom';
+import { useRights } from '../../helpers/UserRightsContext';
 
 
 export default function Header() {
+    const {isStaff} = useRights()
 
     const logout = () => {
         console.log('logout')
@@ -23,6 +25,10 @@ export default function Header() {
         <div className={'header-container'}>
             <Link to={'/'} style={{textDecoration: 'none'}}><h3>Календарь событий СибГУ</h3></Link>
             <div style={{display: 'flex', flexDirection: 'row'}}>
+                {isStaff &&
+                <Link to="/users" style={{display: 'flex', textDecoration: 'none', color: '#006AB3', flexDirection: 'column', justifyContent: 'center', marginRight: 20, fontFamily: 'Oswald', fontSize: 20, cursor: 'pointer'}}>
+                Пользователи
+                </Link>}
              <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginRight: 20, fontFamily: 'Oswald', fontSize: 20}}>
              {hello[Math.floor(Math.random() * hello.length)]}, {name}
              </div>
