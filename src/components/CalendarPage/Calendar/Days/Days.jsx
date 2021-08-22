@@ -35,12 +35,12 @@ export default function Days({events, month, year}){
             let stop = new Date(`${item.stop_date}T00:00:00`)
             if ((week.start_date >= start &&
                 week.start_date <= stop) || 
-                (week.stop_date > start && week.stop_date < stop) ||
+                (week.stop_date >= start && week.stop_date <= stop) ||
                 (start >= week.start_date && stop <= week.stop_date)){
                 eventsCount++;
             }
         })
-
+        console.log(week, eventsCount)
         return eventsCount;
     }
 
@@ -89,7 +89,6 @@ export default function Days({events, month, year}){
            hash = str.charCodeAt(i) + ((hash << 3) - hash);
         }
 
-        console.log(Math.floor(hash / 100))
         return Math.floor(hash);
       } 
     
@@ -128,9 +127,9 @@ export default function Days({events, month, year}){
                         return event
                     }
                 })
-
+                
                 return(
-                    <tr style={{height: (eventsCount <= 1 ? 100 : eventsCount * 50 + 20)}}>
+                    <tr style={{height: (eventsCount <= 1 ? 100 : eventsCount * 50 + 30)}}>
                         {item.list.map(d => {
                             if(d)
                                 return (<td valign='top' className="calendar-day" style={{overflow: 'visible'}}>
@@ -146,13 +145,13 @@ export default function Days({events, month, year}){
                                         let start = new Date(`${event.start_date}T00:00:00`)
                                         let stop = new Date(`${event.stop_date}T00:00:00`)
                                         if (d.valueOf() === start.valueOf() && d.valueOf() === stop.valueOf()){
-                                            return (<Link to={`/event/${event.id}`}><div className="event-div" style={{ borderRadius: 15, backgroundColor: '#' +  intToRGB(hashCode(event.name)), padding: 5, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div></Link>)
+                                            return (<Link to={`/event/${event.id}`}><div className="event-div" style={{ borderRadius: 15, backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc', padding: 5, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div></Link>)
                                           } else if(d.valueOf() === start.valueOf()){
-                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{ borderTopLeftRadius: 15, zIndex: 3, backgroundColor: '#' +  intToRGB(hashCode(event.name)), borderBottomLeftRadius: 15, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div></Link>
+                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{ borderTopLeftRadius: 15, zIndex: 3, backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc', borderBottomLeftRadius: 15, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div></Link>
                                           } else if(d.valueOf() === stop.valueOf()) {
-                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{borderTopRightRadius: 15, borderBottomRightRadius: 15, backgroundColor: '#' +  intToRGB(hashCode(event.name)), marginTop: weekEvents.indexOf(event) * 45 + 5}}>{start.getMonth() < month && event.name}</div></Link>
+                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{borderTopRightRadius: 15, borderBottomRightRadius: 15, backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc', marginTop: weekEvents.indexOf(event) * 45 + 5}}>{start.getMonth() < month && event.name}</div></Link>
                                           } else if(d.valueOf() > start.valueOf() && stop.valueOf() > d.valueOf() ){
-                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{backgroundColor: '#' +  intToRGB(hashCode(event.name)), marginTop: weekEvents.indexOf(event) * 45 + 5}}></div></Link>
+                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc', marginTop: weekEvents.indexOf(event) * 45 + 5}}></div></Link>
                                           }
                                     })}
                                     </td>)

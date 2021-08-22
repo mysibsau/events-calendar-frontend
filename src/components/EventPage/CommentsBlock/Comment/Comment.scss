@@ -1,0 +1,23 @@
+
+.comment {
+    padding: 10px;
+    box-shadow: 3px 3px 10px #ddd;
+    border-radius: 30px;
+    margin-bottom: 30px;
+    position: relative;
+
+    .edit {
+        position: absolute;
+        height: 25px;
+        width: 25px;
+        right: 50px;
+        cursor: pointer;
+    }
+    .delete {
+        position: absolute;
+        height: 25px;
+        width: 25px;
+        right: 10px;
+        cursor: pointer;
+    }
+}

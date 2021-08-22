@@ -9,6 +9,7 @@ import CalendarPage from "./components/CalendarPage/CalendarPage";
 import EventPage from "./components/EventPage/EventPage";
 import { ReferenceManager } from "./api/references";
 import AddEventPage from "./components/AddEventPage/AddEventPage";
+import Header from "./components/Header/Header";
 
 function App() {
   return (
@@ -16,7 +17,10 @@ function App() {
     <ReferenceManager>
     <Router>
       {localStorage.getItem('token') !== null ? 
+      <>
+      <Header />
       <Switch>
+        
         <Route path={'/add-event/:date'}>
           <AddEventPage />
         </Route>
@@ -27,7 +31,7 @@ function App() {
           <CalendarPage />
         </Route>
         <Redirect to="/" />
-      </Switch> : 
+      </Switch></> : 
       <Switch>
         <Route path={'/'}>
           <LoginPage />

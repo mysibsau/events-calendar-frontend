@@ -11,8 +11,11 @@ export default function Header() {
         localStorage.removeItem('token');
         localStorage.removeItem('name');
         localStorage.removeItem('confirmed');
+        localStorage.removeItem('id')
         window.location.reload();
     }
+
+    const hello = ['Привет', 'Здравствуй', 'Доброго времени суток', 'Приветствую', 'Салют']
 
     const name = localStorage.getItem('name');
 
@@ -21,7 +24,7 @@ export default function Header() {
             <Link to={'/'} style={{textDecoration: 'none'}}><h3>Календарь событий СибГУ</h3></Link>
             <div style={{display: 'flex', flexDirection: 'row'}}>
              <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', marginRight: 20, fontFamily: 'Oswald', fontSize: 20}}>
-             Привет, {name}
+             {hello[Math.floor(Math.random() * hello.length)]}, {name}
              </div>
             <div className={'button-container'}>
             <Button onClick={() => logout()} type={'button'} className={'button'} variant={'contained'}>Выйти</Button>

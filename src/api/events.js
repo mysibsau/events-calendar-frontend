@@ -2,7 +2,8 @@ import axios from "axios"
 
 export const getEventsByDate = async (month, year) => {
     try {
-        const response = await axios.get(`/events/${month}.${year}/`)
+        const token = localStorage.getItem('token')
+        const response = await axios.get(`/events/${month}.${year}/`, {headers: {Authorization: `Token ${token}`}})
         return response.data;
     } catch (err) {
         console.log(err);

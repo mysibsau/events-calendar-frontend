@@ -25,6 +25,7 @@ export default function LoginPage() {
             localStorage.setItem('token', res.token);
             localStorage.setItem('name', res.name);
             localStorage.setItem('confirmed', res.confirmed);
+            localStorage.setItem('userId', res.id)
             window.location.reload()
         } else {
             setIsError(true);

@@ -6,8 +6,8 @@ import { editEvent, getEventData, unvereficateEvent, verificateEvent } from '../
 import { TextField, CircularProgress, MenuItem, Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert'
 import { useReferences } from '../../api/references';
-import Header from '../Header/Header';
 import { getAddVerifyRight } from '../../api/rights';
+import CommentBlock from './CommentsBlock/CommentBlock';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -87,19 +87,12 @@ export default function EventPage(props) {
 
     return(
     <>
-    <Header />
     <Snackbar open={showError} autoHideDuration={4000} onClose={() => setShowError(false)}>
         <Alert severity="warning">
             {errorTitle}
         </Alert>
     </Snackbar>
     <div className={'eventPage'}>
-        <div className={'back-button'}>
-            <Link to={'/'} style={{display: 'flex', flexDirection: 'row', textDecoration: 'none', color: '#006AB3', margin: 10}}>
-                {/* <img src="https://img.icons8.com/ios-filled/50/000000/long-arrow-left.png" style={{marginRight: 15, width: 60}}/> */}
-                <h3>Вернуться к календарю</h3>
-            </Link>
-        </div>
         {loaded ? <div>
             {isDisable ? 
             <div className={'eventInfo'}>
@@ -137,7 +130,7 @@ export default function EventPage(props) {
                 {/* <img src="https://img.icons8.com/ios-glyphs/50/26e07f/checkmark--v1.png"/> */}
                 <p>Отменить</p>
             </div>}
-
+            <CommentBlock eventId={event.id} comments={event.comments} />
             </div> : 
             <form className={'edit-form'} onSubmit={editCurrentEvent}>
                 <TextField id={'name'} className={'edit-input'} defaultValue={event.name} onChange={e => setName(e.target.value)} label={'Название мероприятия'} variant={'outlined'} type={'text'}/>
