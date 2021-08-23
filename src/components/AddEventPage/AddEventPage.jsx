@@ -49,11 +49,6 @@ export default function AddEventPage(){
             </Alert>
         </Snackbar>
         <div className={'eventPage'}>
-            <div className={'back-button'}>
-                <Link to={'/'} style={{display: 'flex', flexDirection: 'row', textDecoration: 'none', color: '#006AB3', margin: 10}}>
-                    <h3>Вернуться к календарю</h3>
-                </Link>
-            </div>
             <form className={'edit-form'} onSubmit={addEventOnDate}>
                 <TextField id={'name'} className={'edit-input'} value={name} onChange={e => setName(e.target.value)} label={'Название мероприятия'} variant={'outlined'} type={'text'}/>
                 <TextField id={'date'} className={'edit-input'} defaultValue={dateParams} value={date} onChange={e => setDate(e.target.value)}  variant={'outlined'} type={'date'}/>
