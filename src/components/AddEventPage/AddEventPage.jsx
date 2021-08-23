@@ -43,7 +43,6 @@ export default function AddEventPage(){
 
     return(
         <>
-        <Header />
         <Snackbar open={showError} autoHideDuration={4000} onClose={() => setShowError(false)}>
             <Alert severity="warning">
                 {errorText}
