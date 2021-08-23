@@ -12,6 +12,7 @@ import AddEventPage from "./components/AddEventPage/AddEventPage";
 import Header from "./components/Header/Header";
 import { RightsManager } from "./helpers/UserRightsContext";
 import UsersPage from "./components/UsersPage/UsersPage";
+import UnverifiedPage from "./components/UnverifiedPage/UnverifiedPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <>
       <Header />
       <Switch>
+        <Route path={'/unverified'} component={UnverifiedPage}/>
         <Route path={'/users'}>
           <UsersPage />
         </Route>

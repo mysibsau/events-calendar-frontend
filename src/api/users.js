@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const getUsersApiCall = async () => {
+export const getUsersApiCall = async (url) => {
     try {
         const token = localStorage.getItem('token')
-        const response = await axios.get('/users/', {headers: {Authorization: `Token ${token}`}})
+        const response = await axios.get(url, {headers: {Authorization: `Token ${token}`}})
         console.log(response.data)
         return response.data;
     } catch(err) {

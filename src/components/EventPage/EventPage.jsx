@@ -115,17 +115,18 @@ export default function EventPage(props) {
                 {/* <p>Формат мероприятия: {formats.filter(item => item.id === event.format)[0].name}</p> */}
                 <p>Направление: {directions.filter(item => item.id === event.direction)[0].name}</p>
                 </>}
-                {!event.verified && isStaff ?
-                <div className={'done-button'} onClick={() => verifyEvent()}>
-                    <img src="https://img.icons8.com/ios-glyphs/60/26e07f/ok.png"/>
-                    {/* <img src="https://img.icons8.com/ios-glyphs/50/26e07f/checkmark--v1.png"/> */}
-                    <p>Верифицировать</p>
-                </div> : 
-                <div className={'done-button__cancel'} onClick={() => verifyEvent()}>
-                <img src="https://img.icons8.com/color/60/000000/cancel--v1.png"/>
-                {/* <img src="https://img.icons8.com/ios-glyphs/50/26e07f/checkmark--v1.png"/> */}
-                <p>Отменить</p>
-            </div>}
+                {isStaff && 
+                <>
+                    {!event.verified  ?
+                    <div className={'done-button'} onClick={() => verifyEvent()}>
+                        <img src="https://img.icons8.com/ios-glyphs/60/26e07f/ok.png"/>
+                        <p>Верифицировать</p>
+                    </div> : 
+                    <div className={'done-button__cancel'} onClick={() => verifyEvent()}>
+                        <img src="https://img.icons8.com/color/60/000000/cancel--v1.png"/>
+                        <p>Отменить</p>
+                    </div>}
+                </>}
             <CommentBlock eventId={event.id} comments={event.comments} />
             </div> : 
             <form className={'edit-form'} onSubmit={editCurrentEvent}>

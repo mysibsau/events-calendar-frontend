@@ -1,0 +1,11 @@
+.unverified-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .no-events {
+        font-family: 'Oswald';
+        margin-top: 30vh;
+        font-size: 40px;
+    }
+}
