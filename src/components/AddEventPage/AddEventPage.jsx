@@ -1,8 +1,6 @@
 import React from 'react';
 import { TextField, MenuItem, Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert'
-import Header from '../Header/Header';
-import { Link } from 'react-router-dom';
 import { useReferences } from '../../api/references';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router';

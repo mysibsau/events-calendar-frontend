@@ -10,6 +10,7 @@ export default function Days({events, month, year}){
     const [isConfirmed, setIsConfirmed] = React.useState(false)
 
     React.useEffect(() => {
+        console.log(events)
         getRights();
         generateDays();
     }, [month])
@@ -31,14 +32,15 @@ export default function Days({events, month, year}){
     const getWeekEventsCount = (week) => {
         let eventsCount = 0;
         events.map(item => {
-            let start = new Date(`${item.start_date}T00:00:00`)
-            let stop = new Date(`${item.stop_date}T00:00:00`)
-            if ((week.start_date >= start &&
-                week.start_date <= stop) || 
-                (week.stop_date >= start && week.stop_date <= stop) ||
-                (start >= week.start_date && stop <= week.stop_date)){
-                eventsCount++;
-            }
+            let thereIs = false
+            item.important_dates.map(importantDate => {
+                let date = new Date(importantDate.date)
+                if (date >= week.start_date && date <= week.stop_date){
+                    thereIs = true
+                }
+            })
+
+            thereIs && eventsCount++;
         })
         
         return eventsCount;
@@ -96,8 +98,7 @@ export default function Days({events, month, year}){
           var c = (i & 0x00FFFFFF)
               .toString(16)
               .toUpperCase();
-      
-        //   console.log("00000".substring(0, 6 - c.length) + c)
+
           return "00000".substring(0, 6 - c.length) + c;
       }
 
@@ -131,9 +132,9 @@ export default function Days({events, month, year}){
                 return(
                     <tr style={{height: (eventsCount <= 1 ? 100 : eventsCount * 50 + 30)}}>
                         {item.list.map(d => {
-                            if(d)
-                                return (<td valign='top' className="calendar-day" style={{overflow: 'visible'}}>
-                                    
+                            if(d){
+                                return (
+                                <td valign='top' className="calendar-day" style={{overflow: 'visible'}}>
                                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                         {d.getDate()}
                                         {isConfirmed && <Link to={`/add-event/${d.getFullYear()}-${String(d.getMonth() + 1).length === 1 ? 
@@ -142,21 +143,26 @@ export default function Days({events, month, year}){
                                             style={{textDecoration: 'none'}}><div className="plus-button">+</div></Link>}
                                     </div>
                                     {weekEvents.map(event => {
-                                        let start = new Date(`${event.start_date}T00:00:00`)
-                                        let stop = new Date(`${event.stop_date}T00:00:00`)
-                                        if (d.valueOf() === start.valueOf() && d.valueOf() === stop.valueOf()){
-                                            return (<Link to={`/event/${event.id}`}><div className="event-div" style={{ borderRadius: 15, backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc', padding: 5, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div></Link>)
-                                          } else if(d.valueOf() === start.valueOf()){
-                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{ borderTopLeftRadius: 15, zIndex: 3, backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc', borderBottomLeftRadius: 15, marginTop: weekEvents.indexOf(event) * 45 + 5}}>{event.name}</div></Link>
-                                          } else if(d.valueOf() === stop.valueOf()) {
-                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{borderTopRightRadius: 15, borderBottomRightRadius: 15, backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc', marginTop: weekEvents.indexOf(event) * 45 + 5}}>{start.getMonth() < month && event.name}</div></Link>
-                                          } else if(d.valueOf() > start.valueOf() && stop.valueOf() > d.valueOf() ){
-                                            return <Link to={`/event/${event.id}`}><div className="event-div" style={{backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc', marginTop: weekEvents.indexOf(event) * 45 + 5}}></div></Link>
-                                          }
+                                        // console.log(event, d)
+                                        return(<div>
+                                            {event.important_dates.map(importantDate => {
+                                                let day = new Date(`${importantDate.date}`)
+                                                if (d.getDate() === day.getDate()){
+                                                    return(
+                                                        <Link to={`/event/${event.id}`}>
+                                                            <div 
+                                                                className="event-div" 
+                                                                style={{ borderRadius: 15, backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc', marginTop: weekEvents.indexOf(event) * 45 + 5}}
+                                                            >{importantDate.name}</div>
+                                                        </Link>
+                                                    )
+                                                }
+                                        })}</div>)
                                     })}
-                                    </td>)
-                            else 
+                                </td>)
+                            } else { 
                                 return <td className="calendar-day empty"/>
+                            }
                         })}
                     </tr>
                 )
