@@ -130,7 +130,7 @@ export default function Days({events, month, year}){
                 })
                 
                 return(
-                    <tr style={{height: (eventsCount <= 1 ? 100 : eventsCount * 50 + 30)}}>
+                    <tr>
                         {item.list.map(d => {
                             if(d){
                                 return (
@@ -143,17 +143,21 @@ export default function Days({events, month, year}){
                                             style={{textDecoration: 'none'}}><div className="plus-button">+</div></Link>}
                                     </div>
                                     {weekEvents.map(event => {
-                                        // console.log(event, d)
                                         return(<div>
                                             {event.important_dates.map(importantDate => {
                                                 let day = new Date(`${importantDate.date}`)
                                                 if (d.getDate() === day.getDate()){
                                                     return(
-                                                        <Link to={`/event/${event.id}`}>
+                                                        <Link to={`/event/${event.id}`} style={{textDecoration: 'none', position: 'relative'}}>
                                                             <div 
                                                                 className="event-div" 
-                                                                style={{ borderRadius: 15, backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc', marginTop: weekEvents.indexOf(event) * 45 + 5}}
-                                                            >{importantDate.name}</div>
+                                                                style={{ borderRadius: 15, backgroundColor: event.is_verified ? '#' +  intToRGB(hashCode(event.name)) : '#ccc'}}
+                                                            >{importantDate.name}
+                                                            </div>
+                                                            {/* <div className="tip-div">
+                                                                <p className="tip-div__name">{importantDate.name}</p>
+                                                                <p className="tip-div__event">Мероприятие: {event.name}</p>
+                                                            </div> */}
                                                         </Link>
                                                     )
                                                 }
