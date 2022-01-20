@@ -142,11 +142,14 @@ export default function EventPage(props) {
                     })}
                 </TextField>
                 {/* <InputLabel id="label">Организация</InputLabel> */}
+                // TODO: Починить
+                {/*
                 <TextField select id={'organization'} className={'edit-input'} label={'Организация'} onChange={e => setOrganization(e.target.value)} defaultValue={event.organization} variant={'outlined'}>
                     {organizations.map(item => {
                         return(<MenuItem value={String(item.id)}>{item.name}</MenuItem>)
                     })}
                 </TextField>
+                */}
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', marginTop: 20}}>
                     <Button className={'form-button cancel'} onClick={() => setIsDisable(true)}>Отмена</Button>
                     <Button type={'submit'} onSubmit={editCurrentEvent} className={'form-button accept'}>Подтвердить</Button>
