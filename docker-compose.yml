@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  frontend:
+    container_name: event-calendar-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/app"
+      - "/app/node_modules"
+    ports:
+      - 3001:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - event-calendar
+    command: "npm start"
+
+networks:
+  event-calendar:
+    external: True
+    name: event-calendar
