@@ -23,7 +23,7 @@ export default function CommentBlock({eventId, comments, onUpdate}){
 
     return (
         <div>
-            <div style={{display: 'flex', flexDirection: 'row',}}>
+            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
             <h3 style={{marginRight: 10}}>Комментарии</h3>
             <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             <img style={{height: 25, width: 25, cursor: 'pointer'}} onClick={() => setAdding(true)} src="https://img.icons8.com/material-rounded/48/4a90e2/plus--v1.png"/>

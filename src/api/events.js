@@ -41,17 +41,10 @@ export const editEvent = async (id, name, date, stopDate, place, count, directio
     }
 }; 
 
-export const addEvent = async (name, date, stopDate, place, count, direction, organization) => {
+export const addEvent = async (event) => {
     try {
         const token = localStorage.getItem('token')
-        const response = await axios.post('/event/', {
-            direction: Number(direction), 
-            organization: Number(organization), 
-            name: name, 
-            start_date: date, 
-            stop_date: stopDate,
-            place: place, 
-            coverage_participants_plan: Number(count)}, {headers: {Authorization: `Token ${token}`}})
+        const response = await axios.post('/event/', event, {headers: {Authorization: `Token ${token}`}})
 
         return response.data;
     } catch(err) {

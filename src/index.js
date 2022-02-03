@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://api-calendar.mysibsau.ru/v1/';
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 ReactDOM.render(
   <React.StrictMode>

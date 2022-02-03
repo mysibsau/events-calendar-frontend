@@ -10,12 +10,17 @@ import EventPage from "./components/EventPage/EventPage";
 import { ReferenceManager } from "./api/references";
 import AddEventPage from "./components/AddEventPage/AddEventPage";
 import Header from "./components/Header/Header";
+import ru from "date-fns/locale/ru";
 import { RightsManager } from "./helpers/UserRightsContext";
 import UsersPage from "./components/UsersPage/UsersPage";
 import UnverifiedPage from "./components/UnverifiedPage/UnverifiedPage";
 
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+
 function App() {
   return (
+    <MuiPickersUtilsProvider locale={ru} utils={DateFnsUtils}>
     <RightsManager>
     <ReferenceManager>
     <Router>
@@ -47,6 +52,7 @@ function App() {
     </Router>
     </ReferenceManager>
     </RightsManager>
+    </MuiPickersUtilsProvider>
   );
 }
 
