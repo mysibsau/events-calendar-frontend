@@ -108,15 +108,24 @@ export default function EventPage(props) {
                 <p>Охват участников (план): {event.coverage_participants_plan}</p>
                 {isReferenceLoaded &&
                 <>
-                {/*
+                
                 <p>Организация: {organizations.filter(item => item.id === event.organization)[0].name}</p>
-                */}fix 
+               
                 
                 {/* <p>Уровень мероприятия: {levels.filter(item => item.id === event.level)[0].name}</p> */}
                 {/* <p>Роль СибГУ: {roles.filter(item => item.id === event.role)[0].name}</p> */}
                 {/* <p>Формат мероприятия: {formats.filter(item => item.id === event.format)[0].name}</p> */}
                 <p>Направление: {directions.filter(item => item.id === event.direction)[0].name}</p>
                 </>}
+                <p style={{fontSize: 22, color: '#006AB3', margin: 0}}>Мероприятия</p>
+                {event.important_dates.map(item => {
+                    return(
+                        <div style={{display: 'flex', flexDirection: 'row', margin: 0}}>
+                            <p>Название: {item.name}</p>
+                            <p>Дата: {item.date}</p>
+                        </div>
+                    );
+                })}
                 {isStaff && 
                 <>
                     {!event.verified  ?
