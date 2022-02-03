@@ -24,7 +24,6 @@ export default function EventPage(props) {
     const [showError, setShowError] = React.useState(false)
 
     const {directions, organizations, formats, levels, roles, isReferenceLoaded} = useReferences()
-
     const {isStaff} = useRights();
 
     const [name, setName] = React.useState('');
@@ -109,7 +108,7 @@ export default function EventPage(props) {
                 {isReferenceLoaded &&
                 <>
                 
-                <p>Организация: {organizations.filter(item => item.id === event.organization)[0].name}</p>
+                {event.organization && <p>Организация: {organizations.filter(item => item.id === event.organization)[0].name}</p>}
                
                 
                 {/* <p>Уровень мероприятия: {levels.filter(item => item.id === event.level)[0].name}</p> */}
