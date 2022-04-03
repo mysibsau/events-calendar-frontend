@@ -1,0 +1,20 @@
+.loader{
+    width: 100%;
+    margin-top: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: 300px;
+        height: 300px;
+        animation: loader-rotate 2s infinite linear;
+    }
+
+    @keyframes loader-rotate {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}

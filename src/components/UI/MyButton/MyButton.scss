@@ -1,0 +1,29 @@
+button{
+    text-align: center;
+    padding: 10px 40px;
+    border: 1px solid #0057FF;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.primary{
+    color: white;
+    background-color: #0057FF;
+
+    &:hover{
+        color: #0057FF;
+        background-color: white;
+    }
+}
+
+.default{
+    color: #0057FF;
+    background-color: white;
+
+    &:hover{
+        color: white;
+        background-color: #0057FF;
+    }
+}

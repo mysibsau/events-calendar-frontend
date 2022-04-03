@@ -1,0 +1,27 @@
+.input-container{
+    position: relative;
+
+    span{
+        position: absolute;
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        top: 10px;
+        left: 8px;
+        background-size: cover;
+    }
+
+    input{
+        height: 45px;
+        padding: 10px 10px 10px 41px;
+        border: 2px solid #0057FF;
+        border-radius: 7px;
+        font-size: 18px;
+        width: 100%;
+
+        &::placeholder{
+            line-height: 25px;
+            font-weight: 700;
+        }
+    }
+}
