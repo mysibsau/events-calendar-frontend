@@ -1,0 +1,32 @@
+.eventCard{
+
+
+    .cardBody{
+        height: 180px;
+        padding: 40px 25px;
+        background-image: url("../../../assets/EventsCardBack.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        border-radius: 7px;
+
+        p{
+            text-align: left;
+            font-weight: 400;
+            font-size: 29px;
+            line-height: 34px;
+        }
+    }
+
+    .changeBut{
+        display: inline-block;
+        margin-top: 5px;
+        font-size: 22px;
+        font-weight: 500;
+        color: black;
+
+        &:hover{
+            color: #0057FF;
+        }
+    }
+}

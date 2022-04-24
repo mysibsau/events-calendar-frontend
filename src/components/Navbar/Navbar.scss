@@ -37,7 +37,7 @@
                     color: black;
                     height: 40px;
 
-                    &:hover{
+                    &.active, &:hover{
                         color: #0057FF;
                     }
 
@@ -54,7 +54,7 @@
                         z-index: 10;
                     }
 
-                    &:hover::after{
+                    &.active::after, &:hover::after{
                         width: 100%;
                     }
                 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import { useActionsAuth } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import MyButton, { ButtonVariant } from '../UI/MyButton/MyButton';
@@ -10,10 +10,6 @@ const Navbar = () => {
     const { user } = useTypedSelector(state => state.auth)
     const { fetchLogout } = useActionsAuth()
 
-    const clickBtnLogin = () => {
-        
-    }
-
     const clickBtnLogout = () => {
         fetchLogout()
         window.location.reload()
@@ -23,17 +19,17 @@ const Navbar = () => {
         <div className={'navbar'}>
             <nav>
                 <div className={'navbar-left'}>
-                    <Link to={'/'}>
+                    <NavLink to={'/'}>
                         <img src={logo} alt="logo"/>
                         <span style={{'color': 'black'}}>СибГУ им.Решетнева</span>
-                    </Link>
+                    </NavLink>
                 </div>
                 <div className={'navbar-center'}>
                     <ul>
-                        <li><Link to={'/'}>Главная</Link></li>
-                        <li><Link to={'/calendar'}>Календарь</Link></li>
-                        <li><Link to={'/events'}>Мероприятия</Link></li>
-                        <li><Link to={'/contacts'}>Контакты</Link></li>
+                        <li><NavLink to={'/'}>Календарь</NavLink></li>
+                        <li><NavLink to={'/my-events'}>Мои мероприятия</NavLink></li>
+                        <li><NavLink to={'/authors'}>Мои авторы</NavLink></li>
+                        <li><NavLink to={'/moderators'}>Модераторы</NavLink></li>
                     </ul>
                 </div>
                 <div className={'navbar-right'}>
@@ -43,8 +39,8 @@ const Navbar = () => {
                             <MyButton onClick={() => clickBtnLogout()} variant={ButtonVariant.primary}>Выйти</MyButton>
                         </div>
                         : <div>
-                            <MyButton onClick={() => clickBtnLogin()} variant={ButtonVariant.primary}>Вход</MyButton>
-                            <MyButton onClick={() => console.log('Регистрация')} variant={ButtonVariant.default}>Регистрация</MyButton>
+                            <MyButton variant={ButtonVariant.primary}>Вход</MyButton>
+                            <MyButton variant={ButtonVariant.default}>Регистрация</MyButton>
                         </div>
                     }
                 </div>

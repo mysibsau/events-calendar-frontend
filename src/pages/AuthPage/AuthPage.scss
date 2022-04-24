@@ -1,45 +1,44 @@
 main{
     margin-top: 130px;
-    text-align: center;
-}
 
-form{
-    display: inline-block;
-    margin: auto;
+    form{
+        display: inline-block;
+        margin: auto;
 
-    fieldset{
-        padding: 50px 90px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border: 2px solid #0057FF;
-        border-radius: 7px;
+        fieldset{
+            padding: 50px 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #0057FF;
+            border-radius: 7px;
 
-        > *{
-            text-align: center;
-            width: 300px;
-            margin: 10px auto;
-        }
+            > *{
+                text-align: center;
+                width: 300px;
+                margin: 10px auto;
+            }
 
-        img{
-            width: 60px;
-            height: 60px;
-        }
+            img{
+                width: 60px;
+                height: 60px;
+            }
 
-        h1{
-            margin-bottom: 30px;
-        }
+            h1{
+                margin-bottom: 30px;
+            }
 
-        a{
-            margin-top: 0;
-            text-align: left;
-            display: inline-block;
-            font-size: 14px;
-            color: black;
+            a{
+                margin-top: 0;
+                text-align: left;
+                display: inline-block;
+                font-size: 14px;
+                color: black;
 
-            &:hover{
-                color: #0057FF;
+                &:hover{
+                    color: #0057FF;
+                }
             }
         }
     }

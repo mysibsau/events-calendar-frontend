@@ -5,6 +5,7 @@ import Navbar from './components/Navbar/Navbar';
 import { useTypedSelector } from './hooks/useTypedSelector';
 import AuthPage from './pages/AuthPage/AuthPage';
 import MainPage from './pages/MainPage/MainPage';
+import MyEvents from "./pages/MyEvents/MyEvents";
 
 
 const App = () => {
@@ -16,9 +17,9 @@ const App = () => {
             {user.token
                 ? <Routes>
                     <Route path="/" element={<MainPage/>}/>
-                    <Route path="/calendar" element={<h1>Календарь!</h1>} />
-                    <Route path="/events" element={<h1>Мероприятия!</h1>} />
-                    <Route path="/contacts" element={<h1>Контакты!</h1>} />
+                    <Route path="/my-events" element={<MyEvents />} />
+                    <Route path="/authors" element={<MainPage/>} />
+                    <Route path="/moderators" element={<MainPage/>} />
                 </Routes>
                 : <Routes>
                     <Route path="/" element={<AuthPage />}/>

@@ -3,18 +3,22 @@ import './MyButton.scss'
 
 export enum ButtonVariant{
     primary='primary',
-    default='default'
+    default='default',
+    disabled='disabled'
 }
 
 interface MyButtonProps {
     variant: ButtonVariant;
-    onClick: () => void;
+    disabled?: boolean
+    onClick?: () => void;
     id?: string;
 }
 
-const MyButton: React.FC<MyButtonProps> = ({id, variant, onClick, children}) => {
+const defaultClickFun = () => {}
+
+const MyButton: React.FC<MyButtonProps> = ({id, disabled, variant, onClick = defaultClickFun, children}) => {
     return (
-        <button onClick={() => onClick()} id={id} className={variant}>{children}</button>
+        <button onClick={() => onClick()} id={id} className={variant} disabled={disabled}>{children}</button>
     );
 };
 
