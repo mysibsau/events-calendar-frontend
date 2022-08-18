@@ -1,32 +1,100 @@
-.eventCard{
+@import "src/styles/variables";
 
+.eventCard {
+    padding: 20px 30px;
+    border: 2px solid $primary-color;
+    border-radius: $border-radius;
+    margin: 10px 0;
 
-    .cardBody{
-        height: 180px;
-        padding: 40px 25px;
-        background-image: url("../../../assets/EventsCardBack.png");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        border-radius: 7px;
+    .eventCardBody {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
 
-        p{
-            text-align: left;
-            font-weight: 400;
-            font-size: 29px;
-            line-height: 34px;
+        div {
+            flex: 1;
+            font-weight: 500;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .number {
+            flex: 0;
+            padding: 0 10px;
+        }
+
+        .eventName{
+            flex: 3;
+        }
+
+        .eventPlace, .eventOrganizer, .eventDate {
+            flex: 2;
+        }
+
+        .eventName, .eventPlace {
+            display: flex;
+            overflow: hidden;
+            padding: 0 10px;
+
+            span {
+                overflow: hidden;
+                display: inline-block;
+                white-space: nowrap;
+                word-wrap: normal;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .dropdown {
+            flex: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &.active {
+                transform: rotate(180deg);
+            }
+        }
+
+        .cardBody {
+            height: 180px;
+            padding: 40px 25px;
+            border-radius: 7px;
+
+            p {
+                text-align: left;
+                font-weight: 400;
+                font-size: 29px;
+                line-height: 34px;
+            }
+        }
+
+        .changeBut {
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 22px;
+            font-weight: 500;
+            color: black;
+
+            &:hover {
+                color: #0057FF;
+            }
         }
     }
 
-    .changeBut{
-        display: inline-block;
-        margin-top: 5px;
-        font-size: 22px;
-        font-weight: 500;
-        color: black;
+    .eventCardDesc {
+        margin-top: 15px;
+        padding: 15px 15px 25px;
+        border-top: 2px solid rgba(125, 125, 125, 0.6);
+        text-align: left;
+        opacity: 0.8;
 
-        &:hover{
-            color: #0057FF;
+        h3 {
+            font-size: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 10px;
         }
     }
 }

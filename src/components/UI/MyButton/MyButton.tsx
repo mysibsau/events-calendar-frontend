@@ -1,24 +1,30 @@
-import React from 'react';
-import './MyButton.scss'
+import React from "react";
+import "./MyButton.scss";
 
-export enum ButtonVariant{
-    primary='primary',
-    default='default',
-    disabled='disabled'
-}
 
-interface MyButtonProps {
-    variant: ButtonVariant;
-    disabled?: boolean
+const variants = new Map([
+    ["default", "default"],
+    ["primary", "primary"],
+    ["disabled", "disabled"],
+    ["danger", "danger"],
+    ["secondary", "secondary"],
+    ["success", "success"]
+]);
+
+type VariantType = "default" | "primary" | "disabled" | "danger" | "secondary" | "success"
+
+interface IProps {
+    children: React.ReactNode;
+    variant?: VariantType;
     onClick?: () => void;
     id?: string;
 }
 
-const defaultClickFun = () => {}
-
-const MyButton: React.FC<MyButtonProps> = ({id, disabled, variant, onClick = defaultClickFun, children}) => {
+const MyButton:React.FC<IProps> = ({id, variant = "default", onClick, children}) => {
     return (
-        <button onClick={() => onClick()} id={id} className={variant} disabled={disabled}>{children}</button>
+        <button onClick={onClick} id={id} className={`myButton ${variants.get(variant)}`} disabled={variant === "disabled"}>
+            {children}
+        </button>
     );
 };
 

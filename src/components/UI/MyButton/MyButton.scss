@@ -1,34 +1,73 @@
-button{
-    text-align: center;
-    padding: 10px 40px;
-    border: 1px solid #0057FF;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: 500;
+@import "src/styles/variables";
+
+.myButton {
+    padding: 11px 25px;
+    line-height: 127.7%;
+    border-radius: $border-radius;
+    border: 1px solid;
+    position: relative;
+    height: 45px;
     cursor: pointer;
-}
+    transition: all 0.3s ease-in-out;
 
-.primary{
-    color: white;
-    background-color: #0057FF;
+    &.default {
+        color: $primary-color;
+        background-color: $base-color;
 
-    &:hover{
-        color: #0057FF;
-        background-color: white;
+        &:hover {
+            border-color: $secondary-color;
+            background-color: rgba($color: $secondary-color, $alpha: 0.4);
+        }
     }
-}
 
-.default{
-    color: #0057FF;
-    background-color: white;
+    &.primary {
+        color: $base-color;
+        border-color: $base-color;
+        background-color: $primary-color;
 
-    &:hover{
-        color: white;
-        background-color: #0057FF;
+        &:hover {
+            border-color: $primary-color;
+            background-color: rgba($color: $primary-color, $alpha: 0.8);
+        }
     }
-}
 
-.disabled{
-    border-color: black;
-    opacity: 0.7;
+    &.danger {
+        color: $base-color;
+        background-color: $danger-color;
+
+        &:hover {
+            border-color: $danger-color;
+            background-color: rgba($color: $danger-color, $alpha: 0.8);
+        }
+    }
+
+    &.secondary {
+        color: $base-color;
+        background-color: $secondary-color;
+
+        &:hover {
+            border-color: $secondary-color;
+            background-color: rgba($color: $secondary-color, $alpha: 0.8);
+        }
+    }
+
+    &.success{
+        color: $base-color;
+        background-color: $success-color;
+
+        &:hover {
+            border-color: $success-color;
+            background-color: rgba($color: $success-color, $alpha: 0.8);
+        }
+    }
+
+    &.disabled {
+        border: none;
+        color: $font-color-modest;
+        background-color: $modest-color;
+    }
+
+    &:active {
+        top: 4px;
+    }
 }

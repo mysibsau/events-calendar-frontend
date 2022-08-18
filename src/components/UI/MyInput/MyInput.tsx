@@ -1,23 +1,20 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent } from "react";
 
-import './MyInput.scss';
+import "./MyInput.scss";
 
 
-interface InputProps {
-    img?: string;
+interface IProps {
     type: string;
-    placeholder: string;
-    id: string;
     value: string;
     onChange: (value: string) => void;
+    inputIcon?: JSX.Element;
+    placeholder?: string;
+    id?: string;
 }
 
-const MyInput: React.FC<InputProps> = ({img, placeholder, type, id, value, onChange}) => {
+const MyInput: React.FC<IProps> = ({inputIcon, placeholder, type, id, value, onChange}) => {
     return(
-        <div className={'input-container'}>
-            <span style={{
-                background: `url(${img})`
-            }}></span>
+        <div className={`input-container ${inputIcon && "icon"}`}>
             <input
                 value={value}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
@@ -25,6 +22,7 @@ const MyInput: React.FC<InputProps> = ({img, placeholder, type, id, value, onCha
                 type={type}
                 id={id}
             />
+            {inputIcon && <span>{inputIcon}</span>}
         </div>
     );
 };

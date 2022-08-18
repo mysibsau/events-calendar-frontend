@@ -1,0 +1,107 @@
+@import "src/styles/variables";
+
+.create-event {
+
+    .create-event-container {
+        display: flex;
+        padding: 10px;
+        background-color: $secondary-color;
+        border-radius: $border-radius;
+        min-height: 60vh;
+
+        .select-field {
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .select-field__top__item {
+                cursor: pointer;
+                padding: 15px;
+                margin-bottom: 10px;
+                margin-right: 10px;
+                border-radius: 8px 0 0 8px;
+                border-radius: 8px;
+
+                &:hover {
+                    background-color: white;
+                }
+
+                &.active {
+                    background-color: white;
+                }
+            }
+
+            .select-field__bot {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 10px;
+
+                button {
+                    width: 80%;
+                }
+            }
+        }
+
+        .create-form {
+            width: 80%;
+            background-color: white;
+            padding: 20px;
+
+            .create-form__main {
+                display: flex;
+
+                .descriptions {
+                    width: 40%;
+                    padding: 20px;
+
+                    >div {
+                        margin-bottom: 15px;
+                    }
+                }
+
+                .dates {
+                    width: 60%;
+                    padding: 20px;
+                    border-left: 2px solid $secondary-color;
+
+                    .main-dates {
+                        display: flex;
+
+                        >div {
+                            width: 50%;
+                            padding: 0 20px;
+                        }
+                    }
+
+                    .special-dates {
+
+                        h3 {
+                            margin-top: 20px;
+                            margin-left: 20px;
+                        }
+
+                        .special-dates__input {
+                            display: flex;
+
+                            >div {
+                                padding: 0 20px;
+                            }
+                        }
+
+                        .special-dates__list {
+                            padding: 0 20px;
+
+                            >div {
+                                border: 2px solid $primary-color;
+                                border-radius: $border-radius;
+                                margin-top: 15px;
+                                padding: 15px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

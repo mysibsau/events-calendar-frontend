@@ -7,11 +7,16 @@
 }
 
 html{
-    height: 100vh;
+    max-height: 100vh;
 }
 
 main{
     width: 80%;
     margin: auto;
-    text-align: center;
+    margin-top: 150px;
+    margin-bottom: 50px;
+
+    h1{
+        margin-bottom: 30px;
+    }
 }

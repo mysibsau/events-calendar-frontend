@@ -9,31 +9,25 @@ export interface IMyEvent{
     start_date: string;
     stop_date: string;
     is_verified: boolean;
+    educational_work_in_opop: boolean;
+    hours_count: number;
+    educational_work_outside_opop: boolean;
+    place: string;
+    coverage_participants_plan: number;
+    responsible: string;
+    direction: number;
+    format: number;
+    author: string;
+    organization: string;
+    verified: number;
     important_dates: Array<ImportantDates>;
+    level: number;
 }
 
-export interface EventsState {
-    events: Array<IMyEvent>;
+export interface IEventsStore {
+    eventList: Array<IMyEvent>;
     loading: boolean;
     error: null | string;
+    fetchEventList: () => void;
+    fetchEvent: (eventId: string) => void;
 }
-
-export enum AuthActionTypes {
-    FETCH_EVENTS = 'FETCH_EVENTS',
-    FETCH_EVENTS_SUCCESS = 'FETCH_EVENTS_SUCCESS',
-    FETCH_EVENTS_ERROR = 'FETCH_EVENTS_ERROR',
-}
-
-interface FetchEventsAction {
-    type: AuthActionTypes.FETCH_EVENTS
-}
-interface FetchEventsSuccessAction {
-    type: AuthActionTypes.FETCH_EVENTS_SUCCESS;
-    payload: Array<IMyEvent>;
-}
-interface FetchEventsErrorAction {
-    type: AuthActionTypes.FETCH_EVENTS_ERROR;
-    payload: string
-}
-
-export type EventsAction = FetchEventsAction | FetchEventsSuccessAction | FetchEventsErrorAction

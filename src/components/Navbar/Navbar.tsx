@@ -1,17 +1,22 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
-import { useActionsAuth } from '../../hooks/useActions';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
-import MyButton, { ButtonVariant } from '../UI/MyButton/MyButton';
+import { NavLink } from 'react-router-dom';
+import { IconLogo } from '../../assets/Icons';
+import { useAuthStore } from '../../stores';
+import MyButton from '../UI/MyButton';
 import './Navbar.scss'
 
+const roles = {
+    "author" : "Автор",
+    "moder" : "Модератор",
+    "admin" : "Администратор",
+    "default" : "Милорд"
+}
+
 const Navbar = () => {
-    const logo = require('../../assets/logo.png')
-    const { user } = useTypedSelector(state => state.auth)
-    const { fetchLogout } = useActionsAuth()
+    const { logOut, user } = useAuthStore(state => state);
 
     const clickBtnLogout = () => {
-        fetchLogout()
+        logOut()
         window.location.reload()
     }
 
@@ -19,30 +24,25 @@ const Navbar = () => {
         <div className={'navbar'}>
             <nav>
                 <div className={'navbar-left'}>
-                    <NavLink to={'/'}>
-                        <img src={logo} alt="logo"/>
-                        <span style={{'color': 'black'}}>СибГУ им.Решетнева</span>
+                    <NavLink to={'/'} className={"logo"}>
+                        <IconLogo />
                     </NavLink>
-                </div>
-                <div className={'navbar-center'}>
+
                     <ul>
-                        <li><NavLink to={'/'}>Календарь</NavLink></li>
                         <li><NavLink to={'/my-events'}>Мои мероприятия</NavLink></li>
+                        <li><NavLink to={'/create-event'}>Создать мероприятие</NavLink></li>
                         <li><NavLink to={'/authors'}>Мои авторы</NavLink></li>
                         <li><NavLink to={'/moderators'}>Модераторы</NavLink></li>
                     </ul>
                 </div>
                 <div className={'navbar-right'}>
-                    {user.token
-                        ? <div>
-                            <span className={'username'}>{user.name}</span>
-                            <MyButton onClick={() => clickBtnLogout()} variant={ButtonVariant.primary}>Выйти</MyButton>
+                    <div>
+                        <div className={'userInfo'}>
+                            <span className={"name"}>{user.name}</span>
+                            <span className={"role"}>{roles[`${user.role}`]}</span>
                         </div>
-                        : <div>
-                            <MyButton variant={ButtonVariant.primary}>Вход</MyButton>
-                            <MyButton variant={ButtonVariant.default}>Регистрация</MyButton>
-                        </div>
-                    }
+                        <MyButton onClick={() => clickBtnLogout()} variant={"primary"}>Выйти</MyButton>
+                    </div>
                 </div>
             </nav>
         </div>

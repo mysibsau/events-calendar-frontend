@@ -1,17 +1,24 @@
-import React, {useState} from 'react';
+import React, { useEffect } from 'react';
 import './MyEvents.scss'
-import {myEventsList} from "./events";
 import EventCard from "./EventCard/EventCard";
+import { useEventsStore } from '../../stores';
 
 const MyEvents = () => {
-    const [myEvents, setMyEvents] = useState(myEventsList)
+    const { eventList, fetchEventList } = useEventsStore(state => state)
+
+    useEffect(() => {
+        (async () => {
+            fetchEventList()
+        })();
+    }, [])
 
     return (
         <main>
             <h1>Мои меропрития</h1>
             <div className={'eventsList'}>
-                {myEvents.map((event) =>
-                    <EventCard event={event} key={event.id}/>
+
+                {eventList.map((event, index) =>
+                    <EventCard index={index + 1} event={event} key={event.id} />
                 )}
             </div>
         </main>
