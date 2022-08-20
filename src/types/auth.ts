@@ -1,4 +1,4 @@
-type TRole = "author" | "moder" | "admin" | "default"
+type TRole = 0 | 1 | 2
 
 export interface IAuth{
     token: string;

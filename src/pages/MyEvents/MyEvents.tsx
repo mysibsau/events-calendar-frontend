@@ -16,9 +16,8 @@ const MyEvents = () => {
         <main>
             <h1>Мои меропрития</h1>
             <div className={'eventsList'}>
-
-                {eventList.map((event, index) =>
-                    <EventCard index={index + 1} event={event} key={event.id} />
+                {eventList.map(event =>
+                    <EventCard event={event} key={event.id} />
                 )}
             </div>
         </main>

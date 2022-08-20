@@ -1,0 +1,92 @@
+@import "src/styles/variables";
+
+.stepTwo-container {
+
+    .input-dates-container {
+        display: flex;
+
+        .main-dates {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            padding-right: 10px;
+
+            >div {
+                margin-bottom: 15px;
+            }
+        }
+
+        .special-dates {
+            position: relative;
+            padding-left: 10px;
+
+            .block {
+                display: none;
+            }
+
+            .special-dates__input {
+                display: flex;
+                flex-direction: column;
+
+                >div {
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 15px;
+                }
+            }
+
+            &.disabled {
+                .block {
+                    position: absolute;
+                    z-index: 100;
+                    display: block;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(white, 0.6);
+                }
+            }
+        }
+    }
+
+
+    .special-dates__list {
+        margin-top: 10px;
+        max-height: 30vh;
+        overflow-y: auto;
+
+        >div {
+            position: relative;
+            border: 2px solid $primary-color;
+            border-radius: $border-radius;
+            margin-top: 15px;
+            padding: 15px;
+
+            .text-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-right: 30px;
+
+                .name{
+                    display: flex;
+                    overflow: hidden;
+                    display: inline-block;
+                    white-space: nowrap;
+                    word-wrap: normal;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            .icon-container {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
+    }
+}

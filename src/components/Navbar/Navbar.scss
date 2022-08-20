@@ -9,6 +9,7 @@
     padding: 0 50px;
     margin-bottom: 20px;
     border-bottom: 1px solid $secondary-color;
+    z-index: 100;
 
     nav {
         display: flex;
@@ -89,6 +90,12 @@
                 .role{
                     font-size: 16px;
                     font-style: italic;
+                }
+            }
+
+            .buttons-container{
+                button:first-child{
+                    margin-right: 10px;
                 }
             }
         }

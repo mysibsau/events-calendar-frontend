@@ -106,3 +106,27 @@ export const IconLock: React.FC<IProps> = ({ color, size = 19 }) => {
         </svg>
     );
 };
+
+export const IconElips: React.FC<IProps> = ({ color, size = 19 }) => {
+    return (
+        <svg width={size} height={size} viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21.877 10.6977C21.877 15.7972 17.4732 20.0305 11.9145 20.0305C6.35574 20.0305 1.9519 15.7972 1.9519 10.6977C1.9519 5.59823 6.35574 1.36487 11.9145 1.36487C17.4732 1.36487 21.877 5.59823 21.877 10.6977Z" stroke={colors.get(color)} strokeWidth="2" />
+        </svg>
+    );
+};
+
+export const IconPen: React.FC<IProps> = ({ color, size = 19 }) => {
+    return (
+        <svg width={size} height={size} viewBox="0 0 27 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.74353 15.2183V18.4473H7.85449L19.9791 8.92386L15.8681 5.69485L3.74353 15.2183ZM23.1582 6.42676C23.5858 6.09095 23.5858 5.54847 23.1582 5.21266L20.593 3.19775C20.1655 2.86194 19.4748 2.86194 19.0473 3.19775L17.0411 4.77351L21.1521 8.00252L23.1582 6.42676V6.42676Z" fill={colors.get(color)} />
+        </svg>
+    );
+};
+
+export const IconArrowDown: React.FC<IProps> = ({ color, size = 19 }) => {
+    return (
+        <svg width={size} height={size} viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.1867 6.47583L9.25463 6.47583L4.81338 6.47583C4.05338 6.47583 3.67338 7.39417 4.21171 7.9325L8.31254 12.0333C8.96963 12.6904 10.0384 12.6904 10.6955 12.0333L12.255 10.4737L14.7963 7.9325C15.3267 7.39417 14.9467 6.47583 14.1867 6.47583Z" fill={colors.get(color)} />
+        </svg>
+    );
+};

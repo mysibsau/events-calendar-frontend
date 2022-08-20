@@ -5,5 +5,11 @@ export {
     IconDanger,
     IconSuccess,
     IconTrushSquare,
-    IconLogo
+    IconLogo,
+    IconElips,
+    IconLock,
+    IconSearch,
+    IconUser,
+    IconPen,
+    IconArrowDown
 } from "./Icons";

@@ -7,7 +7,8 @@ import MainPage from './pages/MainPage/MainPage';
 import MyEvents from "./pages/MyEvents/MyEvents";
 import { useAuthStore } from './stores';
 import CreateEnevntPage from './pages/CreateEnevntPage';
-import CalendarPage from './pages/CalendarPage';
+import EventPage from './pages/EventPage';
+import MyNotification from './components/UI/MyNotification';
 
 
 const App = () => {
@@ -19,11 +20,15 @@ const App = () => {
                 ? <>
                     <Navbar />
                     <Routes>
-                        <Route path="/" element={<CalendarPage />} />
-                        <Route path="/my-events" element={<MyEvents />} />
+                        <Route path="/events" element={<MyEvents />} />
+                        <Route path="/events/:eventId" element={<EventPage />} />
                         <Route path="/authors" element={<MainPage />} />
                         <Route path="/create-event" element={<CreateEnevntPage />} />
                         <Route path="/moderators" element={<MainPage />} />
+                        <Route
+                            path="*"
+                            element={<Navigate to="/events" replace />}
+                        />
                     </Routes>
                 </>
                 : <Routes>
@@ -34,6 +39,7 @@ const App = () => {
                     />
                 </Routes>
             }
+            <MyNotification />
         </BrowserRouter>
     );
 };

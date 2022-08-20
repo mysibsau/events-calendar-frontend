@@ -6,10 +6,9 @@ import MyButton from '../UI/MyButton';
 import './Navbar.scss'
 
 const roles = {
-    "author" : "Автор",
-    "moder" : "Модератор",
-    "admin" : "Администратор",
-    "default" : "Милорд"
+    0 : "Автор",
+    1 : "Модератор",
+    2 : "Администратор"
 }
 
 const Navbar = () => {
@@ -29,10 +28,10 @@ const Navbar = () => {
                     </NavLink>
 
                     <ul>
-                        <li><NavLink to={'/my-events'}>Мои мероприятия</NavLink></li>
                         <li><NavLink to={'/create-event'}>Создать мероприятие</NavLink></li>
-                        <li><NavLink to={'/authors'}>Мои авторы</NavLink></li>
-                        <li><NavLink to={'/moderators'}>Модераторы</NavLink></li>
+                        <li><NavLink to={'/events'}>Мои мероприятия</NavLink></li>
+                        {user.role > 0 && <li><NavLink to={'/authors'}>Мои авторы</NavLink></li>}
+                        {user.role > 1 && <li><NavLink to={'/moderators'}>Модераторы</NavLink></li>}
                     </ul>
                 </div>
                 <div className={'navbar-right'}>
@@ -41,7 +40,10 @@ const Navbar = () => {
                             <span className={"name"}>{user.name}</span>
                             <span className={"role"}>{roles[`${user.role}`]}</span>
                         </div>
-                        <MyButton onClick={() => clickBtnLogout()} variant={"primary"}>Выйти</MyButton>
+                        <div className={"buttons-container"}>
+                            <MyButton variant={"primary"}>Моя информация</MyButton>
+                            <MyButton onClick={() => clickBtnLogout()} variant={"secondary"}>Выйти</MyButton>
+                        </div>
                     </div>
                 </div>
             </nav>

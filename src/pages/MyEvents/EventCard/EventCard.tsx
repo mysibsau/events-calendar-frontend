@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import './EventCard.scss'
-import { IMyEvent } from "../../../types/events";
-import { arrowDown } from "../../../assets/myEventsIcons/arrowsIcons";
-import clsx from "clsx";
-import { calendarIcon } from "../../../assets/myEventsIcons/calendarIcon";
+import { IEvent } from "../../../types/event";
+import MyButton from '../../../components/UI/MyButton';
+import { IconElips, IconPen, IconTrushSquare } from '../../../assets/Icons';
+import Tooltip from '../../../components/UI/Tooltip';
 
 interface IProps {
-    event: IMyEvent;
-    index: number;
+    event: IEvent;
 }
 
-const EventCard: React.FC<IProps> = ({ event, index }) => {
-    const [isActive, setIsActive] = useState(false)
-
+const EventCard: React.FC<IProps> = ({ event }) => {
     const start_date = new Date(event.start_date).toLocaleString('ru', {
         year: 'numeric',
         month: 'numeric',
@@ -26,41 +23,44 @@ const EventCard: React.FC<IProps> = ({ event, index }) => {
     })
 
     return (
-        <div className={'eventCard'}>
-            <div className={'eventCardBody'}>
-                <div className={'number'}>№{index}</div>
-                <div className={'eventName'}><span>{event.name}</span></div>
-                <div className={'eventDate'}>
-                    {event.start_date === event.stop_date
-                        ? <span>{start_date}</span>
-                        : <span>{start_date}-{stop_date}</span>
-                    }
+        <div className={'eventCard-container'}>
+            <h2>{event.name}</h2>
+            <div className={"cardBody-container"}>
+                <div className={"info"}>
+                    <div>
+                        <span>Даты: </span>
+                        {start_date === stop_date
+                            ? <span>{start_date}</span>
+                            : <span>с {start_date} по {stop_date}</span>
+                        }
+                    </div>
+                    <div>
+                        <span>Ответственное лицо: </span>
+                        <span>{event.responsible}</span>
+                    </div>
+                    <div>
+                        <span>Аудитория: </span>
+                        <span>{event.place}</span>
+                    </div>
                 </div>
-                <div className={'eventOrganizer'}>{event.responsible}</div>
-                <div className={'eventPlace'}><span>{event.place}</span></div>
-                <div className={'eventStatus'}></div>
-                <div className={clsx({
-                    'dropdown': true,
-                    'active': isActive
-                })} onClick={() => setIsActive(!isActive)}>{arrowDown()}</div>
+                <div className={"graphic-info"}>
+                    <div className={"icon-container"}>
+                        <Tooltip text={"Статус верификации"} >
+                            <IconElips color={"gray"} size={25} />
+                        </Tooltip>
+                        <Tooltip text={"Редактировать"} >
+                            <IconPen color={"gray"} size={25} />
+                        </Tooltip>
+                        <Tooltip text={"Удалить"} >
+                            <IconTrushSquare color={"gray"} size={25} />
+                        </Tooltip>
+                    </div>
+                    <div className={"buttons"}>
+                        <MyButton variant={"success"} onClick={() => window.open(`/events/${event.id}`)}>Подробнее</MyButton>
+                        <MyButton variant={"primary"} onClick={() => window.open(`/events/${event.id}`)}>Создать отчет</MyButton>
+                    </div>
+                </div>
             </div>
-            {isActive &&
-                <div className={'eventCardDesc'}>
-                    <h3>Описание мероприятия</h3>
-                    <p>Название: <b>{event.name}</b></p>
-                    <p>Место проведения: <b>{event.place}</b></p>
-                    <p>Ответственное лицо: <b>{event.responsible}</b></p>
-                    <p>Воспитательная работа в рамках ОПОП: <b>{event.educational_work_outside_opop}</b></p>
-                    <p>Количество часов: <b>{event.hours_count}</b></p>
-                    <p>Охват учасников по плану: <b>{event.coverage_participants_plan}</b></p>
-                    <p>Направление воспитательной работы: <b>{event.direction}</b></p>
-                    <p>Уровень мероприятия: <b>{event.level}</b></p>
-                    <p>Формат мероприятия: <b>{event.format}</b></p>
-                    <p>Автор: <b>{event.author}</b></p>
-                    <p>Ответственное подразделение: <b>{event.organization}</b></p>
-                    <p>Статус верификации: </p>
-                </div>
-            }
         </div>
     );
 };

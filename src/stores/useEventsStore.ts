@@ -27,9 +27,21 @@ export const useEventsStore = create<IEventsStore>()(
                         })
                 }
             },
-            fetchEvent: (eventId) => {
-
-            },
+            createEvent: async (event) => {
+                const authStore = sessionStorage.getItem('authStore')
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    await axios.post('/events/', event, {headers: { Authorization: `Token ${userToken}` } })
+                        .then((response) => {
+                            const data = response.data
+                            console.log(data);
+                            
+                        })
+                        .catch((e: AxiosError) => {
+                            console.log(JSON.parse(e.request.response))
+                        })
+                }
+            }
         })
     ))
 );

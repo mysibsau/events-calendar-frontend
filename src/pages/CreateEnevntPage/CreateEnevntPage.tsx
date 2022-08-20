@@ -1,95 +1,137 @@
-import classNames from 'classnames';
 import React, { useState } from 'react';
 import MyButton from '../../components/UI/MyButton';
-import MyInput from '../../components/UI/MyInput';
-import MyTextarea from '../../components/UI/MyTextarea';
 import "./CreateEnevntPage.scss";
+import { ICreateEvnet } from '../../types/event';
+import { useNotification } from '../../components/UI/MyNotification/useNotification';
+import { useAuthStore, useEventsStore } from '../../stores';
+import StepOne from './StepOne';
+import StepTwo from './StepTwo';
+import StepThree from './StepThree';
+import StepFour from './StepFour';
 
-type TStep = "main" | "dop"
+
+const defaultData: ICreateEvnet = {
+    name: "",
+    place: "",
+    hours_count: -1,
+    coverage_participants_plan: -1,
+    description: "",
+    //
+    start_date: "",
+    stop_date: "",
+    important_dates: [],
+    //
+    educational_work: -1,
+    direction: -1,
+    format: -1,
+    organization: "",
+    level: -1,
+    role: -1,
+    //
+    contacts: "",
+    post: "",
+    responsible: "",
+}
 
 const CreateEnevntPage = () => {
-    const [step, setStep] = useState<TStep>("main")
+    const { addToast } = useNotification()
+    const { createEvent } = useEventsStore(state => state)
+    const { user } = useAuthStore(state => state)
 
-    const [val1, setVal1] = useState("")
-    const [val10, setVal10] = useState("")
-    const [val2, setVal2] = useState("")
-    const [val3, setVal3] = useState("")
-    const [val4, setVal4] = useState("")
-    const [val5, setVal5] = useState("")
-    const [val6, setVal6] = useState("")
-    const [val7, setVal7] = useState("")
-    const [val8, setVal8] = useState<string[]>([])
+    const [step, setStep] = useState<number>(1)
+
+    const [data, setData] = useState<ICreateEvnet>(defaultData)
+
+    const nextStepHandler = () => {
+        setStep(step + 1)
+        if (step === 1) {
+            if (data.name.length === 0) {
+                addToast("Ошибка", "Введите название мероприятия", "danger")
+                return
+            }
+            if (data.place.length === 0) {
+                addToast("Ошибка", "Введите место прохождения мероприятия", "danger")
+                return
+            }
+            if (data.description.length === 0) {
+                addToast("Ошибка", "Введите описание мероприятия", "danger")
+                return
+            }
+            if (data.coverage_participants_plan === -1) {
+                addToast("Ошибка", "Введите ожидаемый охват участников", "danger")
+                return
+            }
+            if (data.hours_count === -1) {
+                addToast("Ошибка", "Введите количество часов", "danger")
+                return
+            }
+        } else if (step === 2) {
+            if (data.start_date.length === 0) {
+                addToast("Ошибка", "Введите начальную дату", "danger")
+                return
+            }
+            if (data.stop_date.length === 0) {
+                addToast("Ошибка", "Введите конечную", "danger")
+                return
+            }
+        } else if (step === 3) {
+            if (data.educational_work === -1) {
+                addToast("Ошибка", "Выберите тип воспитетельных работ", "danger")
+                return
+            }
+            if (data.direction === -1) {
+                addToast("Ошибка", "Выберите направление мероприятия", "danger")
+                return
+            }
+            if (data.format === -1) {
+                addToast("Ошибка", "Выберите формат мероприятия", "danger")
+                return
+            }
+            if (data.level === -1) {
+                addToast("Ошибка", "Выберите уровень мероприятия", "danger")
+                return
+            }
+            if (data.role === -1) {
+                addToast("Ошибка", "Выберите роль СибГУ", "danger")
+                return
+            }
+            if (data.organization.length === 0) {
+                addToast("Ошибка", "Ввыдети ответственное подразделение", "danger")
+                return
+            }
+        }
+    }
+
+    const createEventHandler = () => {
+        const newData: ICreateEvnet = { 
+            ...data,
+            responsible: user.username
+        }
+
+        createEvent(newData)
+    }
 
     return (
         <main className={"create-event"}>
             <h1>Создание мероприятия</h1>
             <div className={"create-event-container"}>
-                <div className={"select-field"}>
-                    <div className={"select-field__top"}>
-                        <div className={classNames("select-field__top__item", { "active": step === "main" })} onClick={() => setStep("main")}>Основная информация</div>
-                        <div className={classNames("select-field__top__item", { "active": step === "dop" })} onClick={() => setStep("dop")}>Дополнительная информация</div>
-                    </div>
-                    <div className={"select-field__bot"}>
-                        <MyButton variant={"primary"}>Сохранить</MyButton>
-                    </div>
-                </div>
                 <div className={"create-form"}>
-                    <div className={"create-form__main"}>
-                        <div className={"descriptions"}>
-                            <div>
-                                <label htmlFor={""}>Название мероприятия</label>
-                                <MyInput value={val1} onChange={setVal1} type={"text"} id={""} />
-                            </div>
-                            <div>
-                                <label htmlFor={""}>Место проведения</label>
-                                <MyInput value={val3} onChange={setVal3} type={"text"} id={""} />
-                            </div>
-                            <div>
-                                <label htmlFor={""}>Охват участников</label>
-                                <MyInput value={val4} onChange={setVal4} type={"text"} id={""} />
-                            </div>
-                            <div>
-                                <label htmlFor="">Описание мероприятия</label>
-                                <MyTextarea maxLength={100} onChange={setVal10} value={val10} />
-                            </div>
-                        </div>
-                        <div className={"dates"}>
-                            <div className={"main-dates"}>
-                                <div>
-                                    <label htmlFor={""}>Дата начала</label>
-                                    <MyInput value={val2} onChange={setVal2} type={"date"} id={""} />
-                                </div>
-                                <div>
-                                    <label htmlFor={""}>Дата окончания</label>
-                                    <MyInput value={val5} onChange={setVal5} type={"date"} id={""} />
-                                </div>
-                            </div>
-                            <div className={"special-dates"}>
-                                <h3>Специальные даты</h3>
-                                <div className={"special-dates__input"}>
-                                    <div>
-                                        <label htmlFor="">Название даты</label>
-                                        <MyInput value={val6} onChange={setVal6} type={"text"} id={""} />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="">Дата</label>
-                                        <MyInput value={val7} onChange={setVal7} type={"date"} id={""} />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="" style={{opacity: 0}}>asd</label>
-                                        <MyButton variant={"success"} onClick={() => setVal8(prev => [...prev, "1"])}>Добавить</MyButton>
-                                    </div>
-                                </div>
-                                <div className={"special-dates__list"}>
-                                    {val8.map(item => <div>Название и дата</div>)}
-                                </div>
-                            </div>
-                        </div>
-
+                    <div className={"step-container"}>
+                        {step === 1 && <StepOne data={data} setData={setData} />}
+                        {step === 2 && <StepTwo data={data} setData={setData} />}
+                        {step === 3 && <StepThree data={data} setData={setData} />}
+                        {step === 4 && <StepFour data={data} setData={setData} />}
                     </div>
                 </div>
             </div>
-        </main>
+            <div className={"select-step-container"}>
+                {step > 1 && <MyButton variant={"secondary"} onClick={() => setStep(step - 1)}>Назад</MyButton>}
+                {step < 4
+                    ? <MyButton variant={"primary"} onClick={nextStepHandler}>Далее</MyButton>
+                    : <MyButton variant={"primary"} onClick={createEventHandler} >Сохранить</MyButton>
+                }
+            </div>
+        </main >
     )
 }
 
