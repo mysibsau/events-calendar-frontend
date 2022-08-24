@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MyInput from '../../../components/UI/MyInput';
 import MySelect from '../../../components/UI/MySelect';
+import { useEventsStore } from '../../../stores';
 import { ICreateEvnet } from '../../../types/event';
 import "./StepThree.scss";
 
@@ -10,118 +11,33 @@ interface IProps {
     setData: React.Dispatch<React.SetStateAction<ICreateEvnet>>;
 }
 
-const directionOptions = [
-    {
-        value: "-1",
-        label: "Выберите направление мероприятия"
-    },
-    {
-        value: "0",
-        label: "Культурно-творческое"
-    },
-    {
-        value: "1",
-        label: "Добровольческое"
-    },
-    {
-        value: "2",
-        label: "Научно-образовательное"
-    },
-    {
-        value: "3",
-        label: "Гражданско-патриотическое"
-    },
-    {
-        value: "4",
-        label: "Духовно-нравственное"
-    },
-    {
-        value: "5",
-        label: "Здоровьесберегающее"
-    },
-    {
-        value: "6",
-        label: "Профессионально-трудовое"
-    },
-    {
-        value: "7",
-        label: "Социально-культурное"
-    },
-    {
-        value: "8",
-        label: "Студенческое самоуправление"
-    }
-]
-
-const levelOptions = [
-    {
-        value: "-1",
-        label: "Выберите уровень мероприятия"
-    },
-    {
-        value: "0",
-        label: "Институтский"
-    },
-    {
-        value: "1",
-        label: "Университетский"
-    },
-    {
-        value: "2",
-        label: "Городской"
-    },
-    {
-        value: "3",
-        label: "Региональный"
-    },
-    {
-        value: "4",
-        label: "Федеральный"
-    }
-]
-
-const rasioButtons: Record<string, Record<string, number>> = {
-    educationalWork: {
-        in: 0,
-        out: 1
-    },
-    role: {
-        organizer: 0,
-        coOrganizer: 1
-    },
-    format: {
-        online: 0,
-        offline: 1
-    }
-}
-
 const StepThree: React.FC<IProps> = ({ data, setData }) => {
-    const [educationalWork, setEducationalWork] = useState<number>(-1)
+    const { directionList, formatsList, rolesList, levelsList, organizationsList, getData } = useEventsStore(state => state)
+
+    const [educationalWork, setEducationalWork] = useState(false)
     const [role, setRole] = useState<number>(-1)
     const [format, setFormat] = useState<number>(-1)
 
-    const [direction, setDirection] = useState("")
-    const [level, setLevel] = useState("")
-    const [organization, setOrganization] = useState("")
+    const [direction, setDirection] = useState(-1)
+    const [level, setLevel] = useState(-1)
+    const [organization, setOrganization] = useState(-1)
 
     const radioHandler = (val: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = val.target
-        
-        if (name === "educationalWork") {
-            setEducationalWork(rasioButtons[`${name}`][`${value}`])
-        } else if (name === "role") {
-            setRole(rasioButtons[`${name}`][`${value}`])
-        } else if (name === "format") {
-            setFormat(rasioButtons[`${name}`][`${value}`])
+        const value = val.target.value
+
+        if (value === "in") {
+            setEducationalWork(true)
+        } else {
+            setEducationalWork(false)
         }
     }
 
     useEffect(() => {
-        setEducationalWork(data.educational_work)
+        setEducationalWork(data.educational_work_outside_opop)
         setRole(data.role)
         setFormat(data.format)
-        setDirection(data.direction.toString())
-        setLevel(data.level.toString())
+        setDirection(data.direction)
+        setLevel(data.level)
         setOrganization(data.organization)
     }, [])
 
@@ -131,8 +47,8 @@ const StepThree: React.FC<IProps> = ({ data, setData }) => {
             educational_work: educationalWork,
             role: role,
             format: format,
-            direction: parseInt(direction),
-            level: parseInt(level),
+            direction: direction,
+            level: level,
             organization: organization
         }))
     }, [educationalWork, role, format, direction, level, organization])
@@ -150,7 +66,7 @@ const StepThree: React.FC<IProps> = ({ data, setData }) => {
                             name="educationalWork"
                             onChange={(e) => radioHandler(e)}
                             value={"in"}
-                            checked={educationalWork === 0}
+                            checked={educationalWork}
                         />
                     </div>
                     <div>
@@ -161,76 +77,30 @@ const StepThree: React.FC<IProps> = ({ data, setData }) => {
                             name="educationalWork"
                             onChange={(e) => radioHandler(e)}
                             value={"out"}
-                            checked={educationalWork === 1}
+                            checked={!educationalWork}
                         />
                     </div>
                 </div>
             </div>
             <div>
                 <label htmlFor={""}>Направление воспитательных работ: </label>
-                <MySelect options={directionOptions} value={direction} setValue={setDirection} />
+                <MySelect options={directionList} value={direction} setValue={(val) => setDirection(parseInt(val))} />
             </div>
             <div>
                 <label htmlFor={""}>Роль СибГУ: </label>
-                <div className={"radio-container"}>
-                    <div>
-                        <label htmlFor="roleOrganizer">Организатор</label>
-                        <input
-                            id="roleOrganizer"
-                            type="radio"
-                            name="role"
-                            onChange={(e) => radioHandler(e)}
-                            value={"organizer"}
-                            checked={role === 0}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="roleCoOrganizer">Соорганизатор</label>
-                        <input
-                            id="roleCoOrganizer"
-                            type="radio"
-                            name="role"
-                            onChange={(e) => radioHandler(e)}
-                            value={"coOrganizer"}
-                            checked={role === 1}
-                        />
-                    </div>
-                </div>
+                <MySelect options={rolesList} value={role} setValue={(val) => setRole(parseInt(val))} />
             </div>
             <div>
                 <label htmlFor={""}>Уровень мероприятия: </label>
-                <MySelect options={levelOptions} value={level} setValue={setLevel} />
+                <MySelect options={levelsList} value={level} setValue={(val) => setLevel(parseInt(val))} />
             </div>
             <div>
                 <label htmlFor={""}>Формат мероприятия: </label>
-                <div className={"radio-container"}>
-                    <div>
-                        <label htmlFor="formatOnline">Онлайн</label>
-                        <input
-                            id="formatOnline"
-                            type="radio"
-                            name="format"
-                            onChange={(e) => radioHandler(e)}
-                            value={"online"}
-                            checked={format === 0}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="formatOffline">Оффлайн</label>
-                        <input
-                            id="formatOffline"
-                            type="radio"
-                            name="format"
-                            onChange={(e) => radioHandler(e)}
-                            value={"offline"}
-                            checked={format === 1}
-                        />
-                    </div>
-                </div>
+                <MySelect options={formatsList} value={format} setValue={(val) => setFormat(parseInt(val))} />
             </div>
             <div>
                 <label htmlFor={""}>Ответственное подразделение: </label>
-                <MyInput value={organization} onChange={setOrganization} type={"text"} placeholder={"Введите ответственное подразделение"} />
+                <MySelect options={organizationsList} value={organization} setValue={(val) => setOrganization(parseInt(val))} />
             </div>
         </div>
     )

@@ -6,18 +6,18 @@ import { IAuthStore, IAuth } from "../types/auth";
 
 
 const user = sessionStorage.getItem('authStore')
-let foundUser = null
+const foundUser = user ? JSON.parse(user).user : undefined
 
-if (user) {
-    foundUser = JSON.parse(user).user
-}
-
-const defaultState: IAuth = foundUser || {
+const defaultState: IAuth = {
     token: '',
     name: '',
     confirmed: false,
     is_staff: false,
-    id: 0
+    id: 0,
+    contacts: {},
+    position: "",
+    personal_status: -1,
+    ...foundUser
 }
 
 export const useAuthStore = create<IAuthStore>()(
@@ -33,12 +33,10 @@ export const useAuthStore = create<IAuthStore>()(
                 await axios.post('/auth/', { username: username, password: password })
                     .then((responce) => {
                         const data = responce.data
-                        setTimeout(() => {
-                            set(state => {
-                                state.user = {...state.user, ...data}
-                                state.loading = false
-                            })
-                        }, 500)
+                        set(state => {
+                            state.user = { ...state.user, ...data }
+                            state.loading = false
+                        })
 
                     })
                     .catch((e: AxiosError) => {
@@ -54,6 +52,19 @@ export const useAuthStore = create<IAuthStore>()(
                     user: defaultState
                 })
                 sessionStorage.clear()
+            },
+            clearError: () => {
+                set(state => {
+                    state.error = null
+                })
+            },
+            updateUser: (data) => {
+                set(state => {
+                    state.user = {
+                        ...state.user,
+                        ...data
+                    }
+                })
             }
         }),
         {

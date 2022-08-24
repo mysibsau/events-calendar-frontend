@@ -41,7 +41,6 @@ const Navbar = () => {
                             <span className={"role"}>{roles[`${user.role}`]}</span>
                         </div>
                         <div className={"buttons-container"}>
-                            <MyButton variant={"primary"}>Моя информация</MyButton>
                             <MyButton onClick={() => clickBtnLogout()} variant={"secondary"}>Выйти</MyButton>
                         </div>
                     </div>

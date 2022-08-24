@@ -7,9 +7,7 @@ const MyEvents = () => {
     const { eventList, fetchEventList } = useEventsStore(state => state)
 
     useEffect(() => {
-        (async () => {
-            fetchEventList()
-        })();
+        fetchEventList()
     }, [])
 
     return (

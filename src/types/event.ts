@@ -1,3 +1,5 @@
+import { IContacts } from "./auth";
+
 export interface IImportantDates{
     name: string;
     date: string;
@@ -12,14 +14,12 @@ export interface IEvent{
     name: string;
     status: IEventStatus;
     free_plan: boolean;
-    educational_work_outside_opop: boolean;
     hours_count: number;
     educational_work_in_opop: boolean;
     start_date: string;
     stop_date: string;
     place: string;
     coverage_participants_plan: number;
-    // number_organizers: number;
     responsible: string;
     coverage_participants_fact: number;
     links: string;
@@ -29,30 +29,29 @@ export interface IEvent{
     role: number;
     format: number;
     author: string;
-    organization: string;
+    organization: number;
     verified: number;
+    ///
+    description: string;
 }
 
 export interface ICreateEvnet {
     responsible: string;
-    ///
-    contacts: string;
     description: string;
-    post: string; // Студент или сотрудник
-    ///
     name: string;
     place: string;
     hours_count: number;
     start_date: string;
     stop_date: string;
     important_dates: Array<IImportantDates>;
-    educational_work: number;
+    educational_work_outside_opop: boolean;
     coverage_participants_plan: number;
     direction: number;
     level: number;
     role: number;
     format: number;
-    organization: string;
+    organization: number;
+    author: number;
 }
 
 export interface IEventStore {

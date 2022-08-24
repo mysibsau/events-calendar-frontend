@@ -1,26 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MyInput from '../../../components/UI/MyInput';
 import { useAuthStore } from '../../../stores';
+import { IUpdateUser, TStatus } from '../../../types/auth';
 import { ICreateEvnet } from '../../../types/event';
 import "./StepFour.scss";
 
 
 interface IProps {
-    data: ICreateEvnet;
     setData: React.Dispatch<React.SetStateAction<ICreateEvnet>>;
 }
 
-const StepFour: React.FC<IProps> = ({ data, setData }) => {
-    const { user } = useAuthStore(state => state)
+const StepFour: React.FC<IProps> = ({ setData }) => {
+    const { user, updateUser } = useAuthStore(state => state)
 
-    const [post, setPost] = useState("")
-    const [phone, setPhone] = useState("")
-    const [telegramm, setTelegramm] = useState("")
-    const [vk, setVk] = useState("")
+    const [position, setPosition] = useState(user.position ? user.position : "")
+    const [phone, setPhone] = useState(user.contacts && user.contacts.phone ? user.contacts.phone : "")
+    const [status, setStatus] = useState<TStatus>(user.personal_status)
+    const [messenger, setMessenger] = useState(user.contacts.messenger_link ? user.contacts.messenger_link : "")
 
-    const handler = (val: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = val.target
-    }
+    useEffect(() => {
+        const contacts = {
+            phone: phone,
+            messenger_link: messenger
+        }
+
+        const data: IUpdateUser = {
+            contacts: contacts
+        }
+
+        setData(prev => ({
+            ...prev,
+            responsible: user.name,
+            author: user.id
+        }))
+
+        updateUser(data)        
+    }, [position, phone, messenger, status])
 
     return (
         <div className={"stepFour-container"}>
@@ -29,48 +44,24 @@ const StepFour: React.FC<IProps> = ({ data, setData }) => {
                 <span className={"responsible"}>{user.name} (вы)</span>
             </div>
             <div>
-                <label htmlFor={""}>Ваша должность: </label>
-                <div className={"radio-container"}>
-                    <div>
-                        <label htmlFor="roleOrganizer">Организатор</label>
-                        <input
-                            id="roleOrganizer"
-                            type="radio"
-                            name="role"
-                            onChange={(e) => handler(e)}
-                            value={"organizer"}
-                            // checked={role === 0}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="roleCoOrganizer">Соорганизатор</label>
-                        <input
-                            id="roleCoOrganizer"
-                            type="radio"
-                            name="role"
-                            onChange={(e) => handler(e)}
-                            value={"coOrganizer"}
-                            // checked={role === 1}
-                        />
-                    </div>
-                </div>
-
+                <label htmlFor={""}>Ваша должность: 
+                <span className={"responsible"}>{user.personal_status}</span>
+                </label>
             </div>
             <div>
-                <label htmlFor="">Должность \ Группа и институт</label>
-                <MyInput type={"text"} value={post} onChange={setPost} />
+                <label htmlFor="">{status === 0
+                    ? <>Должность: </>
+                    : <>Группа и институт: </>
+                }</label>
+                <span className={"responsible"}>{user.position}</span>
             </div>
             <div>
                 <label htmlFor="">Номер телефона</label>
                 <MyInput type={"text"} value={phone} onChange={setPhone} />
             </div>
             <div>
-                <label htmlFor="">Ссылка на телеграмм аккаунт</label>
-                <MyInput type={"text"} value={telegramm} onChange={setTelegramm} />
-            </div>
-            <div>
-                <label htmlFor="">Ссылка на ВК</label>
-                <MyInput type={"text"} value={vk} onChange={setVk} />
+                <label htmlFor="">Ссылка на соцсети</label>
+                <MyInput type={"text"} value={messenger} onChange={setMessenger} />
             </div>
         </div>
     )

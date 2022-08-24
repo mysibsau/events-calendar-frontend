@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { IconLock, IconUser } from '../../assets/Icons/Icons';
 import MyButton from '../../components/UI/MyButton';
 import MyInput from '../../components/UI/MyInput';
 import MyLoader from '../../components/UI/MyLoader/MyLoader';
+import { useNotification } from '../../components/UI/MyNotification/useNotification';
 import { useAuthStore } from '../../stores';
 import './AuthPage.scss'
 
@@ -12,12 +12,20 @@ const AuthInfo = () => {
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
 
-    const { logIn, loading } = useAuthStore(state => state)
+    const { logIn, loading, error, clearError } = useAuthStore(state => state)
+    const { addToast } = useNotification()
 
     const authentication = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         logIn(login, password)
     }
+
+    useEffect(() => {
+        if (error) {
+            addToast("Ошибка", "Неверный логин или пароль", "danger")
+            clearError()
+        }
+    }, [error])
 
     return (
         <main className={'authPage'}>
@@ -47,7 +55,6 @@ const AuthInfo = () => {
                             : <span>Вход</span>
                         }
                     </MyButton>
-                    <Link to={'#'}>Нажмите, если забыли пароль</Link>
                 </fieldset>
             </form>
         </main>

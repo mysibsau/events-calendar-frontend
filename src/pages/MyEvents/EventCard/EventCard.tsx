@@ -4,12 +4,15 @@ import { IEvent } from "../../../types/event";
 import MyButton from '../../../components/UI/MyButton';
 import { IconElips, IconPen, IconTrushSquare } from '../../../assets/Icons';
 import Tooltip from '../../../components/UI/Tooltip';
+import { useEventsStore } from '../../../stores';
 
 interface IProps {
     event: IEvent;
 }
 
 const EventCard: React.FC<IProps> = ({ event }) => {
+    const { deleteEvent } = useEventsStore(state => state)
+
     const start_date = new Date(event.start_date).toLocaleString('ru', {
         year: 'numeric',
         month: 'numeric',
@@ -52,7 +55,9 @@ const EventCard: React.FC<IProps> = ({ event }) => {
                             <IconPen color={"gray"} size={25} />
                         </Tooltip>
                         <Tooltip text={"Удалить"} >
-                            <IconTrushSquare color={"gray"} size={25} />
+                            <span onClick={() => deleteEvent(event.id.toString())}>
+                                <IconTrushSquare color={"gray"} size={25} />
+                            </span>
                         </Tooltip>
                     </div>
                     <div className={"buttons"}>

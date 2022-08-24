@@ -3,8 +3,8 @@ import { IconArrowDown } from "../../../assets/Icons";
 import "./MySelect.scss";
 
 interface IOption {
-    value: string | number;
-    label: string;
+    id: string | number;
+    name: string;
 }
 
 interface IProps {
@@ -18,7 +18,7 @@ const MySelect: React.FC<IProps> = ({ value, options, setValue }) => {
         <div className={"selectContainer"}>
             <select value={value} onChange={(e) => setValue(e.target.value)}>
                 {options.map((option) =>
-                    <option value={option.value} key={option.value}>{option.label}</option>
+                    <option value={option.id} key={option.id}>{option.name}</option>
                 )}
             </select>
             <span>

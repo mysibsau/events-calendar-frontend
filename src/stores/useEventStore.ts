@@ -13,14 +13,13 @@ const defaultState: IEvent = {
     is_verified: false,
     educational_work_in_opop: false,
     hours_count: 0,
-    educational_work_outside_opop: false,
     place: "",
     coverage_participants_plan: 0,
     responsible: "",
     direction: 0,
     format: 0,
     author: "",
-    organization: "",
+    organization: -1,
     verified: 0,
     important_dates: [],
     level: 0,
@@ -29,7 +28,8 @@ const defaultState: IEvent = {
     links: "",
     status: "0",
     verified_date: "",
-    role: 0
+    role: 0,
+    description: ""
 }
 
 export const useEventStore = create<IEventStore>()(

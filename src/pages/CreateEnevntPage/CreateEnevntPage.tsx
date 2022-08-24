@@ -3,7 +3,7 @@ import MyButton from '../../components/UI/MyButton';
 import "./CreateEnevntPage.scss";
 import { ICreateEvnet } from '../../types/event';
 import { useNotification } from '../../components/UI/MyNotification/useNotification';
-import { useAuthStore, useEventsStore } from '../../stores';
+import { useEventsStore } from '../../stores';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
@@ -21,29 +21,26 @@ const defaultData: ICreateEvnet = {
     stop_date: "",
     important_dates: [],
     //
-    educational_work: -1,
+    educational_work_outside_opop: false,
     direction: -1,
     format: -1,
-    organization: "",
+    organization: -1,
     level: -1,
     role: -1,
     //
-    contacts: "",
-    post: "",
     responsible: "",
+    author: -1
 }
 
 const CreateEnevntPage = () => {
     const { addToast } = useNotification()
     const { createEvent } = useEventsStore(state => state)
-    const { user } = useAuthStore(state => state)
 
     const [step, setStep] = useState<number>(1)
 
     const [data, setData] = useState<ICreateEvnet>(defaultData)
 
     const nextStepHandler = () => {
-        setStep(step + 1)
         if (step === 1) {
             if (data.name.length === 0) {
                 addToast("Ошибка", "Введите название мероприятия", "danger")
@@ -75,40 +72,34 @@ const CreateEnevntPage = () => {
                 return
             }
         } else if (step === 3) {
-            if (data.educational_work === -1) {
-                addToast("Ошибка", "Выберите тип воспитетельных работ", "danger")
-                return
-            }
             if (data.direction === -1) {
                 addToast("Ошибка", "Выберите направление мероприятия", "danger")
-                return
-            }
-            if (data.format === -1) {
-                addToast("Ошибка", "Выберите формат мероприятия", "danger")
-                return
-            }
-            if (data.level === -1) {
-                addToast("Ошибка", "Выберите уровень мероприятия", "danger")
                 return
             }
             if (data.role === -1) {
                 addToast("Ошибка", "Выберите роль СибГУ", "danger")
                 return
             }
-            if (data.organization.length === 0) {
-                addToast("Ошибка", "Ввыдети ответственное подразделение", "danger")
+            if (data.level === -1) {
+                addToast("Ошибка", "Выберите уровень мероприятия", "danger")
+                return
+            }
+            if (data.format === -1) {
+                addToast("Ошибка", "Выберите формат мероприятия", "danger")
+                return
+            }
+            if (data.organization === -1) {
+                addToast("Ошибка", "Выберите ответственное подразделение", "danger")
                 return
             }
         }
+        setStep(step + 1)
     }
 
     const createEventHandler = () => {
-        const newData: ICreateEvnet = { 
-            ...data,
-            responsible: user.username
-        }
-
-        createEvent(newData)
+        createEvent(data)
+        setData(defaultData)
+        setStep(1)
     }
 
     return (
@@ -120,7 +111,7 @@ const CreateEnevntPage = () => {
                         {step === 1 && <StepOne data={data} setData={setData} />}
                         {step === 2 && <StepTwo data={data} setData={setData} />}
                         {step === 3 && <StepThree data={data} setData={setData} />}
-                        {step === 4 && <StepFour data={data} setData={setData} />}
+                        {step === 4 && <StepFour setData={setData} />}
                     </div>
                 </div>
             </div>
