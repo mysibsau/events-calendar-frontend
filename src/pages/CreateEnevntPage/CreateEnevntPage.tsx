@@ -41,6 +41,8 @@ const CreateEnevntPage = () => {
     const [data, setData] = useState<ICreateEvnet>(defaultData)
 
     const nextStepHandler = () => {
+        setStep(step + 1)
+
         if (step === 1) {
             if (data.name.length === 0) {
                 addToast("Ошибка", "Введите название мероприятия", "danger")
@@ -93,13 +95,13 @@ const CreateEnevntPage = () => {
                 return
             }
         }
-        setStep(step + 1)
     }
 
     const createEventHandler = () => {
         createEvent(data)
         setData(defaultData)
         setStep(1)
+        addToast("Успех!", "Мероприятияе успешно создано!", "success")
     }
 
     return (

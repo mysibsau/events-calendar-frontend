@@ -26,11 +26,11 @@ export const useAuthStore = create<IAuthStore>()(
             error: null,
             loading: false,
             user: defaultState,
-            logIn: async (username, password) => {
+            logIn: async (username, password, code) => {
                 set({
                     loading: true
                 })
-                await axios.post('/auth/', { username: username, password: password })
+                await axios.post('/auth/', { username: username, password: password, code: code })
                     .then((responce) => {
                         const data = responce.data
                         set(state => {

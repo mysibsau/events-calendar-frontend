@@ -1,0 +1,26 @@
+@import "src/styles/variables";
+
+.addPersonal-container{
+    >div{
+        margin-bottom: 10px;
+    }
+
+    .inputs-container{
+        display: flex;
+        justify-content: space-between;
+
+        >div{
+            width: 48%;
+        }
+    }
+
+    .inviteLink-container{
+        color: $modest-color-font;
+        text-align: center;
+        padding: 20px 10px;
+        width: 70%;
+        margin: auto;
+        background-color: $modest-color;
+        border-radius: $border-radius;
+    }
+}
