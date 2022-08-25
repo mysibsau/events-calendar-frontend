@@ -1,0 +1,51 @@
+@import "src/styles/variables";
+
+.create-event {
+    label{
+        margin-bottom: 10px;
+        margin-right: 10px;
+        font-size: 18px;
+        display: inline-block;
+    }
+
+    .create-event-container {
+        width: 40%;
+        margin: auto;
+        padding: 10px;
+        background-color: $modest-color;
+        border-radius: 8px;
+
+        .create-form {
+            background-color: white;
+            padding: 20px;
+
+            .step-container {
+                width: 100%;
+                padding: 20px;
+
+                .number-select{
+                    display: flex;
+                    justify-content: space-between;
+
+                    >div{
+                        width: 48%;
+                    }
+                }
+            }
+        }
+    }
+
+    .select-step-container{
+        width: 20%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: auto;
+        margin-top: 30px;
+
+        span{
+            font-weight: 800;
+            font-size: 20px;
+        }
+    }
+}

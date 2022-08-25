@@ -1,0 +1,32 @@
+@import "src/styles/variables";
+
+.stepFour-container{
+    >div {
+        padding-bottom: 15px;
+
+        .radio-container{
+            display: flex;
+            justify-content: space-between;
+
+            >div{
+                width: 48%;
+                padding: 0 10px;
+
+                label{
+                    font-size: 16px;
+                    margin-bottom: 0;
+                    cursor: pointer;
+                }
+
+                input{
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .responsible{
+        font-weight: 600;
+        font-size: 18px;
+    }
+}
