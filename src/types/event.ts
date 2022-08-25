@@ -1,5 +1,3 @@
-import { IContacts } from "./auth";
-
 export interface IImportantDates{
     name: string;
     date: string;

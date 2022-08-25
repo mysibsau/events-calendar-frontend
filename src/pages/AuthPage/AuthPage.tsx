@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { IconLock, IconUser } from '../../assets/Icons/Icons';
 import MyButton from '../../components/UI/MyButton';
 import MyInput from '../../components/UI/MyInput';
@@ -8,17 +9,27 @@ import { useAuthStore } from '../../stores';
 import './AuthPage.scss'
 
 
-const AuthInfo = () => {
+const AuthPage = () => {
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
+    const [code, setCode] = useState("")
 
     const { logIn, loading, error, clearError } = useAuthStore(state => state)
     const { addToast } = useNotification()
 
+    const [params] = useSearchParams()
+
     const authentication = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        logIn(login, password)
+        logIn(login, password, code)
     }
+
+    useEffect(() => {
+        const invite = params.get("invite")
+        if (invite) {
+            setCode(invite)
+        }
+    }, [params])
 
     useEffect(() => {
         if (error) {
@@ -61,4 +72,4 @@ const AuthInfo = () => {
     );
 }
 
-export default AuthInfo;
+export default AuthPage;

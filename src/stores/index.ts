@@ -9,6 +9,9 @@ import { IEventsStore } from "../types/events";
 import { useEventStore as useEventStoreZus } from "./useEventStore";
 import { IEventStore } from "../types/event";
 
+import { useEventStore as usePersonalStoreZus } from "./usePersonalStore";
+import { IPersonalStore } from "../types/personal";
+
 const useAuthStore: <T>(selector: (s: IAuthStore) => T) =>
     T = (selector) => useAuthStoreZus(selector, shallow);
 
@@ -18,8 +21,12 @@ const useEventsStore: <T>(selector: (s: IEventsStore) => T) =>
 const useEventStore: <T>(selector: (s: IEventStore) => T) =>
     T = (selector) => useEventStoreZus(selector, shallow);
 
+const usePersonalStore: <T>(selector: (s: IPersonalStore) => T) =>
+    T = (selector) => usePersonalStoreZus(selector, shallow);
+
 export {
     useAuthStore,
     useEventsStore,
-    useEventStore
+    useEventStore,
+    usePersonalStore
 };

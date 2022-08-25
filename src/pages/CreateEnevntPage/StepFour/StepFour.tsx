@@ -13,9 +13,7 @@ interface IProps {
 const StepFour: React.FC<IProps> = ({ setData }) => {
     const { user, updateUser } = useAuthStore(state => state)
 
-    const [position, setPosition] = useState(user.position ? user.position : "")
     const [phone, setPhone] = useState(user.contacts && user.contacts.phone ? user.contacts.phone : "")
-    const [status, setStatus] = useState<TStatus>(user.personal_status)
     const [messenger, setMessenger] = useState(user.contacts.messenger_link ? user.contacts.messenger_link : "")
 
     useEffect(() => {
@@ -31,11 +29,10 @@ const StepFour: React.FC<IProps> = ({ setData }) => {
         setData(prev => ({
             ...prev,
             responsible: user.name,
-            author: user.id
         }))
 
         updateUser(data)        
-    }, [position, phone, messenger, status])
+    }, [phone, messenger])
 
     return (
         <div className={"stepFour-container"}>
@@ -45,11 +42,11 @@ const StepFour: React.FC<IProps> = ({ setData }) => {
             </div>
             <div>
                 <label htmlFor={""}>Ваша должность: 
-                <span className={"responsible"}>{user.personal_status}</span>
+                <span className={"responsible"}>{user.status}</span>
                 </label>
             </div>
             <div>
-                <label htmlFor="">{status === 0
+                <label htmlFor="">{user.status === 0
                     ? <>Должность: </>
                     : <>Группа и институт: </>
                 }</label>
