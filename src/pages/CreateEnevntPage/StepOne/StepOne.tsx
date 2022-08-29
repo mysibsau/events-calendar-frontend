@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MyInput from '../../../components/UI/MyInput'
 import MyTextarea from '../../../components/UI/MyTextarea'
-import { ICreateEvnet } from '../../../types/event';
+import { ICreateEvnet } from '../../../types/events';
 import "./StepOne.scss"
 
 
@@ -35,6 +35,9 @@ const StepOne: React.FC<IProps> = ({data, setData}) => {
         if (data.hours_count > 0) {
             setHoursCount(data.hours_count.toString())
         }
+        setName(data.name)
+        setPlace(data.place)
+        setDescription(data.description)
     }, [])
 
     const setCoverageParticipantsHandler = (val: string) => {
@@ -71,7 +74,7 @@ const StepOne: React.FC<IProps> = ({data, setData}) => {
             </div>
             <div>
                 <label htmlFor="">Описание мероприятия</label>
-                <MyTextarea maxLength={200} value={description} onChange={setDescription} placeholder={"Введите описание мероприятия"} />
+                <MyTextarea value={description} onChange={setDescription} placeholder={"Введите описание мероприятия"} />
             </div>
         </div>
     )

@@ -1,14 +1,14 @@
-import React, {ChangeEvent} from "react";
+import React, { ChangeEvent } from "react";
 import "./MyTextarea.scss";
 
 interface IProps {
     value: string;
     onChange: (value: string) => void;
-    maxLength: number;
+    maxLength?: number;
     placeholder?: string;
 }
 
-const MyTextarea:React.FC<IProps> = ({placeholder, value, onChange, maxLength}) => {
+const MyTextarea: React.FC<IProps> = ({ placeholder, value, onChange, maxLength }) => {
     return (
         <div className={"myTextarea"}>
             <textarea
@@ -18,9 +18,12 @@ const MyTextarea:React.FC<IProps> = ({placeholder, value, onChange, maxLength}) 
                 placeholder={placeholder}
                 maxLength={maxLength}
             />
-            <span className={"textareaLength"}>
-                {value.length}/{maxLength}
-            </span>
+            {maxLength
+                ? <span className={"textareaLength"}>
+                    {value.length}/{maxLength}
+                </span>
+                : <></>
+            }
         </div>
     );
 };

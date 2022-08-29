@@ -11,5 +11,8 @@ export {
     IconSearch,
     IconUser,
     IconPen,
-    IconArrowDown
+    IconArrowDown,
+    IconArrowUp
 } from "./Icons";
+
+export type {ColorTypes} from "./Icons";

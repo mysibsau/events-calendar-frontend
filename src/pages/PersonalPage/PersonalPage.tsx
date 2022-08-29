@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import MyModal from '../../components/UI/MyModal'
 import { useAuthStore, usePersonalStore } from '../../stores'
-import { IAuth } from '../../types/auth'
 import AddPersonal from './AddPersonal'
 import PersonalCard from './PersonalCard'
 import "./PersonalPage.scss"
@@ -13,18 +12,15 @@ interface IProps {
 
 const PersonalPage: React.FC<IProps> = ({ personal }) => {
     const { user } = useAuthStore(state => state)
-    const { clearInvite } = usePersonalStore(state => state)
-    const [authors, setAuthors] = useState<IAuth[]>([])
+    const { clearInvite, getPersonal, personalList } = usePersonalStore(state => state)
     const [show, setShow] = useState(false)
 
     useEffect(() => {
-        const newUsers = []
-
-        for (let i = 0; i < 0; i++) {
-            newUsers.push(user)
+        if (personal === "authors") {
+            getPersonal(0)
+        } else {
+            getPersonal(1)
         }
-
-        setAuthors(newUsers)
     }, [])
 
     const addAuthorHandler = () => {
@@ -42,8 +38,10 @@ const PersonalPage: React.FC<IProps> = ({ personal }) => {
             <h1>Мои {personal === 'authors'
                 ? <>авторы</>
                 : <>модераторы</>
-            }</h1>
-            {authors.length === 0 &&
+            }
+            <span className={"addPers"} onClick={addAuthorHandler}>Добавить</span>
+            </h1>
+            {personalList.length === 0 &&
                 <h2 style={{ "textAlign": "center" }}>У вас еще нету {personal === 'authors'
                     ? <>авторов</>
                     : <>модераторов</>
@@ -54,7 +52,7 @@ const PersonalPage: React.FC<IProps> = ({ personal }) => {
                 </h2>
             }
             <div className={"authors-container"}>
-                {authors.map(item =>
+                {personalList.map(item =>
                     <PersonalCard author={item} />
                 )}
             </div>

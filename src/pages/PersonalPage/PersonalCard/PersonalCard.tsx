@@ -1,55 +1,52 @@
 import React from 'react'
 import { IconCloseX } from '../../../assets/Icons';
 import Tooltip from '../../../components/UI/Tooltip';
-import { IAuth } from '../../../types/auth';
+import { IPersonal } from '../../../types/personal';
 import "./PersonalCard.scss";
 
 
 interface IProps {
-    author: IAuth
+    author: IPersonal
 }
 
 const personalStatus: Record<string, string> = {
-    "-1": "Студент",
+    "0": "Студент",
     "1": "Сотрудник"
 }
 
 const PersonalCard: React.FC<IProps> = ({ author }) => {
     const deleteAuthorHandler = () => {
         if (window.confirm("Вы уверены что хотите удалть этого автора?")){
-            console.log(author.id);
-            
+            console.log(author.id);   
         }
     }
 
     return (
         <div className={"authorCard-container"}>
             <div>
-                <h3>{author.name}</h3>
+                <h3>{author.first_name} {author.last_name}</h3>
             </div>
             <div>
                 Должность:
                 <span className={"contact-info"}>
-                    {personalStatus[author.status]}, ИИТК МПА22-01{author.position}
+                    {personalStatus[author.status]}, {author.position}
                 </span>
             </div>
             <div>
                 Телефон:
                 <span className={"contact-info"}>
-                    89994445566
-                    {author.contacts.phone}
+                    {author.contacts_info}
                 </span>
             </div>
-            <div>
+            {/* <div>
                 Ссылка на мессенджер:
                 <span className={"contact-info"}>
-                    www.asd.wqe
-                    {author.contacts.messenger_link}
+                    {author.contacts}
                 </span>
-            </div>
+            </div> */}
             <div className={"icon-delete"} onClick={deleteAuthorHandler}>
                 <Tooltip text={"удалить пользователя"}>
-                    <IconCloseX color={"gray"} size={30}/>
+                    <IconCloseX color={"default"} size={30}/>
                 </Tooltip>
             </div>
         </div>

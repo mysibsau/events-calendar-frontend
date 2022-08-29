@@ -13,6 +13,7 @@ const roles = {
 
 const Navbar = () => {
     const { logOut, user } = useAuthStore(state => state);
+    const logo = require('../../assets/logo.jpg')
 
     const clickBtnLogout = () => {
         logOut()
@@ -25,6 +26,7 @@ const Navbar = () => {
                 <div className={'navbar-left'}>
                     <NavLink to={'/'} className={"logo"}>
                         <IconLogo />
+                        {/* <img src={logo} alt="" /> */}
                     </NavLink>
 
                     <ul>

@@ -5,7 +5,6 @@ import AuthPage from './pages/AuthPage';
 import MyEvents from "./pages/MyEvents/MyEvents";
 import { useAuthStore, useEventsStore } from './stores';
 import CreateEnevntPage from './pages/CreateEnevntPage';
-import EventPage from './pages/EventPage';
 import MyNotification from './components/UI/MyNotification';
 import PersonalPage from './pages/PersonalPage';
 import Navbar from './components/Navbar';
@@ -28,13 +27,13 @@ const App = () => {
                     <Navbar />
                     <Routes>
                         <Route path="/events" element={<MyEvents />} />
-                        <Route path="/events/:eventId" element={<EventPage />} />
-                        <Route path="/create-event" element={<CreateEnevntPage />} />
+                        <Route path="/create-event/" element={<CreateEnevntPage edited={false} />} />
+                        <Route path="/create-event/:eventId" element={<CreateEnevntPage edited={true} />} />
                         {user.role > 0 &&
                             <Route path="/authors/" element={<PersonalPage personal={"authors"} />} />
                         }
                         {user.role > 1 &&
-                            < Route path="/moderators" element={<PersonalPage personal={"moderators"} />} />
+                            <Route path="/moderators" element={<PersonalPage personal={"moderators"} />} />
                         }
                         <Route
                             path="*"

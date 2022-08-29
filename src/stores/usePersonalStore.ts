@@ -11,17 +11,28 @@ export const useEventStore = create<IPersonalStore>()(
         (set, get) => ({
             personalList: [],
             inviteLink: undefined,
-            getAuthors: async () => {
-
-            },
-            getModerators: async () => {
-
-            },
-            addPersonal: async (role) => {
+            getPersonal: async (role) => {
                 const authStore = sessionStorage.getItem('authStore')
                 if (authStore) {
                     const userToken = JSON.parse(authStore).state.user.token
-                    await axios.post(`/users/invite/`, {role: role}, { headers: { Authorization: `Token ${userToken}` } })
+                    await axios.post(`/users/my_invites/`, { role: role }, { headers: { Authorization: `Token ${userToken}` } })
+                        .then((response) => {
+                            const data = response.data
+                            
+                            set(state => {
+                                state.personalList = data
+                            })
+                        })
+                        .catch((e: AxiosError) => {
+                            console.log(JSON.parse(e.request.response))
+                        })
+                }
+            },
+            addPersonal: async (role, data) => {
+                const authStore = sessionStorage.getItem('authStore')
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    await axios.post(`/users/invite/`, { role: role, status: data.status, position: data.position }, { headers: { Authorization: `Token ${userToken}` } })
                         .then((response) => {
                             const data = response.data.code
                             set(state => {

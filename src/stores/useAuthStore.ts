@@ -3,6 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import { devtools, persist } from 'zustand/middleware'
 import axios, { AxiosError } from "axios";
 import { IAuthStore, IAuth } from "../types/auth";
+import { useNotification } from "../components/UI/MyNotification/useNotification";
 
 
 const user = sessionStorage.getItem('authStore')
@@ -23,7 +24,6 @@ const defaultState: IAuth = {
 export const useAuthStore = create<IAuthStore>()(
     devtools(immer(persist(
         (set, get) => ({
-            error: null,
             loading: false,
             user: defaultState,
             logIn: async (username, password, code) => {
@@ -41,10 +41,8 @@ export const useAuthStore = create<IAuthStore>()(
                     })
                     .catch((e: AxiosError) => {
                         set({
-                            error: "Произошла ошибка авторизации",
                             loading: false
                         })
-                        console.log(JSON.parse(e.request.response))
                     })
             },
             logOut: () => {
@@ -53,18 +51,28 @@ export const useAuthStore = create<IAuthStore>()(
                 })
                 sessionStorage.clear()
             },
-            clearError: () => {
-                set(state => {
-                    state.error = null
-                })
-            },
-            updateUser: (data) => {
-                set(state => {
-                    state.user = {
-                        ...state.user,
-                        ...data
-                    }
-                })
+            updateUser: async (data) => {
+                const authStore = sessionStorage.getItem('authStore')
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    await axios.put(`/users/${get().user.id}`, data, { headers: { Authorization: `Token ${userToken}` } })
+                        .then(() => {
+                            set(state => {
+                                state.loading = false
+                            })
+                        })
+                        .catch((e: AxiosError) => {
+                            set(state => {
+                                state.loading = false
+                            })
+                        })
+                    set(state => {
+                        state.user = {
+                            ...state.user,
+                            ...data
+                        }
+                    })
+                }
             }
         }),
         {

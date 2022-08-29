@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import MyInput from '../../../components/UI/MyInput';
 import { useAuthStore } from '../../../stores';
-import { IUpdateUser, TStatus } from '../../../types/auth';
-import { ICreateEvnet } from '../../../types/event';
+import { IUpdateUser } from '../../../types/auth';
 import "./StepFour.scss";
 
 
-interface IProps {
-    setData: React.Dispatch<React.SetStateAction<ICreateEvnet>>;
-}
-
-const StepFour: React.FC<IProps> = ({ setData }) => {
+const StepFour = () => {
     const { user, updateUser } = useAuthStore(state => state)
 
     const [phone, setPhone] = useState(user.contacts && user.contacts.phone ? user.contacts.phone : "")
@@ -26,12 +21,7 @@ const StepFour: React.FC<IProps> = ({ setData }) => {
             contacts: contacts
         }
 
-        setData(prev => ({
-            ...prev,
-            responsible: user.name,
-        }))
-
-        updateUser(data)        
+        updateUser(data)
     }, [phone, messenger])
 
     return (
@@ -41,8 +31,8 @@ const StepFour: React.FC<IProps> = ({ setData }) => {
                 <span className={"responsible"}>{user.name} (вы)</span>
             </div>
             <div>
-                <label htmlFor={""}>Ваша должность: 
-                <span className={"responsible"}>{user.status}</span>
+                <label htmlFor={""}>Ваша должность:
+                    <span className={"responsible"}>{user.status}</span>
                 </label>
             </div>
             <div>

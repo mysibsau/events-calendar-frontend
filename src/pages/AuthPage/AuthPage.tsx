@@ -4,7 +4,6 @@ import { IconLock, IconUser } from '../../assets/Icons/Icons';
 import MyButton from '../../components/UI/MyButton';
 import MyInput from '../../components/UI/MyInput';
 import MyLoader from '../../components/UI/MyLoader/MyLoader';
-import { useNotification } from '../../components/UI/MyNotification/useNotification';
 import { useAuthStore } from '../../stores';
 import './AuthPage.scss'
 
@@ -14,8 +13,7 @@ const AuthPage = () => {
     const [password, setPassword] = useState('')
     const [code, setCode] = useState("")
 
-    const { logIn, loading, error, clearError } = useAuthStore(state => state)
-    const { addToast } = useNotification()
+    const { logIn, loading } = useAuthStore(state => state)
 
     const [params] = useSearchParams()
 
@@ -31,13 +29,6 @@ const AuthPage = () => {
         }
     }, [params])
 
-    useEffect(() => {
-        if (error) {
-            addToast("Ошибка", "Неверный логин или пароль", "danger")
-            clearError()
-        }
-    }, [error])
-
     return (
         <main className={'authPage'}>
             <form onSubmit={authentication}>
@@ -45,7 +36,7 @@ const AuthPage = () => {
                     <h1>Вход</h1>
                     <p>Войдите в свой аккаунт</p>
                     <MyInput
-                        inputIcon={<IconUser color={"blue"} />}
+                        inputIcon={<IconUser color={"primary"} />}
                         type="text"
                         placeholder='Введите ваш логин'
                         value={login}
@@ -53,7 +44,7 @@ const AuthPage = () => {
                         id='login'
                     />
                     <MyInput
-                        inputIcon={<IconLock color={"blue"} />}
+                        inputIcon={<IconLock color={"primary"} />}
                         value={password}
                         onChange={(value) => setPassword(value)}
                         type="password"

@@ -13,7 +13,7 @@ export interface IAuth {
     username: string;
     password: string;
     role: TRole;
-    status: TStatus;
+    status: number;
     position: string;
     contacts: IContacts;
 }
@@ -25,9 +25,7 @@ export interface IUpdateUser {
 export interface IAuthStore {
     user: IAuth;
     loading: boolean;
-    error: null | string;
     logIn: (username: string, password: string, code?: string) => void;
     logOut: () => void;
-    clearError: () => void;
     updateUser: (data: IUpdateUser) => void;
 }

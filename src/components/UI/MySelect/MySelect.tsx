@@ -22,7 +22,7 @@ const MySelect: React.FC<IProps> = ({ value, options, setValue }) => {
                 )}
             </select>
             <span>
-                <IconArrowDown color="gray"/>
+                <IconArrowDown color="default"/>
             </span>
         </div>
     );

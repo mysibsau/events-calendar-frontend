@@ -1,15 +1,16 @@
 import React from "react";
 
 const colors = new Map([
-    ["red", "#DD473B"],
-    ["blue", "#1C7EDF"],
+    ["danger", "#DD473B"],
+    ["primary", "#006CB5"],
+    ["warning", "#FFB946"],
+    ["default", "#ADADAD"],
+    ["black", "#000000"],
     ["white", "#FFFFFF"],
-    ["gray", "#ADADAD"],
-    ["soft", "#1C7EDF"],
-    ["black", "#000000"]
+    ["success", "#77787B"]
 ]);
 
-type ColorTypes = "red" | "gray" | "blue" | "white" | "soft" | "black"
+export type ColorTypes = "danger" | "primary" | "warning" | "default" | "black" | "white" | "success"
 
 interface IProps {
     color: ColorTypes,
@@ -110,7 +111,7 @@ export const IconLock: React.FC<IProps> = ({ color, size = 19 }) => {
 export const IconElips: React.FC<IProps> = ({ color, size = 19 }) => {
     return (
         <svg width={size} height={size} viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21.877 10.6977C21.877 15.7972 17.4732 20.0305 11.9145 20.0305C6.35574 20.0305 1.9519 15.7972 1.9519 10.6977C1.9519 5.59823 6.35574 1.36487 11.9145 1.36487C17.4732 1.36487 21.877 5.59823 21.877 10.6977Z" stroke={colors.get(color)} strokeWidth="2" />
+            <path d="M21.877 10.6977C21.877 15.7972 17.4732 20.0305 11.9145 20.0305C6.35574 20.0305 1.9519 15.7972 1.9519 10.6977C1.9519 5.59823 6.35574 1.36487 11.9145 1.36487C17.4732 1.36487 21.877 5.59823 21.877 10.6977Z" stroke={colors.get(color)} strokeWidth="3" />
         </svg>
     );
 };
@@ -127,6 +128,14 @@ export const IconArrowDown: React.FC<IProps> = ({ color, size = 19 }) => {
     return (
         <svg width={size} height={size} viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M14.1867 6.47583L9.25463 6.47583L4.81338 6.47583C4.05338 6.47583 3.67338 7.39417 4.21171 7.9325L8.31254 12.0333C8.96963 12.6904 10.0384 12.6904 10.6955 12.0333L12.255 10.4737L14.7963 7.9325C15.3267 7.39417 14.9467 6.47583 14.1867 6.47583Z" fill={colors.get(color)} />
+        </svg>
+    );
+};
+
+export const IconArrowUp: React.FC<IProps> = ({ color, size = 19 }) => {
+    return (
+        <svg width={size} height={size} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.54706 9.22833L7.18122 9.22833L10.4537 9.22833C11.0137 9.22833 11.2937 8.55167 10.8971 8.155L7.87539 5.13333C7.39122 4.64917 6.60372 4.64917 6.11956 5.13333L4.97039 6.2825L3.09789 8.155C2.70706 8.55167 2.98706 9.22833 3.54706 9.22833Z" fill={colors.get(color)} />
         </svg>
     );
 };

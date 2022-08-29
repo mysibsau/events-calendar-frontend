@@ -17,7 +17,7 @@ const MyModal: React.FC<IProps> = ({title, children, isShow, setIsShow}) => {
                 {title && <div className={"modalTitle"}>{title}</div>}
 
                 <div className={"close"} onClick={() => setIsShow(false)}>
-                    <IconCloseX color={"gray"} size={25} />
+                    <IconCloseX color={"default"} size={25} />
                 </div>
 
                 {children}

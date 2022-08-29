@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import MyInput from '../../../components/UI/MyInput';
 import MySelect from '../../../components/UI/MySelect';
 import { useEventsStore } from '../../../stores';
-import { ICreateEvnet } from '../../../types/event';
+import { ICreateEvnet } from '../../../types/events';
 import "./StepThree.scss";
 
 
@@ -12,7 +11,7 @@ interface IProps {
 }
 
 const StepThree: React.FC<IProps> = ({ data, setData }) => {
-    const { directionList, formatsList, rolesList, levelsList, organizationsList, getData } = useEventsStore(state => state)
+    const { directionList, formatsList, rolesList, levelsList, organizationsList } = useEventsStore(state => state)
 
     const [educationalWork, setEducationalWork] = useState(false)
     const [role, setRole] = useState<number>(-1)
@@ -33,7 +32,7 @@ const StepThree: React.FC<IProps> = ({ data, setData }) => {
     }
 
     useEffect(() => {
-        setEducationalWork(data.educational_work_outside_opop)
+        setEducationalWork(data.educational_work_in_opop)
         setRole(data.role)
         setFormat(data.format)
         setDirection(data.direction)
@@ -44,7 +43,7 @@ const StepThree: React.FC<IProps> = ({ data, setData }) => {
     useEffect(() => {
         setData(prev => ({
             ...prev,
-            educational_work: educationalWork,
+            educational_work_in_opop: educationalWork,
             role: role,
             format: format,
             direction: direction,

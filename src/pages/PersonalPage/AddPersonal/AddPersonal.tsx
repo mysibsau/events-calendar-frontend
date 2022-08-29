@@ -4,6 +4,7 @@ import MyInput from '../../../components/UI/MyInput';
 import { useNotification } from '../../../components/UI/MyNotification/useNotification';
 import MySelect from '../../../components/UI/MySelect';
 import { usePersonalStore } from '../../../stores';
+import { TStatus } from '../../../types/auth';
 import "./AddPersonal.scss";
 
 
@@ -35,9 +36,9 @@ const AddPersonal: React.FC<IProps> = ({ personal }) => {
 
     const addPersonalHandler = () => {
         if (personal === 'authors') {
-            addPersonal(0)
+            addPersonal(0, {status: parseInt(personalStatus), position: position})
         } else {
-            addPersonal(1)
+            addPersonal(1, {status: parseInt(personalStatus), position: position})
         }
     }
 

@@ -5,7 +5,7 @@ import { useEventsStore } from '../../stores';
 import { useNavigate } from 'react-router-dom';
 
 const MyEvents = () => {
-    const { eventList, fetchEventList } = useEventsStore(state => state)
+    const { eventList, fetchEventList, loading } = useEventsStore(state => state)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -15,7 +15,10 @@ const MyEvents = () => {
     return (
         <main>
             <h1>Мои меропрития</h1>
-            {eventList.length === 0 &&
+            {loading && !eventList.length && 
+                <h2 style={{ "textAlign": "center" }}>Загрузка...</h2>
+            }
+            {eventList.length === 0 && !loading &&
                 <h2 style={{ "textAlign": "center" }}>Мероприятия отсутствуют 😞. &nbsp;
                     <span className={"addContent"} onClick={() => navigate("/create-event/")}>
                         Создать?

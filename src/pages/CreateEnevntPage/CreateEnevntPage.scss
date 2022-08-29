@@ -1,7 +1,11 @@
 @import "src/styles/variables";
 
 .create-event {
-    label{
+    h1 {
+        width: 80%;
+    }
+
+    label {
         margin-bottom: 10px;
         margin-right: 10px;
         font-size: 18px;
@@ -9,7 +13,7 @@
     }
 
     .create-event-container {
-        width: 40%;
+        width: 80%;
         margin: auto;
         padding: 10px;
         background-color: $modest-color;
@@ -23,11 +27,11 @@
                 width: 100%;
                 padding: 20px;
 
-                .number-select{
+                .number-select {
                     display: flex;
                     justify-content: space-between;
 
-                    >div{
+                    >div {
                         width: 48%;
                     }
                 }
@@ -35,7 +39,7 @@
         }
     }
 
-    .select-step-container{
+    .select-step-container {
         width: 20%;
         display: flex;
         justify-content: space-around;
@@ -43,12 +47,12 @@
         margin: auto;
         margin-top: 30px;
 
-        span{
+        span {
             font-weight: 800;
             font-size: 20px;
         }
 
-        >*{
+        >* {
             margin: 0 10px;
         }
     }

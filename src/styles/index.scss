@@ -6,7 +6,7 @@
     box-sizing: border-box;
     text-decoration: none;
     list-style: none;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans Regular', sans-serif;
 }
 
 html {
@@ -20,8 +20,9 @@ main {
     padding-bottom: 50px;
 
     h1 {
+        margin: auto;
         margin-bottom: 30px;
-        text-align: center;
+        text-align: left;
     }
 
     .addContent {
