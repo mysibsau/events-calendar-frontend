@@ -17,6 +17,12 @@
         word-wrap: normal;
         text-overflow: ellipsis;
         padding: 10px;
+        cursor: pointer;
+
+        input {
+            margin-right: 10px;
+            cursor: pointer;
+        }
     }
 
     .cardBody-container {

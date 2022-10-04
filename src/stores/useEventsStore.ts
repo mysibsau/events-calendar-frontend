@@ -2,7 +2,7 @@ import create from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { devtools } from 'zustand/middleware'
 import axios, { AxiosError } from "axios";
-import { IEventsStore } from "../types/events";
+import { IEvent, IEventsStore } from "../types/events";
 
 
 export const useEventsStore = create<IEventsStore>()(
@@ -10,28 +10,107 @@ export const useEventsStore = create<IEventsStore>()(
         (set, get) => ({
             loading: false,
             eventList: [],
+            groupList: [],
             directionList: [],
             formatsList: [],
             levelsList: [],
             organizationsList: [],
             rolesList: [],
             isEdited: false,
-            fetchEventList: async () => {
-                const authStore = sessionStorage.getItem('authStore')
+            setChecked: (eventId) => {
                 set(state => {
-                    state.loading = true
+                    state.eventList = state.eventList.map(item => item.id === eventId ? { ...item, isCheked: !item.isCheked } : item)
                 })
+            },
+            fetchInvitesEventList: async (role) => {
+                const authStore = sessionStorage.getItem('authStore')
                 if (authStore) {
+                    set(state => {
+                        state.loading = true
+                        state.eventList = []
+                        state.groupList = []
+                    })
                     const userToken = JSON.parse(authStore).state.user.token
-                    await axios.get('/events/my/', { headers: { Authorization: `Token ${userToken}` } })
-                        .then((response) => {
-                            const data = response.data
+                    const userStatus = JSON.parse(authStore).state.user.status
+                    await axios.post(`/events/my_invites/`, { role: role }, { headers: { Authorization: `Token ${userToken}` } })
+                        .then(async (response) => {
+                            let events: IEvent[] = response.data
+
+                            if (userStatus !== "0") {
+                                await axios.get('/event_groups/', { headers: { Authorization: `Token ${userToken}` } })
+                                    .then((response) => {
+                                        const groups = response.data
+                                        events = events.filter(item => !item.group)
+
+                                        set(state => {
+                                            state.eventList = events
+                                            state.groupList = groups
+                                            state.loading = false
+                                        })
+                                    })
+                                    .catch((e: AxiosError) => {
+                                        set(state => {
+                                            state.eventList = events
+                                            state.loading = false
+                                        })
+                                    })
+                            } else {
+                                set(state => {
+                                    state.eventList = events
+                                    state.loading = false
+                                })
+                            }
+                        })
+                        .catch((e: AxiosError) => {
                             set(state => {
-                                state.eventList = data
                                 state.loading = false
                             })
                         })
+                }
+            },
+            fetchEventList: async () => {
+                const authStore = sessionStorage.getItem('authStore')
+                if (authStore) {
+                    set(state => {
+                        state.loading = true
+                        state.eventList = []
+                        state.groupList = []
+                    })
+                    const userToken = JSON.parse(authStore).state.user.token
+                    const userStatus = JSON.parse(authStore).state.user.status
+                    await axios.get(`/events/my/`, { headers: { Authorization: `Token ${userToken}` } })
+                        .then(async (response) => {
+                            let events: IEvent[] = response.data
+
+                            if (userStatus !== "0") {
+                                await axios.get('/event_groups/', { headers: { Authorization: `Token ${userToken}` } })
+                                    .then((response) => {
+                                        const groups = response.data
+                                        events = events.filter(item => !item.group)
+
+                                        set(state => {
+                                            state.eventList = events
+                                            state.groupList = groups
+                                            state.loading = false
+                                        })
+                                    })
+                                    .catch((e: AxiosError) => {
+                                        set(state => {
+                                            state.eventList = events
+                                            state.loading = false
+                                        })
+                                    })
+                            } else {
+                                set(state => {
+                                    state.eventList = events
+                                    state.loading = false
+                                })
+                            }
+                        })
                         .catch((e: AxiosError) => {
+                            set(state => {
+                                state.loading = false
+                            })
                         })
                 }
             },
@@ -67,6 +146,105 @@ export const useEventsStore = create<IEventsStore>()(
                                 })
                             })
                     }
+                }
+            },
+            createReport: async (eventId, data) => {
+                const authStore = sessionStorage.getItem('authStore')
+                set(state => {
+                    state.loading = true
+                })
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    await axios.patch(`/events/${eventId}/`, data, { headers: { Authorization: `Token ${userToken}` } })
+                        .then(() => {
+                            set(state => {
+                                state.loading = false
+                            })
+                        })
+                        .catch((e: AxiosError) => {
+                            set(state => {
+                                state.loading = false
+                            })
+                        })
+                }
+            },
+            createGroup: async (data) => {
+                const authStore = sessionStorage.getItem('authStore')
+                set(state => {
+                    state.loading = true
+                })
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    if (data.events_ids.length > 1) {
+                        await axios.post(`/event_groups/`, data, { headers: { Authorization: `Token ${userToken}` } })
+                            .then(() => {
+                                set(state => {
+                                    state.loading = false
+                                    state.eventList = state.eventList.map(item => { return { ...item, isCheked: false } })
+                                })
+                            })
+                            .catch((e: AxiosError) => {
+                                set(state => {
+                                    state.loading = false
+                                })
+                            })
+                    } else {
+                        set(state => {
+                            state.loading = false
+                            state.eventList = state.eventList.map(item => { return { ...item, isCheked: false } })
+                        })
+                    }
+                }
+                get().fetchEventList()
+            },
+            updateGroup: async (eventIds, groupId) => {
+                const authStore = sessionStorage.getItem('authStore')
+                set(state => {
+                    state.loading = true
+                })
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    if (eventIds.length > 1) {
+                        await axios.patch(`/event_groups/${groupId}/`, { events_ids: eventIds }, { headers: { Authorization: `Token ${userToken}` } })
+                            .then(() => {
+                                set(state => {
+                                    state.loading = false
+                                    state.eventList = state.eventList.map(item => { return { ...item, isCheked: false } })
+                                })
+                            })
+                            .catch((e: AxiosError) => {
+                                set(state => {
+                                    state.loading = false
+                                })
+                            })
+                    } else {
+                        set(state => {
+                            state.loading = false
+                            state.eventList = state.eventList.map(item => { return { ...item, isCheked: false } })
+                        })
+                    }
+                }
+                get().fetchEventList()
+            },
+            deleteGroup: async (groupId) => {
+                const authStore = sessionStorage.getItem('authStore')
+                set(state => {
+                    state.loading = true
+                })
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    await axios.delete(`/event_groups/${groupId}/`, { headers: { Authorization: `Token ${userToken}` } })
+                        .then(() => {
+                            set(state => {
+                                state.loading = false
+                            })
+                        })
+                        .catch((e: AxiosError) => {
+                            set(state => {
+                                state.loading = false
+                            })
+                        })
+                    get().fetchEventList()
                 }
             },
             getEvent: async (eventId) => {

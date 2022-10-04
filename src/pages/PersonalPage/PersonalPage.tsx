@@ -53,7 +53,7 @@ const PersonalPage: React.FC<IProps> = ({ personal }) => {
             }
             <div className={"authors-container"}>
                 {personalList.map(item =>
-                    <PersonalCard author={item} />
+                    <PersonalCard author={item} key={item.id} />
                 )}
             </div>
             <MyModal isShow={show} setIsShow={setShow} title={`Добавление новго ${personal === "authors" ? "автора" : "модератора"} 😊`} >

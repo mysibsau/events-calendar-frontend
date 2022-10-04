@@ -3,7 +3,6 @@ import { immer } from "zustand/middleware/immer";
 import { devtools } from 'zustand/middleware'
 import axios, { AxiosError } from "axios";
 import { IPersonalStore } from "../types/personal";
-import { stat } from "fs";
 
 
 export const useEventStore = create<IPersonalStore>()(

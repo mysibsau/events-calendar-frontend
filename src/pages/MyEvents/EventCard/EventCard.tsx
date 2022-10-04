@@ -4,10 +4,11 @@ import { IEvent } from "../../../types/events";
 import MyButton from '../../../components/UI/MyButton';
 import { IconElips, IconPen, IconTrushSquare, ColorTypes } from '../../../assets/Icons';
 import Tooltip from '../../../components/UI/Tooltip';
-import { useEventsStore } from '../../../stores';
+import { useAuthStore, useEventsStore } from '../../../stores';
 import { useNavigate } from 'react-router-dom';
 import MyModal from '../../../components/UI/MyModal';
 import EventModal from '../EventModal';
+import CreateReportModal from '../CreateReportModal';
 
 interface IProps {
     event: IEvent;
@@ -18,11 +19,15 @@ interface IElipsData {
     message: string;
 }
 
+type TModalContent = "eventInfo" | "createReport"
+
 const EventCard: React.FC<IProps> = ({ event }) => {
-    const { deleteEvent } = useEventsStore(state => state)
+    const { deleteEvent, setChecked } = useEventsStore(state => state)
+    const { user } = useAuthStore(state => state)
     const navigate = useNavigate()
 
     const [showEvent, setShowEvent] = useState(false)
+    const [modalContent, setModalContetn] = useState<React.ReactNode>()
 
     const start_date = new Date(event.start_date).toLocaleString('ru', {
         year: 'numeric',
@@ -59,9 +64,22 @@ const EventCard: React.FC<IProps> = ({ event }) => {
         }
     }
 
+    const setModalContentHandler = (type: TModalContent) => {
+        if (type === "eventInfo") {
+            setModalContetn(<EventModal eventId={event.id.toString()} isShowEvent={true} />)
+        } else {
+            setModalContetn(<CreateReportModal eventId={event.id.toString()} />)
+        }
+
+        setShowEvent(true)
+    }
+
     return (
         <div className={'eventCard-container'}>
-            <h2>{event.name}</h2>
+            <h2 onClick={() => setChecked(event.id)}>
+                {user.role > 0 && !event.group ? <input type="checkbox" checked={event.isCheked ? true : false} /> : <></>}
+                {event.name}
+            </h2>
             <div className={"cardBody-container"}>
                 <div className={"info"}>
                     <div>
@@ -97,13 +115,13 @@ const EventCard: React.FC<IProps> = ({ event }) => {
                         </Tooltip>
                     </div>
                     <div className={"buttons"}>
-                        <MyButton variant={"success"} onClick={() => setShowEvent(true)}>Подробнее</MyButton>
-                        <MyButton variant={"primary"}>Создать отчет</MyButton>
+                        <MyButton variant={"success"} onClick={() => setModalContentHandler("eventInfo")}>Подробнее</MyButton>
+                        <MyButton variant={"primary"} onClick={() => setModalContentHandler("createReport")}>Создать отчет</MyButton>
                     </div>
                 </div>
             </div>
             <MyModal isShow={showEvent} setIsShow={setShowEvent} title={`Название мероприятия: ${event.name}`}>
-                <EventModal eventId={event.id.toString()} isShowEvent={showEvent} />
+                {modalContent}
             </MyModal>
         </div>
     );

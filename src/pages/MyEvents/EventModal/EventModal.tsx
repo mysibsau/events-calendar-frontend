@@ -41,7 +41,9 @@ const EventModal: React.FC<IProps> = ({ eventId, isShowEvent }) => {
                 setLoading(false)
                 setEvent(resp)
             })
-        }
+        } else {
+            setLoading(true)
+        }        
     }, [isShowEvent])
 
     useEffect(() => {
@@ -149,17 +151,6 @@ const EventModal: React.FC<IProps> = ({ eventId, isShowEvent }) => {
                                 <p>{eventStatus()}</p>
                             </div>
                         </div>
-                        {event.important_dates.length ?
-                            <div className={"importantDates"}>
-                                {event.important_dates.map(item =>
-                                    <div className={"importantDates-item"}>
-                                        <h4>{item.date}</h4>
-                                        <span>{item.name}</span>
-                                    </div>
-                                )}
-                            </div>
-                            : <></>
-                        }
                         <div className={"description"}>
                             <h3>Описание мероприятия:</h3>
                             <p>{event.description}</p>

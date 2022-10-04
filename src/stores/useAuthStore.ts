@@ -3,7 +3,6 @@ import { immer } from "zustand/middleware/immer";
 import { devtools, persist } from 'zustand/middleware'
 import axios, { AxiosError } from "axios";
 import { IAuthStore, IAuth } from "../types/auth";
-import { useNotification } from "../components/UI/MyNotification/useNotification";
 
 
 const user = sessionStorage.getItem('authStore')

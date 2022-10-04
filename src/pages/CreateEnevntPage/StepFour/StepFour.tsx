@@ -43,12 +43,8 @@ const StepFour = () => {
                 <span className={"responsible"}>{user.position}</span>
             </div>
             <div>
-                <label htmlFor="">Номер телефона</label>
+                <label htmlFor="">Контактная информация (номер телефона или ссылка на соцсети)</label>
                 <MyInput type={"text"} value={phone} onChange={setPhone} />
-            </div>
-            <div>
-                <label htmlFor="">Ссылка на соцсети</label>
-                <MyInput type={"text"} value={messenger} onChange={setMessenger} />
             </div>
         </div>
     )

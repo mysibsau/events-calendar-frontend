@@ -12,7 +12,6 @@ import { useParams } from 'react-router-dom';
 
 
 const defaultData: ICreateEvnet = {
-    id: 0,
     name: "",
     place: "",
     hours_count: -1,
@@ -21,7 +20,6 @@ const defaultData: ICreateEvnet = {
     //
     start_date: "",
     stop_date: "",
-    important_dates: [],
     //
     educational_work_in_opop: false,
     direction: -1,
@@ -31,23 +29,21 @@ const defaultData: ICreateEvnet = {
     role: -1,
 }
 
-interface IProps{
+interface IProps {
     edited: boolean;
 }
 
-const CreateEnevntPage: React.FC<IProps> = ({edited}) => {
+const CreateEnevntPage: React.FC<IProps> = ({ edited }) => {
     const { addToast } = useNotification()
     const { createEvent, getEvent } = useEventsStore(state => state)
 
-    const [isEdited, setIsEdited] = useState({edited: edited, eventId: ""})
+    const [isEdited, setIsEdited] = useState({ edited: edited, eventId: "" })
     const [loading, setLoading] = useState(edited)
 
     const [step, setStep] = useState<number>(1)
     const [data, setData] = useState<ICreateEvnet>(defaultData)
 
     const nextStepHandler = () => {
-
-        setStep(step + 1)
         if (step === 1) {
             if (data.name.length === 0) {
                 addToast("Ошибка", "Введите название мероприятия", "danger")
@@ -100,11 +96,11 @@ const CreateEnevntPage: React.FC<IProps> = ({edited}) => {
                 return
             }
         }
+
+        setStep(step + 1)
     }
 
     const createEventHandler = () => {
-        console.log(data);
-        
         createEvent(data, isEdited)
         setData(defaultData)
         setStep(1)
@@ -125,7 +121,6 @@ const CreateEnevntPage: React.FC<IProps> = ({edited}) => {
                     //
                     start_date: resp.start_date,
                     stop_date: resp.stop_date,
-                    important_dates: resp.important_dates,
                     //
                     educational_work_in_opop: resp.educational_work_in_opop,
                     direction: resp.direction,
@@ -135,7 +130,7 @@ const CreateEnevntPage: React.FC<IProps> = ({edited}) => {
                     role: resp.role
                 })
 
-                setIsEdited({edited: true, eventId: resp.id.toString()})
+                setIsEdited({ edited: true, eventId: resp.id.toString() })
                 setLoading(false)
             })
         }

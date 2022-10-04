@@ -1,13 +1,10 @@
-export interface IImportantDates{
-    name: string;
-    date: string;
-}
+import { TRole } from "./auth";
 
 type IEventStatus = "0" | "1" | "2" | "3" | "4"
+export type TEventType = "my" | "invites"
 
-export interface IEvent{
+export interface IEvent {
     id: number;
-    important_dates: Array<IImportantDates>;
     name: string;
     free_plan: boolean;
     hours_count: number;
@@ -16,8 +13,6 @@ export interface IEvent{
     stop_date: string;
     place: string;
     coverage_participants_plan: number;
-    coverage_participants_fact: number;
-    links: string;
     direction: number;
     level: number;
     role: number;
@@ -25,21 +20,44 @@ export interface IEvent{
     author: string;
     organization: number;
     description: string;
-    
-    status?: IEventStatus;
-    verified?: number;
-    verified_date?: string;
+
+    group?: number;
+
+    coverage_participants_fact: number;
+    links: string;
+    organizators: IOrganizators[];
+
+    status: IEventStatus;
+    verified: number;
+    verified_date: string;
+
+    isCheked: boolean;
+}
+
+export interface IEventsGroup {
+    id: number;
+    events: IEvent[];
+    name: string;
+    start_date: string;
+    stop_date: string;
+    description: string;
+}
+
+export interface ICreateEventsGroup {
+    name: string;
+    start_date: string;
+    stop_date: string;
+    description: string;
+    events_ids: number[];
 }
 
 export interface ICreateEvnet {
-    id: number;
     description: string;
     name: string;
     place: string;
     hours_count: number;
     start_date: string;
     stop_date: string;
-    important_dates: Array<IImportantDates>;
     educational_work_in_opop: boolean;
     coverage_participants_plan: number;
     direction: number;
@@ -47,6 +65,18 @@ export interface ICreateEvnet {
     role: number;
     format: number;
     organization: number;
+}
+
+export interface IOrganizators {
+    name: string;
+    position: string;
+    description: string;
+}
+
+export interface ICreateReport {
+    coverage_participants_fact: number;
+    links: string;
+    organizators: IOrganizators[];
 }
 
 interface IObjects {
@@ -61,6 +91,7 @@ interface IEdit {
 
 export interface IEventsStore {
     eventList: Array<IEvent>;
+    groupList: IEventsGroup[];
     loading: boolean;
     directionList: IObjects[];
     formatsList: IObjects[];
@@ -69,7 +100,13 @@ export interface IEventsStore {
     rolesList: IObjects[];
     getEvent: (eventId: string) => Promise<IEvent>;
     fetchEventList: () => void;
+    fetchInvitesEventList: (role: TRole) => void;
     getData: () => void;
     createEvent: (event: ICreateEvnet, isEdited: IEdit) => void;
     deleteEvent: (eventId: string) => void;
+    createReport: (eventId: string, data: ICreateReport) => void;
+    setChecked: (eventId: number) => void;
+    createGroup: (data: ICreateEventsGroup) => void;
+    deleteGroup: (groupId: number) => void;
+    updateGroup: (event_ids: number[], groupId: number) => void;
 }
