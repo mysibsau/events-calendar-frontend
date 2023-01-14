@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import MyInput from '../../../components/UI/MyInput'
-import { ICreateEvnet } from '../../../types/events';
+import { IconCloseX, Input, Select } from '../../../components/UI'
+import { useEventsStore } from '../../../stores';
+import { ICreateEvnet, IObjects } from '../../../types/events';
 import "./StepTwo.scss";
-import { useNotification } from '../../../components/UI/MyNotification/useNotification';
 
 
 interface IProps {
@@ -10,55 +10,207 @@ interface IProps {
     setData: React.Dispatch<React.SetStateAction<ICreateEvnet>>;
 }
 
+type TSelectMenu = "education_work" | "role" | "format" | "direction" | "level" | "organization"
+
+const educationWorkList = [
+    {
+        id: 0,
+        name: "В рамках ОПОП"
+    },
+    {
+        id: 1,
+        name: "За пределами ОПОП"
+    }
+]
+
+const selectTitles: Record<TSelectMenu, string> = {
+    education_work: "Вопситательная работа: ",
+    direction: "Направление воспитательных работ: ",
+    format: "Формат мероприятия: ",
+    role: "Роль СибГУ: ",
+    level: "Уровень мероприятия: ",
+    organization: "Ответственное подразделение: "
+}
+
 const StepTwo: React.FC<IProps> = ({ data, setData }) => {
+    const { directionList, formatsList, rolesList, levelsList, organizationsList } = useEventsStore(state => state)
 
-    const { addToast } = useNotification()
+    const [currentSelectObjects, setCurrentSelectObjects] = useState<IObjects[]>(educationWorkList)
+    const [currentSelectType, setCurrentSelectType] = useState<TSelectMenu>("education_work")
+    const [selectItems, setSelectItems] = useState<Record<TSelectMenu, number>>({
+        education_work: -1,
+        direction: -1,
+        format: -1,
+        role: -1,
+        level: -1,
+        organization: -1
+    })
 
-    const [startDate, setStartDate] = useState(data.start_date)
-    const [endDate, setEndDate] = useState(data.stop_date)
-
-    const dateInputHandler = (date: string, type: "start" | "end" | "important") => {
-        const inp_date = new Date(date).getTime()
-        const start_date = new Date(startDate).getTime()
-        const end_date = new Date(endDate).getTime()
-
-        if (type === "start") {
-            if (end_date && inp_date > end_date) {
-                setEndDate("")
+    const switchSelectmenu = (typeMenu: TSelectMenu) => {
+        switch (typeMenu) {
+            case "direction": {
+                setCurrentSelectObjects(directionList)
+                break
             }
-            setStartDate(date)
-        } else if (type === "end") {
-            if (start_date && start_date > inp_date) {
-                addToast("Ошибка!", "Конечная дата не может быть перед начальноый!", "danger")
-            } else {
-                setEndDate(date)
+            case "role": {
+                setCurrentSelectObjects(rolesList)
+                break
+            }
+            case "format": {
+                setCurrentSelectObjects(formatsList)
+                break
+            }
+            case "education_work": {
+                setCurrentSelectObjects(educationWorkList)
+                break
+            }
+            case "level": {
+                setCurrentSelectObjects(levelsList)
+                break
+            }
+            case "organization": {
+                setCurrentSelectObjects(organizationsList)
+                break
             }
         }
+        setCurrentSelectType(typeMenu)
     }
 
     useEffect(() => {
-        setData(prev => ({
+        setSelectItems({
+            education_work: data.educational_work_in_opop ? 1 : 0,
+            direction: data.direction,
+            format: data.format,
+            role: data.role,
+            level: data.level,
+            organization: data.organization
+        })
+    }, [])
+
+    const setDataHandler = (dataType: TSelectMenu, data: number) => {
+        switch (dataType) {
+            case "direction": {
+                setData((prev => ({
+                    ...prev,
+                    direction: data,
+                })))
+                break
+            }
+            case "role": {
+                setData((prev => ({
+                    ...prev,
+                    role: data,
+                })))
+                break
+            }
+            case "format": {
+                setData((prev => ({
+                    ...prev,
+                    format: data,
+                })))
+                break
+            }
+            case "education_work": {
+                setData((prev => ({
+                    ...prev,
+                    educational_work_in_opop: data === 1,
+                })))
+                break
+            }
+            case "level": {
+                setData((prev => ({
+                    ...prev,
+                    level: data,
+                })))
+                break
+            }
+            case "organization": {
+                setData((prev => ({
+                    ...prev,
+                    organization: data,
+                })))
+                break
+            }
+        }
+        setSelectItems(prev => ({
             ...prev,
-            start_date: startDate,
-            stop_date: endDate
+            [dataType]: data
         }))
-    }, [startDate, endDate])
+    }
 
     return (
         <div className={"stepTwo-container"}>
-            <div className={"input-dates-container"}>
-                <h3>Основные даты</h3>
-                <div className={"main-dates"}>
-                    <div>
-                        <label htmlFor={""}>Дата начала</label>
-                        <MyInput value={startDate} onChange={(val) => dateInputHandler(val, "start")} type={"date"} />
+            <div className={"inputs"}>
+                <div onClick={() => switchSelectmenu("education_work")}>
+                    <label>Воспитательная работа: </label>
+                    <div className={`inputs-item-name ${currentSelectType === "education_work" ? "active" : ""}`}>
+                        {educationWorkList.filter(item => item.id === selectItems.education_work).length
+                            ? educationWorkList.filter(item => item.id === selectItems.education_work)[0].name
+                            : "Выберите элемент"
+                        }
                     </div>
-                    <div>
-                        <label htmlFor={""}>Дата окончания</label>
-                        <MyInput value={endDate} onChange={(val) => dateInputHandler(val, "end")} type={"date"} />
+                </div>
+                <div onClick={() => switchSelectmenu("direction")}>
+                    <label>Направление воспитательных работ: </label>
+                    <div className={`inputs-item-name ${currentSelectType === "direction" ? "active" : ""}`}>
+                        {directionList.filter(item => item.id === selectItems.direction).length
+                            ? directionList.filter(item => item.id === selectItems.direction)[0].name
+                            : "Выберите элемент"
+                        }
+                    </div>
+                </div>
+                <div onClick={() => switchSelectmenu("role")}>
+                    <label>Роль СибГУ: </label>
+                    <div className={`inputs-item-name ${currentSelectType === "role" ? "active" : ""}`}>
+                        {rolesList.filter(item => item.id === selectItems.role).length
+                            ? rolesList.filter(item => item.id === selectItems.role)[0].name
+                            : "Выберите элемент"
+                        }
+                    </div>
+                </div>
+                <div onClick={() => switchSelectmenu("level")}>
+                    <label>Уровень мероприятия: </label>
+                    <div className={`inputs-item-name ${currentSelectType === "level" ? "active" : ""}`}>
+                        {levelsList.filter(item => item.id === selectItems.level).length
+                            ? levelsList.filter(item => item.id === selectItems.level)[0].name
+                            : "Выберите элемент"
+                        }
+                    </div>
+                </div>
+                <div onClick={() => switchSelectmenu("format")}>
+                    <label>Формат мероприятия: </label>
+                    <div className={`inputs-item-name ${currentSelectType === "format" ? "active" : ""}`}>
+                        {formatsList.filter(item => item.id === selectItems.format).length
+                            ? formatsList.filter(item => item.id === selectItems.format)[0].name
+                            : "Выберите элемент"
+                        }
+                    </div>
+                </div>
+                <div onClick={() => switchSelectmenu("organization")}>
+                    <label>Ответственное подразделение: </label>
+                    <div className={`inputs-item-name ${currentSelectType === "organization" ? "active" : ""}`}>
+                        {organizationsList.filter(item => item.id === selectItems.organization).length
+                            ? organizationsList.filter(item => item.id === selectItems.organization)[0].name
+                            : "Выберите элемент"
+                        }
                     </div>
                 </div>
             </div>
+            <div className={`select-input`}>
+                <div className='title'>{selectTitles[currentSelectType]}</div>
+                <ul className='items-container'>
+                    {currentSelectObjects.map(item =>
+                        <li
+                            className={`${selectItems[currentSelectType] === item.id ? "active" : ""}`}
+                            onClick={() => setDataHandler(currentSelectType, item.id)}
+                            key={item.id}
+                        >
+                            {item.name}
+                        </li>
+                    )}
+                </ul>
+            </div>
+
         </div>
     )
 }

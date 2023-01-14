@@ -13,7 +13,7 @@ export interface IAuth {
     username: string;
     password: string;
     role: TRole;
-    status: number;
+    personal_status: number;
     position: string;
     contacts: IContacts;
 }

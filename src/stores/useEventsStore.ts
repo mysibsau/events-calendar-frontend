@@ -3,12 +3,14 @@ import { immer } from "zustand/middleware/immer";
 import { devtools } from 'zustand/middleware'
 import axios, { AxiosError } from "axios";
 import { IEvent, IEventsStore } from "../types/events";
+import { IEventsGroup } from "../types/groups";
 
 
 export const useEventsStore = create<IEventsStore>()(
     devtools(immer(
         (set, get) => ({
-            loading: false,
+            currentEventType: "my",
+            loading: true,
             eventList: [],
             groupList: [],
             directionList: [],
@@ -19,8 +21,55 @@ export const useEventsStore = create<IEventsStore>()(
             isEdited: false,
             setChecked: (eventId) => {
                 set(state => {
-                    state.eventList = state.eventList.map(item => item.id === eventId ? { ...item, isCheked: !item.isCheked } : item)
+                    state.eventList = state.eventList.map(item => item.id === eventId ? { ...item, isChecked: !item.isChecked } : item)
                 })
+            },
+            getData: async () => {
+                const authStore = sessionStorage.getItem('authStore')
+                const { directionList, levelsList, formatsList, organizationsList, rolesList } = get()
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    if (!directionList.length) {
+                        await axios.get('/reference/directions/', { headers: { Authorization: `Token ${userToken}` } })
+                            .then((response) => {
+                                set(state => {
+                                    state.directionList = response.data
+                                })
+                            })
+                    }
+                    if (!formatsList.length) {
+                        await axios.get('/reference/formats/', { headers: { Authorization: `Token ${userToken}` } })
+                            .then((response) => {
+                                set(state => {
+                                    state.formatsList = response.data
+                                })
+                            })
+                    }
+                    if (!levelsList.length) {
+                        await axios.get('/reference/levels/', { headers: { Authorization: `Token ${userToken}` } })
+                            .then((response) => {
+                                set(state => {
+                                    state.levelsList = response.data
+                                })
+                            })
+                    }
+                    if (!organizationsList.length) {
+                        await axios.get('/reference/organizations/', { headers: { Authorization: `Token ${userToken}` } })
+                            .then((response) => {
+                                set(state => {
+                                    state.organizationsList = response.data
+                                })
+                            })
+                    }
+                    if (!rolesList.length) {
+                        await axios.get('/reference/roles/', { headers: { Authorization: `Token ${userToken}` } })
+                            .then((response) => {
+                                set(state => {
+                                    state.rolesList = response.data
+                                })
+                            })
+                    }
+                }
             },
             fetchInvitesEventList: async (role) => {
                 const authStore = sessionStorage.getItem('authStore')
@@ -31,15 +80,15 @@ export const useEventsStore = create<IEventsStore>()(
                         state.groupList = []
                     })
                     const userToken = JSON.parse(authStore).state.user.token
-                    const userStatus = JSON.parse(authStore).state.user.status
+                    const userRole = JSON.parse(authStore).state.user.role
                     await axios.post(`/events/my_invites/`, { role: role }, { headers: { Authorization: `Token ${userToken}` } })
                         .then(async (response) => {
                             let events: IEvent[] = response.data
 
-                            if (userStatus !== "0") {
-                                await axios.get('/event_groups/', { headers: { Authorization: `Token ${userToken}` } })
+                            if (userRole !== 0) {
+                                await axios.get<IEventsGroup[]>('/event_groups/', { headers: { Authorization: `Token ${userToken}` } })
                                     .then((response) => {
-                                        const groups = response.data
+                                        let groups = response.data
                                         events = events.filter(item => !item.group)
 
                                         set(state => {
@@ -69,6 +118,7 @@ export const useEventsStore = create<IEventsStore>()(
                 }
             },
             fetchEventList: async () => {
+                let url = "";
                 const authStore = sessionStorage.getItem('authStore')
                 if (authStore) {
                     set(state => {
@@ -77,12 +127,15 @@ export const useEventsStore = create<IEventsStore>()(
                         state.groupList = []
                     })
                     const userToken = JSON.parse(authStore).state.user.token
-                    const userStatus = JSON.parse(authStore).state.user.status
-                    await axios.get(`/events/my/`, { headers: { Authorization: `Token ${userToken}` } })
+                    const userRole = JSON.parse(authStore).state.user.role
+
+                    userRole !== 2 ? url = `/events/my/` : url = `/events/`;
+
+                    await axios.get(url, { headers: { Authorization: `Token ${userToken}` } })
                         .then(async (response) => {
                             let events: IEvent[] = response.data
 
-                            if (userStatus !== "0") {
+                            if (userRole === 1) {
                                 await axios.get('/event_groups/', { headers: { Authorization: `Token ${userToken}` } })
                                     .then((response) => {
                                         const groups = response.data
@@ -148,6 +201,45 @@ export const useEventsStore = create<IEventsStore>()(
                     }
                 }
             },
+            deleteEvent: async (eventId) => {
+                const authStore = sessionStorage.getItem('authStore')
+                set(state => {
+                    state.loading = true
+                })
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    await axios.delete(`/events/${eventId}/`, { headers: { Authorization: `Token ${userToken}` } })
+                        .then(() => {
+                            set(state => {
+                                state.eventList = state.eventList.filter(item => item.id.toString() !== eventId);
+                                state.loading = false
+                            })
+                        }).catch(() => {
+                            set(state => {
+                                state.loading = false
+                            })
+                        })
+                }
+            },
+            verifiedEvent: async (eventId, isVerified) => {
+                const { eventList, fetchEventList, fetchInvitesEventList, currentEventType } = get()
+                const event = eventList.filter(item => item.id === eventId)[0]
+                const authStore = sessionStorage.getItem('authStore')
+                let url = isVerified ? `/events/${eventId}/verificate/` : `/events/${eventId}/reject/`
+                set(state => {
+                    state.loading = true
+                })
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    await axios.post(url, event, { headers: { Authorization: `Token ${userToken}` } }).finally(() => {
+                        if (currentEventType === "my") {
+                            fetchEventList()
+                        } else {
+                            fetchInvitesEventList(0)
+                        }
+                    })
+                }
+            },
             createReport: async (eventId, data) => {
                 const authStore = sessionStorage.getItem('authStore')
                 set(state => {
@@ -155,8 +247,8 @@ export const useEventsStore = create<IEventsStore>()(
                 })
                 if (authStore) {
                     const userToken = JSON.parse(authStore).state.user.token
-                    await axios.patch(`/events/${eventId}/`, data, { headers: { Authorization: `Token ${userToken}` } })
-                        .then(() => {
+                    await axios.post(`/events/${eventId}/generate_report/`, data, { headers: { Authorization: `Token ${userToken}`} })
+                        .then(() => {    
                             set(state => {
                                 state.loading = false
                             })
@@ -168,63 +260,108 @@ export const useEventsStore = create<IEventsStore>()(
                         })
                 }
             },
-            createGroup: async (data) => {
+            getReport: async (eventId) => {
+                const authStore = sessionStorage.getItem('authStore')
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    const resp = await axios.get(`/events/${eventId}/get_report/`, { headers: { Authorization: `Token ${userToken}` } })
+                        .then((response) => {
+                            const data = response.data
+                            return data
+                        })
+                        .catch((e: AxiosError) => {
+                            console.log(JSON.parse(e.request.response))
+                        })
+
+                    return resp
+                }
+            },
+            generateReport: async (eventId) => {
                 const authStore = sessionStorage.getItem('authStore')
                 set(state => {
                     state.loading = true
                 })
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    await axios({
+                        url: `/events/${eventId}/export_report/`,
+                        method: "GET",
+                        headers: { Authorization: `Token ${userToken}`},
+                        responseType: "blob"
+                    }).then(resp => {
+                        const href = window.URL.createObjectURL(new Blob([resp.data]))
+
+                        const link = document.createElement("a")
+
+                        link.href = href
+                        link.setAttribute("download", "file.docx");
+
+                        document.body.appendChild(link)
+                        link.click()
+                        link.remove()
+                        
+                        set(state => {
+                            state.loading = false
+                        })
+                    })
+                }
+            },
+            generateTotalReport: async () => {
+                const authStore = sessionStorage.getItem('authStore')
+                set(state => {
+                    state.loading = true
+                })
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    await axios({
+                        url: `/events/get_reports_csv/`,
+                        method: "GET",
+                        headers: { Authorization: `Token ${userToken}`},
+                        responseType: "blob"
+                    }).then(resp => {
+                        const href = window.URL.createObjectURL(new Blob([resp.data]))
+
+                        const link = document.createElement("a")
+
+                        link.href = href
+                        link.setAttribute("download", "file.csv");
+
+                        document.body.appendChild(link)
+                        link.click()
+                        link.remove()
+                        
+                        
+                        set(state => {
+                            state.loading = false
+                        })
+                    })
+                }
+            },
+            createGroup: async (data) => {
+                const authStore = sessionStorage.getItem('authStore')
                 if (authStore) {
                     const userToken = JSON.parse(authStore).state.user.token
                     if (data.events_ids.length > 1) {
                         await axios.post(`/event_groups/`, data, { headers: { Authorization: `Token ${userToken}` } })
                             .then(() => {
-                                set(state => {
-                                    state.loading = false
-                                    state.eventList = state.eventList.map(item => { return { ...item, isCheked: false } })
-                                })
-                            })
-                            .catch((e: AxiosError) => {
-                                set(state => {
-                                    state.loading = false
-                                })
+                                get().fetchEventList()
                             })
                     } else {
                         set(state => {
-                            state.loading = false
-                            state.eventList = state.eventList.map(item => { return { ...item, isCheked: false } })
+                            state.eventList = state.eventList.map(item => { return { ...item, isChecked: false } })
                         })
                     }
                 }
-                get().fetchEventList()
             },
-            updateGroup: async (eventIds, groupId) => {
+            updateGroup: async (data, groupId) => {
                 const authStore = sessionStorage.getItem('authStore')
-                set(state => {
-                    state.loading = true
-                })
                 if (authStore) {
                     const userToken = JSON.parse(authStore).state.user.token
-                    if (eventIds.length > 1) {
-                        await axios.patch(`/event_groups/${groupId}/`, { events_ids: eventIds }, { headers: { Authorization: `Token ${userToken}` } })
-                            .then(() => {
-                                set(state => {
-                                    state.loading = false
-                                    state.eventList = state.eventList.map(item => { return { ...item, isCheked: false } })
-                                })
-                            })
-                            .catch((e: AxiosError) => {
-                                set(state => {
-                                    state.loading = false
-                                })
-                            })
-                    } else {
-                        set(state => {
-                            state.loading = false
-                            state.eventList = state.eventList.map(item => { return { ...item, isCheked: false } })
+                    await axios.patch(`/event_groups/${groupId}/`, { ...data }, { headers: { Authorization: `Token ${userToken}` } })
+                        .then(() => {
+                            get().fetchEventList()
                         })
-                    }
                 }
-                get().fetchEventList()
             },
             deleteGroup: async (groupId) => {
                 const authStore = sessionStorage.getItem('authStore')
@@ -248,9 +385,6 @@ export const useEventsStore = create<IEventsStore>()(
                 }
             },
             getEvent: async (eventId) => {
-                set(state => {
-                    state.loading = true
-                })
                 const authStore = sessionStorage.getItem('authStore')
                 if (authStore) {
                     const userToken = JSON.parse(authStore).state.user.token
@@ -266,99 +400,6 @@ export const useEventsStore = create<IEventsStore>()(
                     return resp
                 }
             },
-            deleteEvent: async (eventId) => {
-                const authStore = sessionStorage.getItem('authStore')
-                set(state => {
-                    state.loading = true
-                })
-                if (authStore) {
-                    const userToken = JSON.parse(authStore).state.user.token
-                    await axios.delete(`/events/${eventId}/`, { headers: { Authorization: `Token ${userToken}` } })
-                        .then(() => {
-                            set(state => {
-                                state.eventList = state.eventList.filter(item => item.id.toString() !== eventId)
-                            })
-                        }).catch(() => {
-                        })
-                }
-            },
-            getData: async () => {
-                const authStore = sessionStorage.getItem('authStore')
-                const { directionList, levelsList, formatsList, organizationsList, rolesList } = get()
-                if (authStore) {
-                    const userToken = JSON.parse(authStore).state.user.token
-                    if (!directionList.length) {
-                        await axios.get('/reference/directions/', { headers: { Authorization: `Token ${userToken}` } })
-                            .then((response) => {
-                                set(state => {
-                                    state.directionList = [
-                                        {
-                                            id: -1,
-                                            name: "Выберите направление мероприятия"
-                                        },
-                                        ...response.data
-                                    ]
-                                })
-                            })
-                    }
-                    if (!formatsList.length) {
-                        await axios.get('/reference/formats/', { headers: { Authorization: `Token ${userToken}` } })
-                            .then((response) => {
-                                set(state => {
-                                    state.formatsList = [
-                                        {
-                                            id: -1,
-                                            name: "Выберите формат мероприятия"
-                                        },
-                                        ...response.data,
-                                    ]
-                                })
-                            })
-                    }
-                    if (!levelsList.length) {
-                        await axios.get('/reference/levels/', { headers: { Authorization: `Token ${userToken}` } })
-                            .then((response) => {
-                                set(state => {
-                                    state.levelsList = [
-                                        {
-                                            id: -1,
-                                            name: "Выберите уровень мероприятия"
-                                        },
-                                        ...response.data,
-                                    ]
-                                })
-                            })
-                    }
-                    if (!organizationsList.length) {
-                        await axios.get('/reference/organizations/', { headers: { Authorization: `Token ${userToken}` } })
-                            .then((response) => {
-                                set(state => {
-                                    state.organizationsList = [
-                                        {
-                                            id: -1,
-                                            name: "Выберите ответственное подразделение"
-                                        },
-                                        ...response.data,
-                                    ]
-                                })
-                            })
-                    }
-                    if (!rolesList.length) {
-                        await axios.get('/reference/roles/', { headers: { Authorization: `Token ${userToken}` } })
-                            .then((response) => {
-                                set(state => {
-                                    state.rolesList = [
-                                        {
-                                            id: -1,
-                                            name: "Выберите роль СибГУ"
-                                        },
-                                        ...response.data,
-                                    ]
-                                })
-                            })
-                    }
-                }
-            }
         })
     ))
 );

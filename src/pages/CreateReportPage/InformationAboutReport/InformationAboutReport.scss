@@ -1,0 +1,118 @@
+@import "src/styles/variables";
+
+.eventModal-container {
+    position: relative;
+
+    .main-container {
+        padding: 0px;
+    }
+
+    .switch-container {
+        display: flex;
+
+        .switch-item {
+            display: flex;
+            align-items: center;
+            width: 50%;
+            padding: 20px;
+            cursor: pointer;
+            background-color: $modest-color;
+            color: $modest-color-font;
+            border-radius: $border-radius $border-radius 0 0;
+
+            border-left: 2px solid $modest-color;
+            border-right: 2px solid $modest-color;
+            border-top: 2px solid $modest-color;
+
+            &.active {
+                color: $primary-color;
+                background-color: white;
+            }
+
+            &:first-child {
+                margin-right: 4px;
+            }
+
+            &:last-child {
+                margin-left: 4px;
+            }
+        }
+    }
+
+    .info-main-container {
+        position: relative;
+        overflow-y: auto;
+        border-left: 0px solid $modest-color;
+        border-right: 0px solid $modest-color;
+        border-bottom: 2px solid $modest-color;
+        border-radius: 0 0 $border-radius $border-radius;
+
+
+        .info {
+            .circle {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+            }
+
+            .danger-circle {
+                background-color: $danger-color;
+            }
+
+            .processing-circle {
+                background-color: $secondary-color;
+            }
+
+            .wait-circle {
+                background-color: $primary-color
+            }
+
+            .verify-circle {
+                background-color: $success-color;
+            }
+
+            div {
+                margin-bottom: 5px;
+                padding: 5px 0;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                border-bottom: 1px solid $modest-color;
+
+                p {
+                    font-size: 16px;
+
+                    &::first-letter {
+                        text-transform: uppercase;
+                    }
+
+                    text-align: end;
+                }
+
+                .circle-status {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: end;
+
+                    .circle-info {
+                        margin-left: 20px;
+                    }
+                }
+            }
+
+            .info-title {
+                font-family: "open sans";
+                font-size: 20px;
+                font-weight: normal;
+
+            }
+
+        }
+    }
+}
+
+.info-title-decription {
+    font-family: "open sans";
+    font-size: 20px;
+    font-weight: normal;
+    padding-bottom: 5px;
+}

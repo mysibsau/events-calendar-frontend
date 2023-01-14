@@ -1,0 +1,91 @@
+@import "../variables";
+
+.button-container {
+    .button {
+        width: 100%;
+        padding: 11px 25px;
+        border-radius: $border-radius;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        border: none;
+
+        &.default {
+            color: $primary-color;
+            background-color: rgba($color: $base-color, $alpha: 0.8);
+
+            &:hover {
+                background-color: rgba($color: $base-color, $alpha: 0.6);
+            }
+        }
+
+        &.primary {
+            color: $base-color;
+            background-color: $primary-color;
+
+            &:hover {
+                background-color: rgba($color: $primary-color, $alpha: 0.8);
+            }
+        }
+
+        &.primary-empty {
+            color: $primary-color;
+            background-color: $base-color;
+            border: 1px solid $primary-color;
+            background-color: none;
+            background: none;
+
+            &:hover {
+                background-color: rgba($color: $primary-color, $alpha: 0.1);
+            }
+        }
+
+        &.danger {
+            color: $base-color;
+            background-color: $danger-color;
+
+            &:hover {
+                background-color: rgba($color: $danger-color, $alpha: 0.8);
+            }
+        }
+
+        &.secondary {
+            color: $base-color;
+            background-color: $secondary-color;
+
+            &:hover {
+                background-color: rgba($color: $secondary-color, $alpha: 0.8);
+            }
+        }
+
+        &.success {
+            color: $base-color;
+            background-color: $success-color;
+
+            &:hover {
+                background-color: rgba($color: $success-color, $alpha: 0.8);
+            }
+        }
+
+        &.success-empty {
+            color: $success-color;
+            background-color: none;
+            background: none;
+            border: 1px solid $success-color;
+
+            &:hover {
+                background-color: rgba($color: $success-color, $alpha: 0.1);
+            }
+        }
+
+        &.disabled {
+            border: none;
+            color: $modest-color-font;
+            background-color: $modest-color;
+        }
+
+        &:active {
+            top: 4px;
+        }
+    }
+}

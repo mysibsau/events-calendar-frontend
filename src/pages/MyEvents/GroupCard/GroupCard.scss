@@ -1,35 +1,56 @@
 @import "src/styles/variables";
 
 .group-container {
+    border-radius: 25px;
     margin: 10px 0;
 
     .group-info-container {
         cursor: pointer;
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 10fr 1fr 0fr;
         align-items: center;
+        padding: 14px;
 
         .left-content {
             display: flex;
             flex-direction: column;
 
             h3 {
-                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                font-weight: 400;
+
+                svg {
+                    margin-right: 10px;
+                }
             }
+        }
+
+        .settings-container {
+            display: flex;
+            justify-content: center;
         }
     }
 
     .events-container {
-        margin-left: 50px;
+        .event-card-item h2 {
+            padding-left: 40px;
+        }
     }
 
-    details {
-        summary {
-            position: relative;
-            cursor: pointer;
-            padding: 20px 30px;
-            border: 1px solid $secondary-color;
-            border-radius: $border-radius;
+    &.open {
+        .group-info-container {
+            border-bottom: 2px solid $modest-color;
+        }
+
+        .events-container {
+            >* {
+                &:last-child {
+                    .eventCard-container {
+                        border: none;
+                    }
+                }
+            }
         }
     }
 }

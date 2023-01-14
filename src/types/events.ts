@@ -1,7 +1,9 @@
 import { TRole } from "./auth";
+import { ICreateEventsGroup, IEventsGroup, IUpdateEventsGroup } from "./groups";
+import { IReport } from "./report";
 
-type IEventStatus = "0" | "1" | "2" | "3" | "4"
-export type TEventType = "my" | "invites"
+export type IEventStatus = "0" | "1" | "2" | "3" | "4" | "5";
+export type TEventType = "my" | "invites";
 
 export interface IEvent {
     id: number;
@@ -17,9 +19,11 @@ export interface IEvent {
     level: number;
     role: number;
     format: number;
-    author: string;
     organization: number;
     description: string;
+
+    author_id: number;
+    author_name: string;
 
     group?: number;
 
@@ -31,24 +35,7 @@ export interface IEvent {
     verified: number;
     verified_date: string;
 
-    isCheked: boolean;
-}
-
-export interface IEventsGroup {
-    id: number;
-    events: IEvent[];
-    name: string;
-    start_date: string;
-    stop_date: string;
-    description: string;
-}
-
-export interface ICreateEventsGroup {
-    name: string;
-    start_date: string;
-    stop_date: string;
-    description: string;
-    events_ids: number[];
+    isChecked: boolean;
 }
 
 export interface ICreateEvnet {
@@ -73,13 +60,7 @@ export interface IOrganizators {
     description: string;
 }
 
-export interface ICreateReport {
-    coverage_participants_fact: number;
-    links: string;
-    organizators: IOrganizators[];
-}
-
-interface IObjects {
+export interface IObjects {
     id: number;
     name: string;
 }
@@ -90,6 +71,7 @@ interface IEdit {
 }
 
 export interface IEventsStore {
+    currentEventType: TEventType;
     eventList: Array<IEvent>;
     groupList: IEventsGroup[];
     loading: boolean;
@@ -98,15 +80,24 @@ export interface IEventsStore {
     levelsList: IObjects[];
     organizationsList: IObjects[];
     rolesList: IObjects[];
+
     getEvent: (eventId: string) => Promise<IEvent>;
+    getData: () => void;
+
     fetchEventList: () => void;
     fetchInvitesEventList: (role: TRole) => void;
-    getData: () => void;
     createEvent: (event: ICreateEvnet, isEdited: IEdit) => void;
+    verifiedEvent: (eventId: number, isVerified: boolean) => void;
     deleteEvent: (eventId: string) => void;
-    createReport: (eventId: string, data: ICreateReport) => void;
     setChecked: (eventId: number) => void;
+
+    createReport: (eventId: string, data: IReport) => void;
+    getReport: (eventId: string) => Promise<IReport>;
+    generateReport: (eventId: number) => void;
+
+    generateTotalReport: () => void;
+    
     createGroup: (data: ICreateEventsGroup) => void;
     deleteGroup: (groupId: number) => void;
-    updateGroup: (event_ids: number[], groupId: number) => void;
+    updateGroup: (data: IUpdateEventsGroup, groupId: number) => void;
 }

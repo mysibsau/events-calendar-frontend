@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { IconLock, IconUser } from '../../assets/Icons/Icons';
-import MyButton from '../../components/UI/MyButton';
-import MyInput from '../../components/UI/MyInput';
-import MyLoader from '../../components/UI/MyLoader/MyLoader';
+import { IconLock, IconUser } from '../../components/UI/Icons/Icons';
+import { Button, Input, Loader } from '../../components/UI';
 import { useAuthStore } from '../../stores';
 import './AuthPage.scss'
 
@@ -35,7 +33,7 @@ const AuthPage = () => {
                 <fieldset>
                     <h1>Вход</h1>
                     <p>Войдите в свой аккаунт</p>
-                    <MyInput
+                    <Input
                         inputIcon={<IconUser color={"primary"} />}
                         type="text"
                         placeholder='Введите ваш логин'
@@ -43,7 +41,7 @@ const AuthPage = () => {
                         onChange={(value) => setLogin(value)}
                         id='login'
                     />
-                    <MyInput
+                    <Input
                         inputIcon={<IconLock color={"primary"} />}
                         value={password}
                         onChange={(value) => setPassword(value)}
@@ -51,12 +49,12 @@ const AuthPage = () => {
                         placeholder='Введите ваш пароль'
                         id='password'
                     />
-                    <MyButton variant={!loading ? "primary" : "disabled"}>
+                    <Button variant={!loading ? "primary" : "disabled"}>
                         {loading
-                            ? <MyLoader height={20} width={20} />
+                            ? <Loader />
                             : <span>Вход</span>
                         }
-                    </MyButton>
+                    </Button>
                 </fieldset>
             </form>
         </main>

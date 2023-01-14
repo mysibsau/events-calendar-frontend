@@ -1,10 +1,6 @@
 @import "src/styles/variables";
 
 .create-event {
-    h1 {
-        width: 80%;
-    }
-
     label {
         margin-bottom: 10px;
         margin-right: 10px;
@@ -13,47 +9,64 @@
     }
 
     .create-event-container {
-        width: 80%;
         margin: auto;
-        padding: 10px;
-        background-color: $modest-color;
-        border-radius: 8px;
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        height: 100%;
 
-        .create-form {
+        >* {
+            border-radius: $border-radius;
+        }
+
+        .create-event-form-container {
             background-color: white;
-            padding: 20px;
 
             .step-container {
-                width: 100%;
-                padding: 20px;
+                overflow: hidden;
+                position: relative;
 
-                .number-select {
-                    display: flex;
-                    justify-content: space-between;
+                .inner {
+                    white-space: nowrap;
+                    transition: all 0.6s cubic-bezier(0.15, 0.84, 0.21, 0.96);
 
-                    >div {
-                        width: 48%;
+                    .create-event-form-item {
+                        width: 100%;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 20px;
+
+                        >* {
+                            width: 100%;
+                        }
                     }
+
                 }
             }
         }
-    }
 
-    .select-step-container {
-        width: 20%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        margin: auto;
-        margin-top: 30px;
+        .create-event-switch-container {
+            background-color: #f3f3f3;
+            margin-right: 20px;
+            padding: 10px;
 
-        span {
-            font-weight: 800;
-            font-size: 20px;
-        }
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
 
-        >* {
-            margin: 0 10px;
+            ul {
+                li {
+                    position: relative;
+                    padding: 20px;
+                    cursor: pointer;
+                    border-radius: $border-radius;
+
+                    &.active {
+                        background-color: $success-color;
+                        color: white;
+                    }
+                }
+            }
         }
     }
 }

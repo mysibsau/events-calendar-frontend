@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import MyButton from '../../../components/UI/MyButton';
-import MyInput from '../../../components/UI/MyInput';
-import { useNotification } from '../../../components/UI/MyNotification/useNotification';
-import MySelect from '../../../components/UI/MySelect';
+import { Button, Input, Select, useNotification } from '../../../components/UI';
 import { usePersonalStore } from '../../../stores';
-import { TStatus } from '../../../types/auth';
 import "./AddPersonal.scss";
 
 
@@ -25,7 +21,7 @@ const personalStatusOpt = [
 
 const AddPersonal: React.FC<IProps> = ({ personal }) => {
     const { addPersonal, inviteLink } = usePersonalStore(state => state);
-    const { addToast } = useNotification()
+    const { addNotific } = useNotification()
 
     const [personalStatus, setPersonalStatus] = useState(personalStatusOpt[0].id)
     const [position, setPosition] = useState("")
@@ -36,16 +32,16 @@ const AddPersonal: React.FC<IProps> = ({ personal }) => {
 
     const addPersonalHandler = () => {
         if (personal === 'authors') {
-            addPersonal(0, {status: parseInt(personalStatus), position: position})
+            addPersonal(0, { status: parseInt(personalStatus), position: position })
         } else {
-            addPersonal(1, {status: parseInt(personalStatus), position: position})
+            addPersonal(1, { status: parseInt(personalStatus), position: position })
         }
     }
 
     const copyTextHandler = () => {
         if (inviteLink) {
             navigator.clipboard.writeText(`http://localhost:3000/?invite=${inviteLink}`)
-            addToast("Успех!", "Ссылка успешно скопирована!", "success")
+            addNotific({ title: "Успех!", body: "Ссылка успешно скопирована!", type: "success" })
         }
     }
 
@@ -61,18 +57,18 @@ const AddPersonal: React.FC<IProps> = ({ personal }) => {
             <div className={"inputs-container"}>
                 <div>
                     <label>Выберите статус</label>
-                    <MySelect options={personalStatusOpt} setValue={setPersonalStatus} value={personalStatus} />
+                    <Select options={personalStatusOpt} setValue={setPersonalStatus} value={personalStatus} />
                 </div>
                 <div>
                     <label>Введите {personalStatus === "0"
                         ? <>группу и институт</>
                         : <>должность</>
                     }</label>
-                    <MyInput type={"text"} value={position} onChange={setPosition} />
+                    <Input type={"text"} value={position} onChange={setPosition} />
                 </div>
             </div>
             <div className={"button-container"}>
-                <MyButton onClick={addPersonalHandler} variant={`${position.length ? "primary" : "disabled"}`}>Получить ссылку</MyButton>
+                <Button onClick={addPersonalHandler} variant={`${position.length ? "primary" : "disabled"}`}>Получить ссылку</Button>
             </div>
             {inviteLink &&
                 <div className={"inviteLink-container"}>

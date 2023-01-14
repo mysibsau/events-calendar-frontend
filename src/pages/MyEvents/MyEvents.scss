@@ -1,39 +1,78 @@
 @import "src/styles/variables";
 
 .myEvents-container {
-    h1 {
-        span {
-            position: relative;
-            display: inline-block;
+    .events-switcher {
+        display: flex;
+        align-items: center;
+
+        >* {
+            margin: 0 10px;
+        }
+
+        h1 {
             cursor: pointer;
-            margin-right: 15px;
+            font-size: 13px;
+            transition: all 0.3s cubic-bezier(0.15, 0.84, 0.21, 0.96);
 
-            &.active,
-            &:hover {
-                color: $primary-color;
-            }
-
-            &::after {
-                content: '';
-                position: absolute;
-                display: block;
-                bottom: 0;
-                left: 0;
-                height: 2px;
-                background-color: $primary-color;
-                transition: all 0.3s ease-out;
-                z-index: 10;
-            }
-
-            &.active::after,
-            &:hover::after {
-                width: 100%;
+            &.active {
+                font-size: 2em;
             }
         }
     }
 
-    .add-group-container{
+    .events-table {
+        background-color: $base-color;
+        border-radius: $border-radius;
+        padding: 32px;
+        height: 100%;
+    }
+
+    .page-head {
+        margin-bottom: 15px;
+
         display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h1 {
+            margin: 0;
+        }
+
+        .gropus-controls {
+            display: flex;
+
+            >*:first-child {
+                margin: 0 10px;
+            }
+        }
+    }
+
+    .events-table-head {
+        display: grid;
+        grid-template-columns: 4fr 2fr 2fr 2fr 1fr 120px;
+        padding: 14px;
+        border-bottom: 2px solid $secondary-color;
+        margin-bottom: 10px;
+
+        >* {
+            font-size: 18px;
+            text-align: center;
+
+            &:first-child {
+                text-align: start;
+            }
+        }
+    }
+
+    .events-table-body {
+        height: calc(100% - 32px);
+        overflow-y: auto;
+
+        &.loaded {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
 
     .eventsList {

@@ -1,6 +1,67 @@
-@import "src/styles/variables";
+@import "/src/styles/variables.scss";
+
+%table-text {
+    font-size: 18px;
+    font-weight: 400;
+}
 
 .authors-container {
+    height: calc(100% - 32px);
+    overflow: auto;
+
+    &.loaded {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.add-authors-button-container {
+    max-width: 200px;
+}
+
+.header-container {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+
+    h1 {
+        margin: 0;
+    }
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 30px;
+    padding: 0 25px 15px 25px;
+    text-align: center;
+    border-bottom: 2px solid $secondary-color;
+
+    margin-bottom: 10px;
+
+    div {
+        @extend %table-text
+    }
+
+    .table-header-name {
+        &:first-child {
+            text-align: start;
+        }
+    }
+}
+
+.personal-page-table {
+    background-color: $base-color;
+    border-radius: $border-radius;
+    padding: 32px;
+    height: 100%;
+}
+
+.empty-authors {
+    padding: 10px 20px;
+    background-color: $base-color;
+    border-radius: $border-radius;
+    margin-bottom: 10px;
+    text-align: center;
 }

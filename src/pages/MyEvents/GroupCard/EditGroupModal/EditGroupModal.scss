@@ -1,0 +1,38 @@
+.edit-group-modal-container {
+    min-width: 40vw;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+
+    .edit-group-container {
+        flex: 1 1 auto;
+
+        .edit-name-container {}
+
+        .edit-events-container {
+            >* {
+                display: flex;
+                padding: 10px 0;
+
+                .event-name {
+                    flex: 1 1 auto;
+
+                    label {
+                        display: block;
+                    }
+                }
+            }
+
+            .event-item {
+                input, label {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .buttons-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

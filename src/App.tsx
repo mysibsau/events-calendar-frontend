@@ -5,30 +5,42 @@ import AuthPage from './pages/AuthPage';
 import MyEvents from "./pages/MyEvents/MyEvents";
 import { useAuthStore, useEventsStore } from './stores';
 import CreateEnevntPage from './pages/CreateEnevntPage';
-import MyNotification from './components/UI/MyNotification';
 import PersonalPage from './pages/PersonalPage';
 import Navbar from './components/Navbar';
+import { NotificationContainer } from './components/UI';
+import CreateReportPage from './pages/CreateReportPage';
 
+
+const groupColors = () => {
+    const colors = []
+
+    for (let i = 0; i < 1000; i++) {
+        colors.push('#' + Math.floor(Math.random() * 16777215).toString(16) + "1f")
+    }
+
+    return colors
+}
+
+export const randomColors = groupColors()
 
 const App = () => {
     const { user } = useAuthStore(state => state)
     const { getData } = useEventsStore(state => state)
 
     useEffect(() => {
-        if (user.token) {
-            getData()
-        }
+        getData()
     }, [user])
-
+    
     return (
         <BrowserRouter>
             {user.token
                 ? <>
                     <Navbar />
                     <Routes>
+                        <Route path='create-report/:eventId' element={<CreateReportPage edited={false}/>}/>
                         <Route path="/events" element={<MyEvents />} />
-                        <Route path="/create-event/" element={<CreateEnevntPage edited={false} />} />
-                        <Route path="/create-event/:eventId" element={<CreateEnevntPage edited={true} />} />
+                        {user.role < 2 ? <Route path="/create-event/" element={<CreateEnevntPage edited={false} />} /> : null}
+                        {user.role < 2 ? <Route path="/create-event/:eventId" element={<CreateEnevntPage edited={true} />} /> : null}
                         {user.role > 0 &&
                             <Route path="/authors/" element={<PersonalPage personal={"authors"} />} />
                         }
@@ -49,7 +61,7 @@ const App = () => {
                     />
                 </Routes>
             }
-            <MyNotification />
+            <NotificationContainer />
         </BrowserRouter>
     );
 };

@@ -1,0 +1,71 @@
+@import "/src/styles/variables.scss";
+
+.event-report-container {
+    padding: 20px 10px;
+
+    .info {
+        div {
+            margin-bottom: 5px;
+            padding: 5px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid $modest-color;
+
+            p {
+                margin-left: 30px;
+                white-space: normal;
+                width: 220px;
+
+                &::first-letter {
+                    text-transform: uppercase;
+                }
+
+
+            }
+        }
+    }
+
+    .description {
+        border-bottom: 1px solid $modest-color;
+
+        h5 {
+            padding-bottom: 5px;
+        }
+
+        p {
+            font-size: 90%;
+            padding: 5px 0;
+        }
+    }
+
+    .organizators-container {
+        margin-top: 5px;
+
+        .organizators-list {
+            max-height: 300px;
+            overflow-y: auto;
+
+            .ogranizator-item {
+                padding: 5px 0;
+
+                >* {
+                    font-size: 90%;
+                }
+
+                .organizator-name {
+                    font-size: 110%;
+                }
+            }
+        }
+    }
+
+    .buttons-container {
+        margin-top: 10px;
+        display: flex;
+        justify-content: flex-end;
+
+        >* {
+            margin: 0 10px;
+        }
+    }
+}

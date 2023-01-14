@@ -5,24 +5,14 @@ export interface IEventsGroup {
     id: number;
     events: IEvent[];
     name: string;
-    start_date: string;
-    stop_date: string;
-    description: string;
 }
 
 export interface ICreateEventsGroup {
     name: string;
-    start_date: string;
-    stop_date: string;
-    description: string;
-    events_ids: string[];
+    events_ids: number[];
 }
 
-
-
-export interface IGroupsStore {
-    groupList: IEventsGroup[];
-    loading: boolean;
-    createGroup: (data: ICreateEventsGroup) => void; 
-    deleteGroup: () => void;
+export interface IUpdateEventsGroup {
+    events_ids?: number[];
+    name?: string;
 }

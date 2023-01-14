@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import './EventCard.scss'
 import { IEvent } from "../../../types/events";
-import MyButton from '../../../components/UI/MyButton';
-import { IconElips, IconPen, IconTrushSquare, ColorTypes } from '../../../assets/Icons';
-import Tooltip from '../../../components/UI/Tooltip';
+import { IconElips, ColorTypes, IconArrowDown } from '../../../components/UI/Icons';
 import { useAuthStore, useEventsStore } from '../../../stores';
 import { useNavigate } from 'react-router-dom';
-import MyModal from '../../../components/UI/MyModal';
 import EventModal from '../EventModal';
-import CreateReportModal from '../CreateReportModal';
+import { Button, ExpandableWrapper, Modal, Tooltip } from '../../../components/UI';
+
 
 interface IProps {
     event: IEvent;
@@ -22,10 +20,12 @@ interface IElipsData {
 type TModalContent = "eventInfo" | "createReport"
 
 const EventCard: React.FC<IProps> = ({ event }) => {
-    const { deleteEvent, setChecked } = useEventsStore(state => state)
+    const { deleteEvent, setChecked, verifiedEvent } = useEventsStore(state => state)
     const { user } = useAuthStore(state => state)
+
     const navigate = useNavigate()
 
+    const [showControls, setShowControls] = useState(false)
     const [showEvent, setShowEvent] = useState(false)
     const [modalContent, setModalContetn] = useState<React.ReactNode>()
 
@@ -48,7 +48,7 @@ const EventCard: React.FC<IProps> = ({ event }) => {
     }
 
     const elipceData = (): IElipsData => {
-        switch (event.status) {
+        switch (event!.status) {
             case "0":
                 return { color: "danger", message: "Отклонено" }
             case "1":
@@ -56,9 +56,11 @@ const EventCard: React.FC<IProps> = ({ event }) => {
             case "2":
                 return { color: "warning", message: "В ожидании отчета" }
             case "3":
-                return { color: "danger", message: "Отклонен отчет" }
-            case "4":
                 return { color: "success", message: "Верефицировано" }
+            case "4":
+                return { color: "danger", message: "Отклонен отчет" }
+            case "5":
+                return { color: "primary", message: "В ожидании верификации отчета" }
             default:
                 return { color: "default", message: "В обработке" }
         }
@@ -67,62 +69,49 @@ const EventCard: React.FC<IProps> = ({ event }) => {
     const setModalContentHandler = (type: TModalContent) => {
         if (type === "eventInfo") {
             setModalContetn(<EventModal eventId={event.id.toString()} isShowEvent={true} />)
-        } else {
-            setModalContetn(<CreateReportModal eventId={event.id.toString()} />)
         }
 
         setShowEvent(true)
     }
-
     return (
         <div className={'eventCard-container'}>
-            <h2 onClick={() => setChecked(event.id)}>
-                {user.role > 0 && !event.group ? <input type="checkbox" checked={event.isCheked ? true : false} /> : <></>}
-                {event.name}
-            </h2>
-            <div className={"cardBody-container"}>
-                <div className={"info"}>
-                    <div>
-                        <span>Даты: </span>
-                        {start_date === stop_date
-                            ? <span>{start_date}</span>
-                            : <span>с {start_date} по {stop_date}</span>
-                        }
-                    </div>
-                    <div>
-                        <span>Ответственное лицо: </span>
-                        <span>{event.author}</span>
-                    </div>
-                    <div>
-                        <span>Аудитория: </span>
-                        <span>{event.place}</span>
-                    </div>
+            <div className={`event-card-item${showControls ? " open" : ""}`}>
+                <h2>
+                    {user.role === 1 && !event.group
+                        ? <input type="checkbox" id={`event-checkbox-${event.id}`} onChange={() => setChecked(event.id)} />
+                        : <></>
+                    }
+                    <label htmlFor={`event-checkbox-${event.id}`}>
+                        {event.name}
+                    </label>
+                </h2>
+                <div className={"event-dates"}>
+                    {start_date === stop_date
+                        ? <span>{start_date}</span>
+                        : <span>{start_date} - {stop_date}</span>
+                    }
                 </div>
-                <div className={"graphic-info"}>
-                    <div className={"icon-container"}>
-                        <Tooltip text={elipceData().message} >
-                            <IconElips color={elipceData().color} size={25} />
-                        </Tooltip>
-                        <div onClick={() => navigate(`/create-event/${event.id}`)}>
-                            <Tooltip text={"Редактировать"} >
-                                <IconPen color={"default"} size={25} />
-                            </Tooltip>
-                        </div>
-                        <Tooltip text={"Удалить"} >
-                            <span onClick={deleteEventHandler}>
-                                <IconTrushSquare color={"default"} size={25} />
-                            </span>
-                        </Tooltip>
-                    </div>
-                    <div className={"buttons"}>
-                        <MyButton variant={"success"} onClick={() => setModalContentHandler("eventInfo")}>Подробнее</MyButton>
-                        <MyButton variant={"primary"} onClick={() => setModalContentHandler("createReport")}>Создать отчет</MyButton>
-                    </div>
+                <div className={"event-author"}>
+                    <span>{event.author_name}</span>
                 </div>
+                <div className={"event-place"}>
+                    <span>{event.place}</span>
+                </div>
+                <div className={"event-status"}>
+                    <Tooltip text={elipceData().message} position={"left"}>
+                        <IconElips color={elipceData().color} size={25} />
+                    </Tooltip>
+                </div>
+                <div>
+                    <Button variant={"primary"} onClick={() => setModalContentHandler("eventInfo")}>Проверить</Button>
+                </div>
+                {/* <div className={"arrow"} onClick={() => setShowControls(!showControls)}>
+                    <IconArrowDown size={25} />
+                </div> */}
             </div>
-            <MyModal isShow={showEvent} setIsShow={setShowEvent} title={`Название мероприятия: ${event.name}`}>
+            <Modal isShow={showEvent} setIsShow={setShowEvent} title={`Название мероприятия: ${event.name}`}>
                 {modalContent}
-            </MyModal>
+            </Modal>
         </div>
     );
 };

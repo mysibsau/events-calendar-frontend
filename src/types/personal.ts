@@ -18,7 +18,8 @@ export interface IPersonal {
 export interface IPersonalStore {
     personalList: IPersonal[];
     inviteLink: string | undefined;
-    getPersonal: (role: TRole) => void;
+    loading: boolean;
+    getPersonal: (role: TRole, isAll?: boolean) => void;
     addPersonal: (role: TRole, data: ICreatePersonal) => void;
     clearInvite: () => void;
 }

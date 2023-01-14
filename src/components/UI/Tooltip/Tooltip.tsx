@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import "./Tooltip.scss";
 
 
@@ -14,9 +14,9 @@ const Tooltip: React.FC<IProps> = ({ children, text, position = "top" }) => {
     return (
         <div className={`tooltip-container ${position}`}>
             {children}
-            <span className={"tooltip-text"}>{text}</span>
+            <span className={"tooltip-text"} dangerouslySetInnerHTML={{__html: text}}></span>
         </div>
-    )
-}
+    );
+};
 
-export default Tooltip
+export default Tooltip;

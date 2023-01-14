@@ -1,0 +1,26 @@
+@import "../../../../styles/variables.scss";
+.organizer-data {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: $border-radius;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.organizer-data-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.organizer-data-name {
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+        color: $primary-color;
+    }
+}

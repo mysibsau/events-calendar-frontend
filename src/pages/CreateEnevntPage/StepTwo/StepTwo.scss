@@ -1,91 +1,55 @@
 @import "src/styles/variables";
 
 .stepTwo-container {
+    position: relative;
 
-    .input-dates-container {
-        display: flex;
-        flex-direction: column;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
 
-        .main-dates {
-            display: flex;
-            justify-content: space-between;
+    .inputs {
+        padding-right: 20px;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
 
-            >div {
-                width: 48%;
-                margin-bottom: 15px;
-            }
-        }
+        >div {
+            margin-bottom: 15px;
+            cursor: pointer;
 
-        .special-dates {
-            position: relative;
+            .inputs-item-name {
+                font-size: 14px;
+                padding: 10px;
+                border-radius: $border-radius;
+                border: 2px $modest-color dashed;
 
-            .block {
-                display: none;
-            }
-
-            .special-dates__input {
-                display: flex;
-                justify-content: space-between;
-
-                >div {
-                    width: 48%;
-                    display: flex;
-                    flex-direction: column;
-                    margin-bottom: 15px;
-                }
-            }
-
-            &.disabled {
-                .block {
-                    position: absolute;
-                    z-index: 100;
-                    display: block;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-color: rgba(white, 0.6);
+                &.active {
+                    border-color: rgba($color: $primary-color, $alpha: 0.6);
                 }
             }
         }
     }
 
+    .select-input {
+        padding: 20px;
 
-    .special-dates__list {
-        margin-top: 10px;
-        max-height: 30vh;
-        overflow-y: auto;
+        border-radius: $border-radius;
+        background-color: $modest-color;
 
-        >div {
-            position: relative;
-            border: 2px solid $primary-color;
-            border-radius: $border-radius;
-            margin-top: 15px;
-            padding: 15px;
+        .title {
+            font-weight: 600;
+        }
 
-            .text-container {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding-right: 30px;
-
-                .name{
-                    display: flex;
-                    overflow: hidden;
-                    display: inline-block;
-                    white-space: nowrap;
-                    word-wrap: normal;
-                    text-overflow: ellipsis;
-                }
-            }
-
-            .icon-container {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                display: flex;
-                align-items: center;
+        .items-container {
+            li {
+                font-size: 14px;
+                margin: 10px 0;
+                padding: 10px;
+                border-radius: $border-radius;
                 cursor: pointer;
+
+                &.active {
+                    background-color: $success-color;
+                    color: white;
+                }
             }
         }
     }
