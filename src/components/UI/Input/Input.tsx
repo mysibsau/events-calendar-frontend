@@ -15,9 +15,10 @@ interface IProps {
     required?: boolean;
     readonly?: boolean;
     disabled?: boolean;
+    min?: string | number;
 }
 
-const Input: React.FC<IProps> = ({ inputIcon, placeholder, type, id, value, onChange, required, readonly, disabled }) => {
+const Input: React.FC<IProps> = ({ inputIcon, placeholder, type, id, value, onChange, required, readonly, disabled, min }) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -31,6 +32,7 @@ const Input: React.FC<IProps> = ({ inputIcon, placeholder, type, id, value, onCh
                 id={id}
                 required={required}
                 readOnly={readonly}
+                min={min}
             />
             {inputIcon
                 ? <span onClick={() => {

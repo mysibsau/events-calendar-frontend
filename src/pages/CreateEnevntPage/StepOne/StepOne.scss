@@ -1,6 +1,9 @@
+@import "/src/styles/variables.scss";
+
 .stepOne-container {
     >div {
         margin-bottom: 15px;
+        position: relative;
     }
 
     .dates-container,

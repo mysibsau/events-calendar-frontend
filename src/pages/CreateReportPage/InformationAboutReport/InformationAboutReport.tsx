@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ColorTypes, IconElips, useNotification } from '../../../components/UI';
+import { ColorTypes } from '../../../components/UI';
 import { useEventsStore } from '../../../stores'
 import { IEvent } from '../../../types/events';
 import "./InformationAboutReport.scss";
@@ -14,16 +14,14 @@ interface IElipsData {
     message: string;
 }
 
-const InformationAboutReport: React.FC<IProps> = ({event}) => {
+const InformationAboutReport: React.FC<IProps> = ({ event }) => {
     const {
         rolesList,
         levelsList,
         formatsList,
         directionList,
-        organizationsList,
-        getEvent
+        organizationsList
     } = useEventsStore(state => state)
-    const { addNotific } = useNotification()
 
 
     const [role, setRole] = useState("")

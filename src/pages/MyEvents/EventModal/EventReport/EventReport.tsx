@@ -1,5 +1,4 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../../components/UI';
 import { useAuthStore, useEventsStore } from '../../../../stores';
 import { IEventStatus } from '../../../../types/events';
@@ -17,9 +16,7 @@ interface IProps {
 const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, authorId }) => {
 
     const { generateReport, verifiedEvent } = useEventsStore(state => state)
-    const { user } = useAuthStore(state => state)
-
-    const navigate = useNavigate()
+    const { user } = useAuthStore(state => state) 
 
     return (
         <div className='event-report-container'>
@@ -57,11 +54,19 @@ const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, authorId 
                 </div>
             </div>
             <div className='buttons-container'>
-                {eventStatus === "3" ? <Button variant={"success"} onClick={() => generateReport(eventId)}>Загрузить отчет</Button> : null}
-                {eventStatus === "5" && user.role === 1 ? <Button variant={"success"} onClick={() => verifiedEvent(eventId, true)}>Верифицировать отчет</Button> : null}
-                {eventStatus === "5" && user.role === 1 ? <Button variant={"danger"} onClick={() => verifiedEvent(eventId, false)}>Отклонить отчет</Button> : null}
+                {user.role === 1
+                    ? <>
+                        {eventStatus === "3" ? <Button variant={"success"} onClick={() => generateReport(eventId)}>Загрузить отчет</Button> : null}
+                        {eventStatus === "5" ? <Button variant={"success"} onClick={() => verifiedEvent(eventId, true)}>Верифицировать отчет</Button> : null}
+                        {eventStatus === "5" ? <Button variant={"danger"} onClick={() => verifiedEvent(eventId, false)}>Отклонить отчет</Button> : null}
+                    </>
+                    : null
+                }
+                {user.role === 0 && eventStatus !== "3"
+                    ? <Button variant={"success"} onClick={() => window.location.href = `/edit-report/${eventId}`}>Редактировать отчет</Button> : null
+                }
             </div>
-        </div>
+        </div >
     )
 }
 

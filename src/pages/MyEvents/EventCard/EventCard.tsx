@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import './EventCard.scss'
 import { IEvent } from "../../../types/events";
-import { IconElips, ColorTypes, IconArrowDown } from '../../../components/UI/Icons';
+import { IconElips, ColorTypes } from '../../../components/UI/Icons';
 import { useAuthStore, useEventsStore } from '../../../stores';
-import { useNavigate } from 'react-router-dom';
 import EventModal from '../EventModal';
-import { Button, ExpandableWrapper, Modal, Tooltip } from '../../../components/UI';
+import { Button, Modal, Tooltip } from '../../../components/UI';
 
 
 interface IProps {
@@ -20,12 +19,9 @@ interface IElipsData {
 type TModalContent = "eventInfo" | "createReport"
 
 const EventCard: React.FC<IProps> = ({ event }) => {
-    const { deleteEvent, setChecked, verifiedEvent } = useEventsStore(state => state)
+    const { setChecked } = useEventsStore(state => state)
     const { user } = useAuthStore(state => state)
 
-    const navigate = useNavigate()
-
-    const [showControls, setShowControls] = useState(false)
     const [showEvent, setShowEvent] = useState(false)
     const [modalContent, setModalContetn] = useState<React.ReactNode>()
 
@@ -40,12 +36,6 @@ const EventCard: React.FC<IProps> = ({ event }) => {
         month: 'numeric',
         day: 'numeric',
     })
-
-    const deleteEventHandler = () => {
-        if (window.confirm("Вы действительно хотите удалить мероприятие")) {
-            deleteEvent(event.id.toString())
-        }
-    }
 
     const elipceData = (): IElipsData => {
         switch (event!.status) {
@@ -75,7 +65,7 @@ const EventCard: React.FC<IProps> = ({ event }) => {
     }
     return (
         <div className={'eventCard-container'}>
-            <div className={`event-card-item${showControls ? " open" : ""}`}>
+            <div className={`event-card-item`}>
                 <h2>
                     {user.role === 1 && !event.group
                         ? <input type="checkbox" id={`event-checkbox-${event.id}`} onChange={() => setChecked(event.id)} />
@@ -105,9 +95,6 @@ const EventCard: React.FC<IProps> = ({ event }) => {
                 <div>
                     <Button variant={"primary"} onClick={() => setModalContentHandler("eventInfo")}>Проверить</Button>
                 </div>
-                {/* <div className={"arrow"} onClick={() => setShowControls(!showControls)}>
-                    <IconArrowDown size={25} />
-                </div> */}
             </div>
             <Modal isShow={showEvent} setIsShow={setShowEvent} title={`Название мероприятия: ${event.name}`}>
                 {modalContent}

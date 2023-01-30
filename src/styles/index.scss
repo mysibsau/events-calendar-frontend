@@ -9,7 +9,8 @@
     font-family: "Open Sans Regular", sans-serif;
 
     &::-webkit-scrollbar {
-        width: 5px;
+        width: 2px;
+        height: 2px;
     }
 
     &::-webkit-scrollbar-track {

@@ -40,7 +40,7 @@ const AddPersonal: React.FC<IProps> = ({ personal }) => {
 
     const copyTextHandler = () => {
         if (inviteLink) {
-            navigator.clipboard.writeText(`http://localhost:3000/?invite=${inviteLink}`)
+            navigator.clipboard.writeText(`https://events-calendar.mysibsau.ru/?invite=${inviteLink}`)
             addNotific({ title: "Успех!", body: "Ссылка успешно скопирована!", type: "success" })
         }
     }

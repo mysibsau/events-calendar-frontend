@@ -87,7 +87,7 @@ export interface IEventsStore {
     fetchEventList: () => void;
     fetchInvitesEventList: (role: TRole) => void;
     createEvent: (event: ICreateEvnet, isEdited: IEdit) => void;
-    verifiedEvent: (eventId: number, isVerified: boolean) => void;
+    verifiedEvent: (eventId: number, isVerified: boolean, msg?: string) => void;
     deleteEvent: (eventId: string) => void;
     setChecked: (eventId: number) => void;
 
@@ -96,7 +96,7 @@ export interface IEventsStore {
     generateReport: (eventId: number) => void;
 
     generateTotalReport: () => void;
-    
+
     createGroup: (data: ICreateEventsGroup) => void;
     deleteGroup: (groupId: number) => void;
     updateGroup: (data: IUpdateEventsGroup, groupId: number) => void;

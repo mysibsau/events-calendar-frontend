@@ -81,7 +81,7 @@ export const useEventsStore = create<IEventsStore>()(
                     })
                     const userToken = JSON.parse(authStore).state.user.token
                     const userRole = JSON.parse(authStore).state.user.role
-                    await axios.post(`/events/my_invites/`, { role: role }, { headers: { Authorization: `Token ${userToken}` } })
+                    await axios.post(`/events/my_invites/` + window.location.search, { role: role }, { headers: { Authorization: `Token ${userToken}` } })
                         .then(async (response) => {
                             let events: IEvent[] = response.data
 
@@ -118,7 +118,6 @@ export const useEventsStore = create<IEventsStore>()(
                 }
             },
             fetchEventList: async () => {
-                let url = "";
                 const authStore = sessionStorage.getItem('authStore')
                 if (authStore) {
                     set(state => {
@@ -126,12 +125,11 @@ export const useEventsStore = create<IEventsStore>()(
                         state.eventList = []
                         state.groupList = []
                     })
-                    const userToken = JSON.parse(authStore).state.user.token
-                    const userRole = JSON.parse(authStore).state.user.role
+                    const userToken = JSON.parse(authStore).state.user.token;
+                    const userRole = JSON.parse(authStore).state.user.role;
+                    const url = userRole !== 2 ? `/events/my/` : `/events/`;
 
-                    userRole !== 2 ? url = `/events/my/` : url = `/events/`;
-
-                    await axios.get(url, { headers: { Authorization: `Token ${userToken}` } })
+                    await axios.get(url + window.location.search, { headers: { Authorization: `Token ${userToken}` } })
                         .then(async (response) => {
                             let events: IEvent[] = response.data
 
@@ -180,6 +178,7 @@ export const useEventsStore = create<IEventsStore>()(
                                 set(state => {
                                     state.loading = false
                                 })
+                                window.location.href = "/events/";
                             })
                             .catch((e: AxiosError) => {
                                 set(state => {
@@ -192,6 +191,7 @@ export const useEventsStore = create<IEventsStore>()(
                                 set(state => {
                                     state.loading = false
                                 })
+                                window.location.href = "/events/";
                             })
                             .catch((e: AxiosError) => {
                                 set(state => {
@@ -221,7 +221,7 @@ export const useEventsStore = create<IEventsStore>()(
                         })
                 }
             },
-            verifiedEvent: async (eventId, isVerified) => {
+            verifiedEvent: async (eventId, isVerified, msg) => {
                 const { eventList, fetchEventList, fetchInvitesEventList, currentEventType } = get()
                 const event = eventList.filter(item => item.id === eventId)[0]
                 const authStore = sessionStorage.getItem('authStore')
@@ -237,6 +237,7 @@ export const useEventsStore = create<IEventsStore>()(
                         } else {
                             fetchInvitesEventList(0)
                         }
+                        window.location.reload();
                     })
                 }
             },
@@ -247,11 +248,12 @@ export const useEventsStore = create<IEventsStore>()(
                 })
                 if (authStore) {
                     const userToken = JSON.parse(authStore).state.user.token
-                    await axios.post(`/events/${eventId}/generate_report/`, data, { headers: { Authorization: `Token ${userToken}`} })
-                        .then(() => {    
+                    await axios.post(`/events/${eventId}/generate_report/`, data, { headers: { Authorization: `Token ${userToken}` } })
+                        .then(() => {
                             set(state => {
                                 state.loading = false
                             })
+                            window.location.href = "/events/";
                         })
                         .catch((e: AxiosError) => {
                             set(state => {
@@ -277,6 +279,8 @@ export const useEventsStore = create<IEventsStore>()(
                 }
             },
             generateReport: async (eventId) => {
+                const { eventList } = get();
+
                 const authStore = sessionStorage.getItem('authStore')
                 set(state => {
                     state.loading = true
@@ -286,20 +290,22 @@ export const useEventsStore = create<IEventsStore>()(
                     await axios({
                         url: `/events/${eventId}/export_report/`,
                         method: "GET",
-                        headers: { Authorization: `Token ${userToken}`},
+                        headers: { Authorization: `Token ${userToken}` },
                         responseType: "blob"
                     }).then(resp => {
+                        const currentEvent = eventList.filter((item) => item.id === eventId)[0]
+
                         const href = window.URL.createObjectURL(new Blob([resp.data]))
 
                         const link = document.createElement("a")
 
                         link.href = href
-                        link.setAttribute("download", "file.docx");
+                        link.setAttribute("download", `${currentEvent.name}.docx`);
 
                         document.body.appendChild(link)
                         link.click()
                         link.remove()
-                        
+
                         set(state => {
                             state.loading = false
                         })
@@ -316,7 +322,7 @@ export const useEventsStore = create<IEventsStore>()(
                     await axios({
                         url: `/events/get_reports_csv/`,
                         method: "GET",
-                        headers: { Authorization: `Token ${userToken}`},
+                        headers: { Authorization: `Token ${userToken}` },
                         responseType: "blob"
                     }).then(resp => {
                         const href = window.URL.createObjectURL(new Blob([resp.data]))
@@ -329,8 +335,7 @@ export const useEventsStore = create<IEventsStore>()(
                         document.body.appendChild(link)
                         link.click()
                         link.remove()
-                        
-                        
+
                         set(state => {
                             state.loading = false
                         })

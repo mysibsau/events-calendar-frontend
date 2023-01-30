@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { Button, ColorTypes } from '../../../../components/UI';
+import { Button, ColorTypes, Modal } from '../../../../components/UI';
 import { useAuthStore, useEventsStore } from '../../../../stores';
 import { IEvent } from '../../../../types/events'
+import RejectModal from '../RejectModal';
 import "./EventInfo.scss";
 
 
@@ -25,14 +25,14 @@ const EventInfo: React.FC<IProps> = ({ event }) => {
         verifiedEvent
     } = useEventsStore(state => state)
     const { user } = useAuthStore(state => state)
-    
-    const navigate = useNavigate()
 
     const [role, setRole] = useState("")
     const [level, setLevel] = useState("")
     const [format, setFormat] = useState("")
     const [direction, setDirection] = useState("")
     const [organization, setOrganization] = useState("")
+
+    const [showRejectModal, setShowRejectModal] = useState(false)
 
     useEffect(() => {
         if (rolesList.length && levelsList.length && formatsList.length && directionList.length && organizationsList.length) {
@@ -62,6 +62,17 @@ const EventInfo: React.FC<IProps> = ({ event }) => {
                 return { color: "default", message: "В обработке" }
         }
     }
+
+    const onConfirmRejectModal = (msg?: string) => {
+        if (msg) {
+            verifiedEvent(event.id, false)
+        }
+
+        setShowRejectModal(false)
+    }
+
+    console.log(event);
+    
 
     return (
         <div className={"event-info-container"}>
@@ -123,10 +134,17 @@ const EventInfo: React.FC<IProps> = ({ event }) => {
                 <p>{event.description}</p>
             </div>
             <div className='buttons-container'>
-                {(event.status === "2" || event.status === "4") && event.author_id === user.id ? <Button variant={"success"} onClick={() => navigate(`/create-report/${event.id}`)}>Создать отчет</Button> : null}
+                {(event.status === "2" || event.status === "4")
+                    && event.author_id === user.id
+                    ? <Button variant={"success"} onClick={() => window.location.href = `/create-report/${event.id}`}>Создать отчет</Button>
+                    : null
+                }
                 {event.status === "1" && user.role === 1 ? <Button variant={"success"} onClick={() => verifiedEvent(event.id, true)}>Верифицировать</Button> : null}
-                {event.status === "1" && user.role === 1 ? <Button variant={"danger"} onClick={() => verifiedEvent(event.id, false)}>Отклонить</Button> : null}
+                {event.status === "1" && user.role === 1 ? <Button variant={"danger"} onClick={() => setShowRejectModal(true)}>Отклонить</Button> : null}
             </div>
+            <Modal isShow={showRejectModal} setIsShow={setShowRejectModal} title={`Отклонение мероприятия: ${event.name}`}>
+                <RejectModal onConfirm={onConfirmRejectModal} />
+            </Modal>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Textarea, useNotification } from '../../../components/UI'
+import { Input, Textarea } from '../../../components/UI'
 import { ICreateEvnet } from '../../../types/events';
 import "./StepOne.scss"
 
@@ -10,8 +10,6 @@ interface IProps {
 }
 
 const StepOne: React.FC<IProps> = ({ data, setData }) => {
-    const { addNotific } = useNotification()
-    
     const [name, setName] = useState(data.name)
     const [place, setPlace] = useState(data.place)
     const [coverageParticipants, setCoverageParticipants] = useState("")
@@ -46,72 +44,49 @@ const StepOne: React.FC<IProps> = ({ data, setData }) => {
         setDescription(data.description)
     }, [])
 
-    const dateInputHandler = (date: string, type: "start" | "end" | "important") => {
-        const inp_date = new Date(date).getTime()
-        const start_date = new Date(startDate).getTime()
-        const end_date = new Date(endDate).getTime()
-
-        if (type === "start") {
-            if (end_date && inp_date > end_date) {
-                setEndDate("")
-            }
-            setStartDate(date)
-        } else if (type === "end") {
-            if (start_date && start_date > inp_date) {
-                addNotific({ title: "Ошибка!", body: "Конечная дата не может быть перед начальной!", type: "danger" })
-            } else {
-                setEndDate(date)
-            }
-        }
-    }
-
-    const setCoverageParticipantsHandler = (val: string) => {
-        if (parseInt(val) > 0) {
-            setCoverageParticipants(val)
-        }
-    }
-
-    const setHoursCountHandler = (val: string) => {
-        if (parseInt(val) > 0) {
-            setHoursCount(val)
+    const getMinDate = (startDate?: string) => {
+        if (startDate) {
+            return new Date(startDate).toISOString().split("T")[0];
+        } else {
+            return new Date(new Date().setDate(new Date().getDate() + 2)).toISOString().split("T")[0];
         }
     }
 
     return (
         <div className={"stepOne-container"}>
             <div>
-                <label htmlFor={""}>Название мероприятия</label>
+                <label htmlFor={""}>Название мероприятия<span className={"requaired_star"}>*</span></label>
                 <Input value={name} onChange={setName} type={"text"} placeholder={"Введите название мероприятия"} />
             </div>
             <div>
-                <label htmlFor={""}>Место проведения</label>
+                <label htmlFor={""}>Место проведения<span className={"requaired_star"}>*</span></label>
                 <Input value={place} onChange={setPlace} type={"text"} placeholder={"Введите место проведение мероприятия"} />
             </div>
             <div>
-                <label htmlFor="">Даты проведения</label>
+                <label htmlFor="">Даты проведения<span className={"requaired_star"}>*</span></label>
                 <div className={"dates-container"}>
                     <div>
                         <label htmlFor={""}>Дата начала</label>
-                        <Input value={startDate} onChange={(val) => dateInputHandler(val, "start")} type={"date"} />
+                        <Input value={startDate} onChange={setStartDate} type={"date"} min={getMinDate()} />
                     </div>
                     <div>
                         <label htmlFor={""}>Дата окончания</label>
-                        <Input value={endDate} onChange={(val) => dateInputHandler(val, "end")} type={"date"} />
+                        <Input value={endDate} onChange={setEndDate} type={"date"} min={getMinDate(startDate)} />
                     </div>
                 </div>
             </div>
             <div className={"number-select-container"}>
                 <div>
                     <label htmlFor={""}>Количество часов</label>
-                    <Input value={hoursCount} onChange={setHoursCountHandler} type={"number"} placeholder={"Введите количество часов"}/>
+                    <Input value={hoursCount} onChange={setHoursCount} type={"number"} placeholder={"Введите количество часов"} min={0} />
                 </div>
                 <div>
-                    <label htmlFor={""}>Охват участников</label>
-                    <Input value={coverageParticipants} onChange={setCoverageParticipantsHandler} type={"number"}  placeholder={"Введите ожидаемый охват участников"}/>
+                    <label htmlFor={""}>Охват участников<span className={"requaired_star"}>*</span></label>
+                    <Input value={coverageParticipants} onChange={setCoverageParticipants} type={"number"} placeholder={"Введите ожидаемый охват участников"} min={0} />
                 </div>
             </div>
             <div>
-                <label htmlFor="">Описание мероприятия</label>
+                <label htmlFor="">Описание мероприятия<span className={"requaired_star"}>*</span></label>
                 <Textarea value={description} onChange={setDescription} placeholder={"Введите описание мероприятия"} maxLength={500} />
             </div>
         </div>

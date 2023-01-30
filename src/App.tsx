@@ -30,22 +30,28 @@ const App = () => {
     useEffect(() => {
         getData()
     }, [user])
-    
+
     return (
         <BrowserRouter>
             {user.token
                 ? <>
                     <Navbar />
                     <Routes>
-                        <Route path='create-report/:eventId' element={<CreateReportPage edited={false}/>}/>
                         <Route path="/events" element={<MyEvents />} />
-                        {user.role < 2 ? <Route path="/create-event/" element={<CreateEnevntPage edited={false} />} /> : null}
-                        {user.role < 2 ? <Route path="/create-event/:eventId" element={<CreateEnevntPage edited={true} />} /> : null}
                         {user.role > 0 &&
                             <Route path="/authors/" element={<PersonalPage personal={"authors"} />} />
                         }
                         {user.role > 1 &&
                             <Route path="/moderators" element={<PersonalPage personal={"moderators"} />} />
+                        }
+                        {user.role < 2
+                            ? <>
+                                <Route path="/create-event/" element={<CreateEnevntPage edited={false} />} />
+                                <Route path="/create-event/:eventId" element={<CreateEnevntPage edited={true} />} />
+                                <Route path='/create-report/:eventId' element={<CreateReportPage />} />
+                                <Route path='/edit-report/:eventId' element={<CreateReportPage />} />
+                            </>
+                            : null
                         }
                         <Route
                             path="*"

@@ -7,23 +7,26 @@ import { IReport } from "../../../types/report"
 
 
 interface IProps {
-    setData: React.Dispatch<React.SetStateAction<IReport>>
+    data: IReport;
+    setData: React.Dispatch<React.SetStateAction<IReport>>;
+    eventDateStart: string;
 }
 
-const CreateReportStep: React.FC<IProps> = ({ setData }) => {
+const CreateReportStep: React.FC<IProps> = ({ data, setData, eventDateStart }) => {
     const { addNotific } = useNotification()
 
-    const [startDate, setStartDate] = useState("")
-    const [endDate, setEndDate] = useState("")
+    const [startDate, setStartDate] = useState(data.start_date_fact)
+    const [endDate, setEndDate] = useState(data.stop_date_fact)
+    const [links, setLinks] = useState(data.links)
+    const [peopleFact, setPeopleFact] = useState(data.coverage_participants_fact)
+    const [organizators, setOrganizators] = useState<IOrganizators[]>(data.organizators)
+    const [place, setPlace] = useState(data.place_fact)
 
-    const [links, setLinks] = useState("")
+    const [error, setError] = useState(false)
+
     const [position, setPosition] = useState("")
     const [nameOrganizer, setNameOrganizer] = useState("")
-    const [peopleFact, setPeopleFact] = useState(0)
     const [description, setDescription] = useState("")
-    const [organizators, setOrganizators] = useState<IOrganizators[]>([])
-    const [error, setError] = useState(false)
-    const [place, setPlace] = useState("")
 
     const addOrganizatorsHandler = () => {
         if (!description.length || !position.length || !nameOrganizer.length) {
@@ -53,7 +56,7 @@ const CreateReportStep: React.FC<IProps> = ({ setData }) => {
     };
 
     const removeOrganizators = (deleteIndex: number) => {
-        setOrganizators(organizators.filter((_, index) => index != deleteIndex));
+        setOrganizators(organizators.filter((_, index) => index !== deleteIndex));
     };
 
     const dateInputHandler = (date: string, type: "start" | "end" | "important") => {
@@ -75,8 +78,17 @@ const CreateReportStep: React.FC<IProps> = ({ setData }) => {
         }
     }
 
+    const getMinDate = (startDate?: string) => {
+        if (startDate) {
+            return new Date(startDate).toISOString().split("T")[0];
+        } else {
+            return new Date(eventDateStart).toISOString().split("T")[0];
+        }
+    }
+
     useEffect(() => {
-        setData(prev => ({...prev,
+        setData(prev => ({
+            ...prev,
             start_date_fact: startDate,
             stop_date_fact: endDate,
             place_fact: place,
@@ -102,11 +114,11 @@ const CreateReportStep: React.FC<IProps> = ({ setData }) => {
                     <div className={"dates-container"}>
                         <div>
                             <label htmlFor={""}>Дата начала</label>
-                            <Input value={startDate} onChange={(val) => dateInputHandler(val, "start")} type={"date"} />
+                            <Input value={startDate} onChange={setStartDate} type={"date"} min={getMinDate()} />
                         </div>
                         <div>
                             <label htmlFor={""}>Дата окончания</label>
-                            <Input value={endDate} onChange={(val) => dateInputHandler(val, "end")} type={"date"} />
+                            <Input value={endDate} onChange={setEndDate} type={"date"} min={getMinDate(startDate)} />
                         </div>
                     </div>
                 </div>

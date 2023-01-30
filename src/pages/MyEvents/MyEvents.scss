@@ -20,10 +20,15 @@
         }
     }
 
+    .filters-container {
+        margin: 10px 0;
+    }
+
     .events-table {
         background-color: $base-color;
         border-radius: $border-radius;
         padding: 32px;
+        padding-top: 16px;
         height: 100%;
     }
 
@@ -41,8 +46,12 @@
         .gropus-controls {
             display: flex;
 
-            >*:first-child {
+            >*:nth-child(2) {
                 margin: 0 10px;
+            }
+
+            >*:last-child {
+                margin-right: 0;
             }
         }
     }

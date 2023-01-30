@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import './MyEvents.scss'
 import EventCard from "./EventCard/EventCard";
 import { useAuthStore, useEventsStore } from '../../stores';
-import { useNavigate } from 'react-router-dom';
 import GroupCard from './GroupCard';
 import { TEventType } from '../../types/events';
 import { Button, Loader, Modal, Switcher } from '../../components/UI';
 import { randomColors } from '../../App';
 import CreateGroupModal from './CreateGroupModal';
 import AddInGroupModal from './AddInGroupModal';
+import { useSearchParams } from 'react-router-dom';
+import FiltersEvents from './FiltersEvents';
 
 
 const MyEvents = () => {
     const { user } = useAuthStore(state => state)
     const { eventList, fetchEventList, loading, groupList, fetchInvitesEventList, generateTotalReport, currentEventType } = useEventsStore(state => state)
-    const navigate = useNavigate()
 
     const [eventType, setEventType] = useState<TEventType>("my")
 
@@ -22,13 +22,15 @@ const MyEvents = () => {
     const [modalTitle, setModalTitle] = useState("")
     const [modalContent, setModalContetn] = useState<React.ReactNode>()
 
+    const [searchParams, setSearchParams] = useSearchParams({});
+
     useEffect(() => {
         if (eventType === "my") {
             fetchEventList()
         } else {
             fetchInvitesEventList(0)
         }
-    }, [eventType])
+    }, [eventType, searchParams])
 
     useEffect(() => {
         setEventType(currentEventType)
@@ -79,13 +81,16 @@ const MyEvents = () => {
                         </>
                         : null
                     }
-                    {user.role === 2
+                    {user.role !== 0
                         ? <>
-                            <Button variant={"success"} onClick={generateTotalReport}>Выгрузить общий отчет</Button>
+                            <Button variant={"success"} onClick={generateTotalReport}>Выгрузить общий отчет в CSV</Button>
                         </>
                         : null
                     }
                 </div>
+            </div>
+            <div className='filters-container'>
+                <FiltersEvents searchParams={searchParams} setSearchParams={setSearchParams} />
             </div>
             <div className="events-table">
                 <div className='events-table-head'>

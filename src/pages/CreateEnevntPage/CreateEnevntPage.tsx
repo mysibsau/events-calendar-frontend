@@ -5,7 +5,7 @@ import { Button, Loader, useNotification } from '../../components/UI';
 import { useEventsStore } from '../../stores';
 import StepOne from './StepOne';
 import StepTwo from './StepTwo';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
 const defaultData: ICreateEvnet = {
@@ -33,8 +33,6 @@ const CreateEnevntPage: React.FC<IProps> = ({ edited }) => {
     const { addNotific } = useNotification()
     const { createEvent, getEvent } = useEventsStore(state => state)
 
-    const navigate = useNavigate()
-    
     const [isEdited, setIsEdited] = useState({ edited: edited, eventId: "" })
     const [loading, setLoading] = useState(edited)
 
@@ -43,7 +41,6 @@ const CreateEnevntPage: React.FC<IProps> = ({ edited }) => {
 
     const createEventHandler = () => {
         createEvent(data, isEdited)
-        navigate(`/events/`)
     }
 
     const params = useParams()
@@ -95,15 +92,9 @@ const CreateEnevntPage: React.FC<IProps> = ({ edited }) => {
                     <Button onClick={createEventHandler} variant={'primary'}>Сохранить</Button>
                 </div>
                 <div className='create-event-form-container'>
-                    <div className={"step-container"}>
-                        <div className={"inner"} style={{ transform: `translateX(-${step * 100}%)` }}>
-                            <div className="create-event-form-item">
-                                <StepOne data={data} setData={setData} />
-                            </div>
-                            <div className="create-event-form-item">
-                                <StepTwo data={data} setData={setData} />
-                            </div>
-                        </div>
+                    <div>
+                        {step === 0 ? <StepOne data={data} setData={setData} /> : null}
+                        {step === 1 ? <StepTwo data={data} setData={setData} /> : null}
                     </div>
                 </div>
             </div>

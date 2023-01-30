@@ -28,7 +28,6 @@ const ModalContent: React.FC<IProps> = ({
   const [animationIn, setAnimationIn] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = isShow ? "hidden" : "";
     setAnimationIn(isShow);
   }, [isShow]);
 

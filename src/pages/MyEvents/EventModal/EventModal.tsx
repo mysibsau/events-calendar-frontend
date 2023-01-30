@@ -31,9 +31,12 @@ const EventModal: React.FC<IProps> = ({ eventId, isShowEvent }) => {
             getEvent(eventId).then((resp) => {
                 setLoading(false)
                 setEvent(resp)
-            })
-            getReport(eventId).then((resp)=> {
-                setReport(resp)
+
+                if (resp.status > "2") {
+                    getReport(eventId).then((resp)=> {
+                        setReport(resp)
+                    })
+                }
             })
         } else {
             setLoading(true)

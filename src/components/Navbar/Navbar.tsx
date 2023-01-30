@@ -46,7 +46,7 @@ const Navbar = () => {
                                 <NavLink to={"/events"}>Мероприятия</NavLink>
                             </li>
                         }
-                        {user.role == 1 && (
+                        {user.role === 1 && (
                             <li>
                                 <NavLink to={"/authors"}>Мои авторы</NavLink>
                             </li>
@@ -54,10 +54,10 @@ const Navbar = () => {
                         {user.role > 1 && (
                             <>
                                 <li>
-                                    <NavLink to={"/authors"}>Авторы</NavLink>
+                                    <NavLink to={"/moderators"}>Модераторы</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to={"/moderators"}>Модераторы</NavLink>
+                                    <NavLink to={"/authors"}>Авторы</NavLink>
                                 </li>
                             </>
                         )}
