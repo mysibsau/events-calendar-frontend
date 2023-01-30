@@ -10,17 +10,19 @@ export interface IEvent {
     name: string;
     free_plan: boolean;
     hours_count: number;
-    educational_work_in_opop: boolean;
     start_date: string;
     stop_date: string;
     place: string;
     coverage_participants_plan: number;
-    direction: number;
-    level: number;
-    role: number;
-    format: number;
-    organization: number;
     description: string;
+    
+    educational_work_in_opop: boolean;
+
+    direction: string;
+    level: string;
+    role: string;
+    format: string;
+    organization: string;
 
     author_id: number;
     author_name: string;
@@ -47,11 +49,11 @@ export interface ICreateEvnet {
     stop_date: string;
     educational_work_in_opop: boolean;
     coverage_participants_plan: number;
-    direction: number;
-    level: number;
-    role: number;
-    format: number;
-    organization: number;
+    direction: string;
+    level: string;
+    role: string;
+    format: string;
+    organization: string;
 }
 
 export interface IOrganizators {
@@ -80,6 +82,7 @@ export interface IEventsStore {
     levelsList: IObjects[];
     organizationsList: IObjects[];
     rolesList: IObjects[];
+    organizatorRoles: IObjects[];
 
     getEvent: (eventId: string) => Promise<IEvent>;
     getData: () => void;

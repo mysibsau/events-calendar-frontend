@@ -18,6 +18,7 @@ export const useEventsStore = create<IEventsStore>()(
             levelsList: [],
             organizationsList: [],
             rolesList: [],
+            organizatorRoles: [],
             isEdited: false,
             setChecked: (eventId) => {
                 set(state => {
@@ -26,7 +27,7 @@ export const useEventsStore = create<IEventsStore>()(
             },
             getData: async () => {
                 const authStore = sessionStorage.getItem('authStore')
-                const { directionList, levelsList, formatsList, organizationsList, rolesList } = get()
+                const { directionList, levelsList, formatsList, organizationsList, rolesList, organizatorRoles } = get()
                 if (authStore) {
                     const userToken = JSON.parse(authStore).state.user.token
                     if (!directionList.length) {
@@ -66,6 +67,14 @@ export const useEventsStore = create<IEventsStore>()(
                             .then((response) => {
                                 set(state => {
                                     state.rolesList = response.data
+                                })
+                            })
+                    }
+                    if (!organizatorRoles.length) {
+                        await axios.get('/reference/organizator_roles/', { headers: { Authorization: `Token ${userToken}` } })
+                            .then((response) => {
+                                set(state => {
+                                    state.organizatorRoles = response.data
                                 })
                             })
                     }

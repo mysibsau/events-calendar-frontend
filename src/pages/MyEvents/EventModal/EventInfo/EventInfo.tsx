@@ -16,33 +16,10 @@ interface IElipsData {
 }
 
 const EventInfo: React.FC<IProps> = ({ event }) => {
-    const {
-        rolesList,
-        levelsList,
-        formatsList,
-        directionList,
-        organizationsList,
-        verifiedEvent
-    } = useEventsStore(state => state)
+    const { verifiedEvent } = useEventsStore(state => state)
     const { user } = useAuthStore(state => state)
 
-    const [role, setRole] = useState("")
-    const [level, setLevel] = useState("")
-    const [format, setFormat] = useState("")
-    const [direction, setDirection] = useState("")
-    const [organization, setOrganization] = useState("")
-
     const [showRejectModal, setShowRejectModal] = useState(false)
-
-    useEffect(() => {
-        if (rolesList.length && levelsList.length && formatsList.length && directionList.length && organizationsList.length) {
-            setRole(rolesList.filter(item => item.id === event.role)[0].name)
-            setLevel(levelsList.filter(item => item.id === event.level)[0].name)
-            setFormat(formatsList.filter(item => item.id === event.format)[0].name)
-            setDirection(directionList.filter(item => item.id === event.direction)[0].name)
-            setOrganization(organizationsList.filter(item => item.id === event.organization)[0].name)
-        }
-    }, [event, rolesList, levelsList, formatsList, directionList, organizationsList])
 
     const elipceData = (): IElipsData => {
         switch (event!.status) {
@@ -72,7 +49,7 @@ const EventInfo: React.FC<IProps> = ({ event }) => {
     }
 
     console.log(event);
-    
+
 
     return (
         <div className={"event-info-container"}>
@@ -106,23 +83,23 @@ const EventInfo: React.FC<IProps> = ({ event }) => {
                 </div>
                 <div>
                     <h5>Направление воспитательной работы</h5>
-                    <p>{direction}</p>
+                    <p>{event.direction}</p>
                 </div>
                 <div>
                     <h5>Уровень мероприятия</h5>
-                    <p>{level}</p>
+                    <p>{event.level}</p>
                 </div>
                 <div>
                     <h5>Роль СибГУ</h5>
-                    <p>{role}</p>
+                    <p>{event.role}</p>
                 </div>
                 <div>
                     <h5>Формат мероприятия</h5>
-                    <p>{format}</p>
+                    <p>{event.format}</p>
                 </div>
                 <div>
                     <h5>Ответственное подразделение</h5>
-                    <p>{organization}</p>
+                    <p>{event.organization}</p>
                 </div>
                 <div>
                     <h5>Статус верификации</h5>

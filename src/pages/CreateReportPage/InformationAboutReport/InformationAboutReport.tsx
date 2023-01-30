@@ -15,31 +15,6 @@ interface IElipsData {
 }
 
 const InformationAboutReport: React.FC<IProps> = ({ event }) => {
-    const {
-        rolesList,
-        levelsList,
-        formatsList,
-        directionList,
-        organizationsList
-    } = useEventsStore(state => state)
-
-
-    const [role, setRole] = useState("")
-    const [level, setLevel] = useState("")
-    const [format, setFormat] = useState("")
-    const [direction, setDirection] = useState("")
-    const [organization, setOrganization] = useState("")
-
-    useEffect(() => {
-        if (rolesList.length && levelsList.length && formatsList.length && directionList.length && organizationsList.length) {
-            setRole(rolesList.filter(item => item.id === event.role)[0].name)
-            setLevel(levelsList.filter(item => item.id === event.level)[0].name)
-            setFormat(formatsList.filter(item => item.id === event.format)[0].name)
-            setDirection(directionList.filter(item => item.id === event.direction)[0].name)
-            setOrganization(organizationsList.filter(item => item.id === event.organization)[0].name)
-        }
-    }, [event, rolesList, levelsList, formatsList, directionList, organizationsList])
-
     const elipceData = (): IElipsData => {
         switch (event!.status) {
             case "0":
@@ -94,23 +69,23 @@ const InformationAboutReport: React.FC<IProps> = ({ event }) => {
                             </div>
                             <div>
                                 <h3 className="info-title">Направление воспитательной работы: </h3>
-                                <p>{direction}</p>
+                                <p>{event.direction}</p>
                             </div>
                             <div>
                                 <h3 className="info-title">Уровень мероприятия: </h3>
-                                <p>{level}</p>
+                                <p>{event.level}</p>
                             </div>
                             <div>
                                 <h3 className="info-title">Роль СибГУ: </h3>
-                                <p>{role}</p>
+                                <p>{event.role}</p>
                             </div>
                             <div>
                                 <h3 className="info-title">Формат мероприятия: </h3>
-                                <p>{format}</p>
+                                <p>{event.format}</p>
                             </div>
                             <div>
                                 <h3 className="info-title">Ответственное подразделение: </h3>
-                                <p>{organization}</p>
+                                <p>{event.organization}</p>
                             </div>
                             <div>
                                 <h3 className="info-title">Статус верификации: </h3>

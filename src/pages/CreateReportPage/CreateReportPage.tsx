@@ -23,7 +23,8 @@ const CreateReportPage = () => {
         place_fact: "",
         coverage_participants_fact: 0,
         links: "",
-        organizators: []
+        organizators: [],
+        count_index: ""
     })
 
     const saveReport = () => {

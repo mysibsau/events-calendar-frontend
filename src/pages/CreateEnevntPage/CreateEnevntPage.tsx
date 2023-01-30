@@ -18,11 +18,11 @@ const defaultData: ICreateEvnet = {
     description: "",
     //
     educational_work_in_opop: false,
-    direction: -1,
-    format: -1,
-    organization: -1,
-    level: -1,
-    role: -1,
+    direction: "",
+    format: "",
+    organization: "",
+    level: "",
+    role: "",
 }
 
 interface IProps {

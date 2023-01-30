@@ -1,9 +1,4 @@
-
-export interface IOrganizators {
-    name: string;
-    position: string;
-    description: string;
-}
+import { IOrganizators } from "./events";
 
 export interface IReport {
     start_date_fact: string;
@@ -11,5 +6,6 @@ export interface IReport {
     place_fact: string;
     coverage_participants_fact: number;
     links: string;
+    count_index: string;
     organizators: IOrganizators[];
 }

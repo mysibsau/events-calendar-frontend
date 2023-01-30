@@ -37,13 +37,13 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
 
     const [currentSelectObjects, setCurrentSelectObjects] = useState<IObjects[]>(educationWorkList)
     const [currentSelectType, setCurrentSelectType] = useState<TSelectMenu>("education_work")
-    const [selectItems, setSelectItems] = useState<Record<TSelectMenu, number>>({
-        education_work: -1,
-        direction: -1,
-        format: -1,
-        role: -1,
-        level: -1,
-        organization: -1
+    const [selectItems, setSelectItems] = useState<Record<TSelectMenu, string>>({
+        education_work: "",
+        direction: "",
+        format: "",
+        role: "",
+        level: "",
+        organization: ""
     })
 
     const switchSelectmenu = (typeMenu: TSelectMenu) => {
@@ -78,7 +78,7 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
 
     useEffect(() => {
         setSelectItems({
-            education_work: data.educational_work_in_opop ? 1 : 0,
+            education_work: data.educational_work_in_opop ? "В рамках ОПОП" : "За пределами ОПОП",
             direction: data.direction,
             format: data.format,
             role: data.role,
@@ -87,7 +87,7 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
         })
     }, [])
 
-    const setDataHandler = (dataType: TSelectMenu, data: number) => {
+    const setDataHandler = (dataType: TSelectMenu, data: string) => {
         switch (dataType) {
             case "direction": {
                 setData((prev => ({
@@ -113,7 +113,7 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
             case "education_work": {
                 setData((prev => ({
                     ...prev,
-                    educational_work_in_opop: data === 1,
+                    educational_work_in_opop: data === "В рамках ОПОП",
                 })))
                 break
             }
@@ -144,8 +144,8 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
                 <div onClick={() => switchSelectmenu("education_work")}>
                     <label>Воспитательная работа<span className={"requaired_star"}>*</span>: </label>
                     <div className={`inputs-item-name ${currentSelectType === "education_work" ? "active" : ""}`}>
-                        {educationWorkList.filter(item => item.id === selectItems.education_work).length
-                            ? educationWorkList.filter(item => item.id === selectItems.education_work)[0].name
+                        {selectItems.education_work
+                            ? selectItems.education_work
                             : "Выберите элемент"
                         }
                     </div>
@@ -153,8 +153,8 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
                 <div onClick={() => switchSelectmenu("direction")}>
                     <label>Направление воспитательных работ<span className={"requaired_star"}>*</span>: </label>
                     <div className={`inputs-item-name ${currentSelectType === "direction" ? "active" : ""}`}>
-                        {directionList.filter(item => item.id === selectItems.direction).length
-                            ? directionList.filter(item => item.id === selectItems.direction)[0].name
+                        {selectItems.direction
+                            ? selectItems.direction
                             : "Выберите элемент"
                         }
                     </div>
@@ -162,8 +162,8 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
                 <div onClick={() => switchSelectmenu("role")}>
                     <label>Роль СибГУ<span className={"requaired_star"}>*</span>: </label>
                     <div className={`inputs-item-name ${currentSelectType === "role" ? "active" : ""}`}>
-                        {rolesList.filter(item => item.id === selectItems.role).length
-                            ? rolesList.filter(item => item.id === selectItems.role)[0].name
+                        {selectItems.role
+                            ? selectItems.role
                             : "Выберите элемент"
                         }
                     </div>
@@ -171,8 +171,8 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
                 <div onClick={() => switchSelectmenu("level")}>
                     <label>Уровень мероприятия<span className={"requaired_star"}>*</span>: </label>
                     <div className={`inputs-item-name ${currentSelectType === "level" ? "active" : ""}`}>
-                        {levelsList.filter(item => item.id === selectItems.level).length
-                            ? levelsList.filter(item => item.id === selectItems.level)[0].name
+                        {selectItems.level
+                            ? selectItems.level
                             : "Выберите элемент"
                         }
                     </div>
@@ -180,8 +180,8 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
                 <div onClick={() => switchSelectmenu("format")}>
                     <label>Формат мероприятия<span className={"requaired_star"}>*</span>: </label>
                     <div className={`inputs-item-name ${currentSelectType === "format" ? "active" : ""}`}>
-                        {formatsList.filter(item => item.id === selectItems.format).length
-                            ? formatsList.filter(item => item.id === selectItems.format)[0].name
+                        {selectItems.format.length
+                            ? selectItems.format
                             : "Выберите элемент"
                         }
                     </div>
@@ -189,8 +189,8 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
                 <div onClick={() => switchSelectmenu("organization")}>
                     <label>Ответственное подразделение<span className={"requaired_star"}>*</span>: </label>
                     <div className={`inputs-item-name ${currentSelectType === "organization" ? "active" : ""}`}>
-                        {organizationsList.filter(item => item.id === selectItems.organization).length
-                            ? organizationsList.filter(item => item.id === selectItems.organization)[0].name
+                        {selectItems.organization.length
+                            ? selectItems.organization
                             : "Выберите элемент"
                         }
                     </div>
@@ -201,8 +201,8 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
                 <ul className='items-container'>
                     {currentSelectObjects.map(item =>
                         <li
-                            className={`${selectItems[currentSelectType] === item.id ? "active" : ""}`}
-                            onClick={() => setDataHandler(currentSelectType, item.id)}
+                            className={`${selectItems[currentSelectType] === item.name ? "active" : ""}`}
+                            onClick={() => setDataHandler(currentSelectType, item.name)}
                             key={item.id}
                         >
                             {item.name}
