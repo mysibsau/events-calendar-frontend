@@ -36,7 +36,7 @@ const Navbar = () => {
                                 </NavLink>
                             </li>
                         )}
-                        {user.role < 2
+                        {user.role < 1
                             ?
                             <li>
                                 <NavLink to={"/events"}>Мои мероприятия</NavLink>

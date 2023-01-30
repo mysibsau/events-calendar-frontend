@@ -19,7 +19,7 @@ const RejectModal: React.FC<IProps> = ({ onConfirm }) => {
                 <Textarea value={msg} onChange={setMsg} maxLength={150} />
             </div>
             <div className='reject-modal-buttons_container'>
-                <Button variant={"primary"} onClick={() => onConfirm()}>Отмена</Button>
+                <Button variant={"default"} onClick={() => onConfirm()}>Отмена</Button>
                 <Button variant={"danger"} onClick={() => onConfirm(msg)}>Отклонить</Button>
             </div>
         </div>

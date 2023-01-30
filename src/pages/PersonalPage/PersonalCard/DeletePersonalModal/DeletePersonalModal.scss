@@ -1,0 +1,32 @@
+.delete-personal-modal-container {
+    .delete-personal-label {}
+
+    .delete-personal-list-container {
+        padding: 10px;
+
+        >* {
+            cursor: pointer;
+            margin: 5px 0;
+
+            input {
+                cursor: pointer;
+            }
+
+            label {
+                display: inline-block;
+                margin-left: 5px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .delete-personal-buttons-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+
+        >*:first-child {
+            margin-right: 5px;
+        }
+    }
+}

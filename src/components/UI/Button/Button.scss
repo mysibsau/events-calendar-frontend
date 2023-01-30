@@ -11,11 +11,11 @@
         border: none;
 
         &.default {
-            color: $primary-color;
-            background-color: rgba($color: $base-color, $alpha: 0.8);
+            color: black;
+            background-color: rgba($color: $secondary-color, $alpha: 0.4);
 
             &:hover {
-                background-color: rgba($color: $base-color, $alpha: 0.6);
+                background-color: rgba($color: $secondary-color, $alpha: 0.6);
             }
         }
 

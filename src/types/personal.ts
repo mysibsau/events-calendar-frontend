@@ -1,4 +1,4 @@
-import { IAuth, TRole } from "./auth";
+import { TRole } from "./auth";
 
 interface ICreatePersonal {
     status: number;
@@ -13,6 +13,7 @@ export interface IPersonal {
     role: TRole;
     status: number;
     position: string;
+    creation_date: string;
 }
 
 export interface IPersonalStore {
@@ -21,5 +22,6 @@ export interface IPersonalStore {
     loading: boolean;
     getPersonal: (role: TRole, isAll?: boolean) => void;
     addPersonal: (role: TRole, data: ICreatePersonal) => void;
+    deletePersonal: (id: string, user_for_transfer: string) => void;
     clearInvite: () => void;
 }

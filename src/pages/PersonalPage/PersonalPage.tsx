@@ -47,6 +47,7 @@ const PersonalPage: React.FC<IProps> = ({ personal }) => {
                     <div className="table-header-name">Имя</div>
                     <div className="table-header-specification">Должность</div>
                     <div className="table-header-phone">Телефон</div>
+                    <div>Дата создания</div>
                     <div></div>
                 </div>
                 <div className={`authors-container${loading ? " loaded" : ""}`}>

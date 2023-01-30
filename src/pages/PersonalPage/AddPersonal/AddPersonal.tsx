@@ -73,7 +73,7 @@ const AddPersonal: React.FC<IProps> = ({ personal }) => {
             {inviteLink &&
                 <div className={"inviteLink-container"}>
                     <span onClick={copyTextHandler}>
-                        http://localhost:3000/?invite={inviteLink}
+                        https://events-calendar.mysibsau.ru/?invite={inviteLink}
                     </span>
                 </div>
             }

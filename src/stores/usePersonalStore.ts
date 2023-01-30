@@ -23,7 +23,7 @@ export const useEventStore = create<IPersonalStore>()(
                         await axios.get(url, { headers: { Authorization: `Token ${userToken}` } })
                             .then((response) => {
                                 const data = response.data
-    
+
                                 set(state => {
                                     state.personalList = data
                                     state.loading = false
@@ -38,7 +38,7 @@ export const useEventStore = create<IPersonalStore>()(
                         await axios.post(`/users/my_invites/`, { role: role }, { headers: { Authorization: `Token ${userToken}` } })
                             .then((response) => {
                                 const data = response.data
-    
+
                                 set(state => {
                                     state.personalList = data
                                     state.loading = false
@@ -62,6 +62,20 @@ export const useEventStore = create<IPersonalStore>()(
                             set(state => {
                                 state.inviteLink = data
                             })
+                        })
+                }
+            },
+            deletePersonal: async (id, user_for_transfer) => {
+                const authStore = sessionStorage.getItem('authStore')
+                if (authStore) {
+                    const userToken = JSON.parse(authStore).state.user.token
+                    await axios.delete(`/users/${id}/delete_user/`, { headers: { Authorization: `Token ${userToken}` }, data: { user_for_transfer: user_for_transfer } })
+                        .then((response) => {
+                            const data = response.data.code
+                            set(state => {
+                                state.inviteLink = data
+                            })
+                            window.location.reload()
                         })
                 }
             },
