@@ -15,6 +15,8 @@ export interface IEvent {
     place: string;
     coverage_participants_plan: number;
     description: string;
+
+    comment?: string;
     
     educational_work_in_opop: boolean;
 

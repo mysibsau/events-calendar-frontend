@@ -231,8 +231,7 @@ export const useEventsStore = create<IEventsStore>()(
                 }
             },
             verifiedEvent: async (eventId, isVerified, msg) => {
-                const { eventList, fetchEventList, fetchInvitesEventList, currentEventType } = get()
-                const event = eventList.filter(item => item.id === eventId)[0]
+                const { fetchEventList, fetchInvitesEventList, currentEventType } = get()
                 const authStore = sessionStorage.getItem('authStore')
                 let url = isVerified ? `/events/${eventId}/verificate/` : `/events/${eventId}/reject/`
                 set(state => {
@@ -240,13 +239,13 @@ export const useEventsStore = create<IEventsStore>()(
                 })
                 if (authStore) {
                     const userToken = JSON.parse(authStore).state.user.token
-                    await axios.post(url, event, { headers: { Authorization: `Token ${userToken}` } }).finally(() => {
+                    await axios.post(url, {comment: msg}, { headers: { Authorization: `Token ${userToken}` } }).finally(() => {
                         if (currentEventType === "my") {
                             fetchEventList()
                         } else {
                             fetchInvitesEventList(0)
                         }
-                        window.location.reload();
+                        // window.location.reload();
                     })
                 }
             },

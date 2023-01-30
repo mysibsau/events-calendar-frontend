@@ -33,7 +33,7 @@ const EventModal: React.FC<IProps> = ({ eventId, isShowEvent }) => {
                 setEvent(resp)
 
                 if (resp.status > "2") {
-                    getReport(eventId).then((resp)=> {
+                    getReport(eventId).then((resp) => {
                         setReport(resp)
                     })
                 }
@@ -70,7 +70,7 @@ const EventModal: React.FC<IProps> = ({ eventId, isShowEvent }) => {
                     </div>
                     {menuSelect === "description"
                         ? <EventInfo event={event} />
-                        : report ? <EventReport report={report} eventId={event.id} eventStatus={event.status} authorId={event.author_id}/> : null
+                        : report ? <EventReport report={report} eventId={event.id} eventStatus={event.status} comment={event.status === "4" ? event.comment : undefined} /> : null
                     }
                 </div>
                 : <h2 className='event-modal-loader-container'><Loader /></h2>

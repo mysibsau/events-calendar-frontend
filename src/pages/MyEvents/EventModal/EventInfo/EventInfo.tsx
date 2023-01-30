@@ -42,14 +42,11 @@ const EventInfo: React.FC<IProps> = ({ event }) => {
 
     const onConfirmRejectModal = (msg?: string) => {
         if (msg) {
-            verifiedEvent(event.id, false)
+            verifiedEvent(event.id, false, msg)
         }
 
         setShowRejectModal(false)
     }
-
-    console.log(event);
-
 
     return (
         <div className={"event-info-container"}>
@@ -110,6 +107,13 @@ const EventInfo: React.FC<IProps> = ({ event }) => {
                 <h5>Описание мероприятия:</h5>
                 <p>{event.description}</p>
             </div>
+            {event.comment && event.status === "0"
+                ? <div className='comment'>
+                    <h5>Комментарий отклонения:</h5>
+                    <p>{event.comment}</p>
+                </div>
+                : null
+            }
             <div className='buttons-container'>
                 {(event.status === "2" || event.status === "4")
                     && event.author_id === user.id

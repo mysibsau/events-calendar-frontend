@@ -28,14 +28,33 @@
 
     .description {
         border-bottom: 1px solid $modest-color;
+        padding-bottom: 5px;
 
         h5 {
-            padding-bottom: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
 
         p {
             font-size: 90%;
             padding: 5px 0;
+        }
+    }
+
+    .comment {
+        border-top: 1px solid $modest-color;
+        border-bottom: 1px solid $modest-color;
+        padding-bottom: 5px;
+
+        h5 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: $danger-color;
+        }
+
+        p {
+            font-size: 90%;
         }
     }
 

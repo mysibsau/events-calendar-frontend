@@ -1,8 +1,9 @@
-import React from 'react'
-import { Button } from '../../../../components/UI';
+import React, { useState } from 'react'
+import { Button, Modal } from '../../../../components/UI';
 import { useAuthStore, useEventsStore } from '../../../../stores';
 import { IEventStatus } from '../../../../types/events';
 import { IReport } from '../../../../types/report';
+import RejectModal from '../RejectModal';
 import "./EventReport.scss";
 
 
@@ -10,13 +11,23 @@ interface IProps {
     report: IReport;
     eventId: number;
     eventStatus: IEventStatus;
-    authorId: number
+    comment?: string;
 }
 
-const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, authorId }) => {
+const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, comment }) => {
 
     const { generateReport, verifiedEvent } = useEventsStore(state => state)
-    const { user } = useAuthStore(state => state) 
+    const { user } = useAuthStore(state => state)
+
+    const [showRejectModal, setShowRejectModal] = useState(false)
+
+    const onConfirmRejectModal = (msg?: string) => {
+        if (msg) {
+            verifiedEvent(eventId, false, msg)
+        }
+
+        setShowRejectModal(false)
+    }
 
     return (
         <div className='event-report-container'>
@@ -53,12 +64,19 @@ const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, authorId 
                     )}
                 </div>
             </div>
+            {comment
+                ? <div className='comment'>
+                    <h5>Комментарий отклонения:</h5>
+                    <p>{comment}</p>
+                </div>
+                : null
+            }
             <div className='buttons-container'>
                 {user.role === 1
                     ? <>
                         {eventStatus === "3" ? <Button variant={"success"} onClick={() => generateReport(eventId)}>Загрузить отчет</Button> : null}
                         {eventStatus === "5" ? <Button variant={"success"} onClick={() => verifiedEvent(eventId, true)}>Верифицировать отчет</Button> : null}
-                        {eventStatus === "5" ? <Button variant={"danger"} onClick={() => verifiedEvent(eventId, false)}>Отклонить отчет</Button> : null}
+                        {eventStatus === "5" ? <Button variant={"danger"} onClick={() => setShowRejectModal(true)}>Отклонить отчет</Button> : null}
                     </>
                     : null
                 }
@@ -66,6 +84,9 @@ const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, authorId 
                     ? <Button variant={"success"} onClick={() => window.location.href = `/edit-report/${eventId}`}>Редактировать отчет</Button> : null
                 }
             </div>
+            <Modal isShow={showRejectModal} setIsShow={setShowRejectModal} title={`Отклонение отчета`}>
+                <RejectModal onConfirm={onConfirmRejectModal} />
+            </Modal>
         </div >
     )
 }
