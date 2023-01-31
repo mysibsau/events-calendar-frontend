@@ -7,8 +7,8 @@ services:
       dockerfile: docker/Dockerfile
     container_name: events_calndar_frontend
     networks:
-      -mysibsau
-      -default
+      - mysibsau
+      - default
 
 networks:
   mysibsau:
