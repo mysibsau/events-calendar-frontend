@@ -1,23 +1,15 @@
 version: "3.8"
 
 services:
-  frontend:
-    container_name: event-calendar-frontend
+  app:
     build:
       context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ".:/app"
-      - "/app/node_modules"
-    ports:
-      - 80:3000
-    environment:
-      - REACT_APP_BASE_URL=https://calendar.mysibsau.ru:8000/v1/
+      dockerfile: docker/Dockerfile
+    container_name: events_calndar_frontend
     networks:
-      - event-calendar
-    command: "npm start"
+      -mysibsau
+      -default
 
 networks:
-  event-calendar:
-    external: True
-    name: event-calendar
+  mysibsau:
+    external: true

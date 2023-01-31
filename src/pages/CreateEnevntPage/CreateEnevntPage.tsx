@@ -30,9 +30,10 @@ interface IProps {
 }
 
 const CreateEnevntPage: React.FC<IProps> = ({ edited }) => {
-    const { addNotific } = useNotification()
     const { createEvent, getEvent } = useEventsStore(state => state)
-
+    
+    const { addNotific } = useNotification()
+    
     const [isEdited, setIsEdited] = useState({ edited: edited, eventId: "" })
     const [loading, setLoading] = useState(edited)
 
@@ -40,7 +41,42 @@ const CreateEnevntPage: React.FC<IProps> = ({ edited }) => {
     const [data, setData] = useState<ICreateEvnet>(defaultData)
 
     const createEventHandler = () => {
-        createEvent(data, isEdited)
+        let errorMsg = "";
+        if (!data.name.length) {
+            errorMsg = "Введите название мероприятия"
+        } else if (!data.place.length) {
+            errorMsg = "Введите место проведения мероприятия"
+        } else if (!data.start_date.length) {
+            errorMsg = "Введите начальную дату мероприятия"
+        } else if (!data.stop_date.length) {
+            errorMsg = "Введите конечную дату мероприятия"
+        } else if (!data.coverage_participants_plan) {
+            errorMsg = "Введите охват учасников"
+        } else if (!data.hours_count && data.educational_work_in_opop) {
+            errorMsg = "Введите количество часов"
+        } else if (!data.description.length) {
+            errorMsg = "Введите описание мероприятия"
+        } else if (!data.direction.length) {
+            errorMsg = "Выберите направление воспитательных работ"
+        } else if (!data.role.length) {
+            errorMsg = "Выберите роль СибГУ"
+        } else if (!data.level.length) {
+            errorMsg = "Выберите уровень мероприятия"
+        } else if (!data.format.length) {
+            errorMsg = "Выберите формат мероприятия"
+        } else if (!data.organization.length) {
+            errorMsg = "Выберите ответственное подразделение"
+        }
+
+        if (errorMsg.length) {
+            addNotific({
+                type: "danger",
+                title: "Ошибка",
+                body: errorMsg
+            })
+        } else {
+            createEvent(data, isEdited)
+        }
     }
 
     const params = useParams()

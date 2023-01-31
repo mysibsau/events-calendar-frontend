@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, ColorTypes, Modal } from '../../../../components/UI';
 import { useAuthStore, useEventsStore } from '../../../../stores';
 import { IEvent } from '../../../../types/events'
@@ -72,7 +72,7 @@ const EventInfo: React.FC<IProps> = ({ event }) => {
                 </div>
                 <div>
                     <h5>Ответственное лицо</h5>
-                    <p>{event.author_name}</p>
+                    <p>{event.original_author ? event.original_author : event.author_name}</p>
                 </div>
                 <div>
                     <h5>Воспитательные работы</h5>
@@ -115,6 +115,9 @@ const EventInfo: React.FC<IProps> = ({ event }) => {
                 : null
             }
             <div className='buttons-container'>
+                {event.author_id === user.id && event.status === "1"
+                    ? <Button variant={"primary"} onClick={() => window.location.href = `/create-event/${event.id}`}>Редактировать</Button> : null
+                }
                 {(event.status === "2" || event.status === "4")
                     && event.author_id === user.id
                     ? <Button variant={"success"} onClick={() => window.location.href = `/create-report/${event.id}`}>Создать отчет</Button>

@@ -21,7 +21,7 @@ const DeletePersonalModal: React.FC<IProps> = ({ personalId, setShow }) => {
     return (
         <div className={"delete-personal-modal-container"}>
             <div className={"delete-personal-label"}>
-                Выберите пользователя, которому передать права
+                Выберите пользователя, которому передать архив
             </div>
             <div className={"delete-personal-list-container"}>
                 {personalList.map(item =>

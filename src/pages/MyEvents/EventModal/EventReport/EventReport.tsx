@@ -11,10 +11,11 @@ interface IProps {
     report: IReport;
     eventId: number;
     eventStatus: IEventStatus;
+    authorId: number; 
     comment?: string;
 }
 
-const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, comment }) => {
+const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, comment, authorId }) => {
 
     const { generateReport, verifiedEvent } = useEventsStore(state => state)
     const { user } = useAuthStore(state => state)
@@ -72,6 +73,9 @@ const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, comment }
                 : null
             }
             <div className='buttons-container'>
+                {authorId === user.id && eventStatus !== "3"
+                    ? <Button variant={"primary"} onClick={() => window.location.href = `/edit-report/${eventId}`}>Редактировать</Button> : null
+                }
                 {user.role === 1
                     ? <>
                         {eventStatus === "3" ? <Button variant={"success"} onClick={() => generateReport(eventId)}>Загрузить отчет</Button> : null}
@@ -79,9 +83,6 @@ const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, comment }
                         {eventStatus === "5" ? <Button variant={"danger"} onClick={() => setShowRejectModal(true)}>Отклонить отчет</Button> : null}
                     </>
                     : null
-                }
-                {user.role === 0 && eventStatus !== "3"
-                    ? <Button variant={"success"} onClick={() => window.location.href = `/edit-report/${eventId}`}>Редактировать отчет</Button> : null
                 }
             </div>
             <Modal isShow={showRejectModal} setIsShow={setShowRejectModal} title={`Отклонение отчета`}>

@@ -25,6 +25,7 @@ const AddPersonal: React.FC<IProps> = ({ personal }) => {
 
     const [personalStatus, setPersonalStatus] = useState(personalStatusOpt[0].id)
     const [position, setPosition] = useState("")
+    const [phone, setPhone] = useState("")
 
     useEffect(() => {
         setPosition("")
@@ -32,9 +33,9 @@ const AddPersonal: React.FC<IProps> = ({ personal }) => {
 
     const addPersonalHandler = () => {
         if (personal === 'authors') {
-            addPersonal(0, { status: parseInt(personalStatus), position: position })
+            addPersonal(0, { status: parseInt(personalStatus), position: position, contact_info: phone })
         } else {
-            addPersonal(1, { status: parseInt(personalStatus), position: position })
+            addPersonal(1, { status: parseInt(personalStatus), position: position, contact_info: phone })
         }
     }
 
@@ -67,8 +68,12 @@ const AddPersonal: React.FC<IProps> = ({ personal }) => {
                     <Input type={"text"} value={position} onChange={setPosition} />
                 </div>
             </div>
+            <div>
+                <label>Введите номер телефона</label>
+                <Input type={"text"} value={phone} onChange={setPhone} />
+            </div>
             <div className={"button-container"}>
-                <Button onClick={addPersonalHandler} variant={`${position.length ? "primary" : "disabled"}`}>Получить ссылку</Button>
+                <Button onClick={addPersonalHandler} variant={`${position.length && phone.length > 9 ? "primary" : "disabled"}`}>Получить ссылку</Button>
             </div>
             {inviteLink &&
                 <div className={"inviteLink-container"}>

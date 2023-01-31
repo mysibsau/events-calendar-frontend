@@ -17,6 +17,7 @@ export interface IEvent {
     description: string;
 
     comment?: string;
+    original_author?: string;
     
     educational_work_in_opop: boolean;
 

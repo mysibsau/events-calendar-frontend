@@ -56,7 +56,7 @@ export const useEventStore = create<IPersonalStore>()(
                 const authStore = sessionStorage.getItem('authStore')
                 if (authStore) {
                     const userToken = JSON.parse(authStore).state.user.token
-                    await axios.post(`/users/invite/`, { role: role, status: data.status, position: data.position }, { headers: { Authorization: `Token ${userToken}` } })
+                    await axios.post(`/users/invite/`, {...data, role}, { headers: { Authorization: `Token ${userToken}` } })
                         .then((response) => {
                             const data = response.data.code
                             set(state => {

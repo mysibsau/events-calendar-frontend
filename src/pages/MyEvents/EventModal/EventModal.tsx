@@ -70,7 +70,7 @@ const EventModal: React.FC<IProps> = ({ eventId, isShowEvent }) => {
                     </div>
                     {menuSelect === "description"
                         ? <EventInfo event={event} />
-                        : report ? <EventReport report={report} eventId={event.id} eventStatus={event.status} comment={event.status === "4" ? event.comment : undefined} /> : null
+                        : report ? <EventReport report={report} eventId={event.id} eventStatus={event.status} comment={event.status === "4" ? event.comment : undefined} authorId={event.author_id} /> : null
                     }
                 </div>
                 : <h2 className='event-modal-loader-container'><Loader /></h2>

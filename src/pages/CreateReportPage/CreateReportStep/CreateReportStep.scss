@@ -67,20 +67,21 @@
 
     }
 
-    .organizatorsList-container {
-        details {
-            padding: 10px;
-        }
-    }
-
     .AllOrganizers {
         margin-top: 25px;
         padding: 8px 10px;
         border: 2px solid $modest-color;
+        border-radius: $border-radius;
+        max-height: 350px;
+        overflow: auto;
     }
 
     .organizers-container {
         margin-right: 0px;
+
+        >*:first-child {
+            margin-bottom: 10px;
+        }
     }
 
     .report-button-container {

@@ -21,7 +21,7 @@ const CreateReportStep: React.FC<IProps> = ({ data, setData, eventDateStart }) =
     const [startDate, setStartDate] = useState(data.start_date_fact)
     const [endDate, setEndDate] = useState(data.stop_date_fact)
     const [links, setLinks] = useState(data.links)
-    const [peopleFact, setPeopleFact] = useState<string>(data.coverage_participants_fact+"")
+    const [peopleFact, setPeopleFact] = useState<string>(data.coverage_participants_fact + "")
     const [organizators, setOrganizators] = useState<IOrganizators[]>(data.organizators)
     const [place, setPlace] = useState(data.place_fact)
     const [countIndex, setCountIndex] = useState(data.count_index)
@@ -74,7 +74,7 @@ const CreateReportStep: React.FC<IProps> = ({ data, setData, eventDateStart }) =
     useEffect(() => {
         if (organizatorRoles.length) {
             setRole(organizatorRoles[0].id)
-        }        
+        }
     }, [organizatorRoles])
 
     useEffect(() => {
@@ -87,7 +87,7 @@ const CreateReportStep: React.FC<IProps> = ({ data, setData, eventDateStart }) =
             links: links,
             organizators: organizators
         }))
-        
+
     }, [startDate, endDate, organizators, place, links, peopleFact])
 
     return (
@@ -139,7 +139,7 @@ const CreateReportStep: React.FC<IProps> = ({ data, setData, eventDateStart }) =
                                 </div>
                                 <div className={"create-organizers-input-container"}>
                                     <label htmlFor="">Роль:</label>
-                                    <Select options={organizatorRoles} value={role} setValue={setRole}/>
+                                    <Select options={organizatorRoles} value={role} setValue={setRole} />
                                 </div>
                             </div>
                             <div>
@@ -151,6 +151,9 @@ const CreateReportStep: React.FC<IProps> = ({ data, setData, eventDateStart }) =
                         </div>
                         <div className="AllOrganizers">
                             <div className="organizers-container">
+                                <Button variant={"primary"} onClick={addOrganizatorsHandler}>
+                                    Добавить организатора
+                                </Button>
                                 {organizators.map((data, index) => (
                                     <Organizer
                                         data={data}
@@ -160,9 +163,6 @@ const CreateReportStep: React.FC<IProps> = ({ data, setData, eventDateStart }) =
                                         key={index}
                                     />
                                 )) || <></>}
-                                <Button variant={"primary"} onClick={addOrganizatorsHandler}>
-                                    Добавить организатора
-                                </Button>
                             </div>
 
                         </div>

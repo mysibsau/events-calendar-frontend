@@ -82,7 +82,7 @@ const EventCard: React.FC<IProps> = ({ event }) => {
                     }
                 </div>
                 <div className={"event-author"}>
-                    <span>{event.author_name}</span>
+                    <span>{event.original_author ? event.original_author : event.author_name}</span>
                 </div>
                 <div className={"event-place"}>
                     <span>{event.place}</span>

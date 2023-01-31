@@ -49,23 +49,23 @@ const FiltersEvents: React.FC<IProps> = ({ searchParams, setSearchParams }) => {
     const options: GroupedOption[] = [
         {
             name: "Уровень мероприятия",
-            options: levelsList.map(item => ({ value: item.name + "_level", label: item.name }))
+            options: levelsList.map(item => ({ value: item.name + "-level", label: item.name }))
         },
         {
             name: "Роль СибГУ",
-            options: rolesList.map(item => ({ value: item.name + "_role", label: item.name }))
+            options: rolesList.map(item => ({ value: item.name + "-role", label: item.name }))
         },
         {
             name: "Формат мероприятия",
-            options: formatsList.map(item => ({ value: item.name + "_format", label: item.name }))
+            options: formatsList.map(item => ({ value: item.name + "-event_format", label: item.name }))
         },
         {
             name: "Направление воспитательных работ",
-            options: directionList.map(item => ({ value: item.name + "_direction", label: item.name }))
+            options: directionList.map(item => ({ value: item.name + "-direction", label: item.name }))
         },
         {
             name: "Ответственное подразделение",
-            options: organizationsList.map(item => ({ value: item.name + "_organizations", label: item.name }))
+            options: organizationsList.map(item => ({ value: item.name + "-organizations", label: item.name }))
         }
     ]
 
@@ -79,7 +79,7 @@ const FiltersEvents: React.FC<IProps> = ({ searchParams, setSearchParams }) => {
         }
 
         for (const item of val) {
-            let param = item.value.split("_")
+            let param = item.value.split("-")
             params.append(param[1], param[0])
         }
 
@@ -88,11 +88,11 @@ const FiltersEvents: React.FC<IProps> = ({ searchParams, setSearchParams }) => {
 
     useEffect(() => {
         const newVal: IFiltersOption[] = [];
-        newVal.push(...levelsList.filter(item => searchParams.getAll("level").includes(item.id + "")).map(item => ({ value: item.name + "_level", label: item.name })));
-        newVal.push(...rolesList.filter(item => searchParams.getAll("role").includes(item.id + "")).map(item => ({ value: item.name + "_role", label: item.name })));
-        newVal.push(...formatsList.filter(item => searchParams.getAll("format").includes(item.id + "")).map(item => ({ value: item.name + "_format", label: item.name })));
-        newVal.push(...directionList.filter(item => searchParams.getAll("direction").includes(item.id + "")).map(item => ({ value: item.name + "_direction", label: item.name })));
-        newVal.push(...organizationsList.filter(item => searchParams.getAll("organizations").includes(item.id + "")).map(item => ({ value: item.name + "_organizations", label: item.name })));
+        newVal.push(...levelsList.filter(item => searchParams.getAll("level").includes(item.id + "")).map(item => ({ value: item.name + "-level", label: item.name })));
+        newVal.push(...rolesList.filter(item => searchParams.getAll("role").includes(item.id + "")).map(item => ({ value: item.name + "-role", label: item.name })));
+        newVal.push(...formatsList.filter(item => searchParams.getAll("event_format").includes(item.id + "")).map(item => ({ value: item.name + "-event_format", label: item.name })));
+        newVal.push(...directionList.filter(item => searchParams.getAll("direction").includes(item.id + "")).map(item => ({ value: item.name + "-direction", label: item.name })));
+        newVal.push(...organizationsList.filter(item => searchParams.getAll("organizations").includes(item.id + "")).map(item => ({ value: item.name + "-organizations", label: item.name })));
 
         setVal(newVal)
     }, [])

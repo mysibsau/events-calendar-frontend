@@ -25,7 +25,7 @@ const PersonalCard: React.FC<IProps> = ({ author }) => {
             <div className={"contact-info"}>
                 {personalStatus[author.status]}, {author.position}
             </div>
-            <div className={"contact-info"}>{author.contacts_info || "телефон не указан"}</div>
+            <div className={"contact-info"}>{author.contact_info || "телефон не указан"}</div>
             <div className={"contact-info"}>
                 {new Date(author.creation_date).toLocaleDateString()}
             </div>

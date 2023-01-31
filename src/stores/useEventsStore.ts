@@ -145,7 +145,8 @@ export const useEventsStore = create<IEventsStore>()(
                             if (userRole === 1) {
                                 await axios.get('/event_groups/', { headers: { Authorization: `Token ${userToken}` } })
                                     .then((response) => {
-                                        const groups = response.data
+                                        const groups: IEventsGroup[] = response.data
+                                        // groups.map(group => group.events.filter(item => events.includes(item)))
                                         events = events.filter(item => !item.group)
 
                                         set(state => {
@@ -245,7 +246,7 @@ export const useEventsStore = create<IEventsStore>()(
                         } else {
                             fetchInvitesEventList(0)
                         }
-                        // window.location.reload();
+                        window.location.reload();
                     })
                 }
             },
@@ -328,7 +329,7 @@ export const useEventsStore = create<IEventsStore>()(
                 if (authStore) {
                     const userToken = JSON.parse(authStore).state.user.token
                     await axios({
-                        url: `/events/get_reports_csv/`,
+                        url: `/events/get_reports_csv/${window.location.search}`,
                         method: "GET",
                         headers: { Authorization: `Token ${userToken}` },
                         responseType: "blob"

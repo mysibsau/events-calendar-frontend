@@ -6,11 +6,13 @@ import CreateReportStep from "./CreateReportStep";
 import InformationAboutReport from "./InformationAboutReport";
 import { useParams } from "react-router-dom";
 import { IEvent } from "../../types/events";
-import { Button } from "../../components/UI";
+import { Button, useNotification } from "../../components/UI";
 
 
 const CreateReportPage = () => {
     const { createReport, getEvent, getReport } = useEventsStore(state => state)
+    
+    const { addNotific } = useNotification()
 
     const params = useParams()
 
@@ -29,7 +31,30 @@ const CreateReportPage = () => {
 
     const saveReport = () => {
         if (params.eventId) {
-            createReport(params.eventId, data);
+            let errorMsg = "";
+            if (!data.coverage_participants_fact) {
+                errorMsg = "Введите фактический охват учасников"
+            } else if (!data.place_fact.length) {
+                errorMsg = "Введите фактическое место проведения мероприятия"
+            } else if (!data.start_date_fact.length || !data.stop_date_fact.length) {
+                errorMsg = "Введите фактические даты проведения"
+            } else if (!data.count_index.length) {
+                errorMsg = "Введите количествене показатели"
+            } else if (!data.links.length) {
+                errorMsg = "Введите ссыдки на материалы в интернете"
+            } else if (!data.organizators.length) {
+                errorMsg = "Добавьте организаторов мероприятия"
+            }
+    
+            if (errorMsg.length) {
+                addNotific({
+                    type: "danger",
+                    title: "Ошибка",
+                    body: errorMsg
+                })
+            } else {
+                createReport(params.eventId, data);
+            }
         }
     };
 

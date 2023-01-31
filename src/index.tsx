@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.baseURL = "https://calendar-backend.mysibsau.ru/v1/";
 
 ReactDOM.render(
     <App />,

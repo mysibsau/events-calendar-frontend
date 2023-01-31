@@ -3,13 +3,14 @@ import { TRole } from "./auth";
 interface ICreatePersonal {
     status: number;
     position: string;
+    contact_info: string;
 }
 
 export interface IPersonal {
     id: string;
     first_name: string;
     last_name: string;
-    contacts_info: string;
+    contact_info: string;
     role: TRole;
     status: number;
     position: string;
