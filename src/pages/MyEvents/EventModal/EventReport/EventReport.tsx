@@ -50,6 +50,10 @@ const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, comment, 
                 </div>
             </div>
             <div className='description'>
+                <h5>Количественные показатели: </h5>
+                <p>{report.count_index}</p>
+            </div>
+            <div className='description'>
                 <h5>Ссылки на источники в интернете: </h5>
                 <p>{report.links}</p>
             </div>
@@ -73,7 +77,7 @@ const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, comment, 
                 : null
             }
             <div className='buttons-container'>
-                {authorId === user.id && eventStatus !== "3"
+                {authorId === user.id && (eventStatus === "5" || eventStatus === "4")
                     ? <Button variant={"primary"} onClick={() => window.location.href = `/edit-report/${eventId}`}>Редактировать</Button> : null
                 }
                 {user.role === 1

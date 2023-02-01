@@ -85,7 +85,8 @@ const CreateReportStep: React.FC<IProps> = ({ data, setData, eventDateStart }) =
             place_fact: place,
             coverage_participants_fact: +peopleFact,
             links: links,
-            organizators: organizators
+            organizators: organizators,
+            count_index: countIndex
         }))
 
     }, [startDate, endDate, organizators, place, links, peopleFact])

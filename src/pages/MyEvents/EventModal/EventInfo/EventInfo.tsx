@@ -16,7 +16,7 @@ interface IElipsData {
 }
 
 const EventInfo: React.FC<IProps> = ({ event }) => {
-    const { verifiedEvent } = useEventsStore(state => state)
+    const { verifiedEvent, deleteEvent } = useEventsStore(state => state)
     const { user } = useAuthStore(state => state)
 
     const [showRejectModal, setShowRejectModal] = useState(false)
@@ -115,10 +115,10 @@ const EventInfo: React.FC<IProps> = ({ event }) => {
                 : null
             }
             <div className='buttons-container'>
-                {event.author_id === user.id && event.status === "1"
+                {event.author_id === user.id && (event.status === "1" || event.status === "0")
                     ? <Button variant={"primary"} onClick={() => window.location.href = `/create-event/${event.id}`}>Редактировать</Button> : null
                 }
-                {(event.status === "2" || event.status === "4")
+                {event.status === "2"
                     && event.author_id === user.id
                     ? <Button variant={"success"} onClick={() => window.location.href = `/create-report/${event.id}`}>Создать отчет</Button>
                     : null
