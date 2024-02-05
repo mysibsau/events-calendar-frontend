@@ -68,6 +68,7 @@ export interface IOrganizators {
 export interface IObjects {
     id: number;
     name: string;
+    is_inside: boolean;
 }
 
 interface IEdit {

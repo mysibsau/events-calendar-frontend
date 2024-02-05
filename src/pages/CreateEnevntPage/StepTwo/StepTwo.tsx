@@ -15,11 +15,13 @@ type TSelectMenu = "education_work" | "role" | "format" | "direction" | "level" 
 const educationWorkList = [
     {
         id: 0,
-        name: "В рамках ОПОП"
+        name: "В рамках ОПОП",
+        is_inside: false,
     },
     {
         id: 1,
-        name: "За пределами ОПОП"
+        name: "За пределами ОПОП",
+        is_inside: false,
     }
 ]
 
@@ -198,17 +200,20 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
             </div>
             <div className={`select-input`}>
                 <div className='title'>{selectTitles[currentSelectType]}</div>
-                <ul className='items-container'>
-                    {currentSelectObjects.map(item =>
-                        <li
-                            className={`${selectItems[currentSelectType] === item.name ? "active" : ""}`}
-                            onClick={() => setDataHandler(currentSelectType, item.name)}
-                            key={item.id}
-                        >
-                            {item.name}
-                        </li>
-                    )}
-                </ul>
+                    <ul className='items-container'>
+                        {currentSelectObjects.map((item, index) => (
+                            <React.Fragment key={item.id}>
+                                {selectTitles[currentSelectType] === "Уровень мероприятия: " &&
+                                    (item.is_inside && index === 4 ? <p>Внутренние</p> : !item.is_inside && index === 0 ? <p>Внешние</p> : null)
+                                }
+                                <li
+                                    className={`${selectItems[currentSelectType] === item.name ? "active" : ""}`}
+                                    onClick={() => setDataHandler(currentSelectType, item.name)}
+                                >
+                                </li>
+                            </React.Fragment>
+                        ))}
+                    </ul>
             </div>
 
         </div>
