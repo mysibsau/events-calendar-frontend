@@ -204,7 +204,7 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
                         {currentSelectObjects.map((item, index) => (
                             <React.Fragment key={item.id}>
                                 {selectTitles[currentSelectType] === "Уровень мероприятия: " &&
-                                    (item.is_inside && index === 4 ? <p>Внутренние</p> : !item.is_inside && index === 0 ? <p>Внешние</p> : null)
+                                    (item.is_inside && index === 0 ? <p>Внутренние</p> : !item.is_inside && index === 3 ? <p>Внешние</p> : null)
                                 }
                                 <li
                                     className={`${selectItems[currentSelectType] === item.name ? "active" : ""}`}
