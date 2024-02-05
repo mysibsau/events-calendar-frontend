@@ -80,9 +80,9 @@ const EventReport: React.FC<IProps> = ({ report, eventId, eventStatus, comment, 
                 {authorId === user.id && (eventStatus === "5" || eventStatus === "4")
                     ? <Button variant={"primary"} onClick={() => window.location.href = `/edit-report/${eventId}`}>Редактировать</Button> : null
                 }
+                {eventStatus === "3" ? <Button variant={"success"} onClick={() => generateReport(eventId)}>Загрузить отчет</Button> : null}
                 {user.role === 1
                     ? <>
-                        {eventStatus === "3" ? <Button variant={"success"} onClick={() => generateReport(eventId)}>Загрузить отчет</Button> : null}
                         {eventStatus === "5" ? <Button variant={"success"} onClick={() => verifiedEvent(eventId, true)}>Верифицировать отчет</Button> : null}
                         {eventStatus === "5" ? <Button variant={"danger"} onClick={() => setShowRejectModal(true)}>Отклонить отчет</Button> : null}
                     </>
