@@ -210,6 +210,7 @@ const StepTwo: React.FC<IProps> = ({ data, setData }) => {
                                     className={`${selectItems[currentSelectType] === item.name ? "active" : ""}`}
                                     onClick={() => setDataHandler(currentSelectType, item.name)}
                                 >
+                                    {item.name}
                                 </li>
                             </React.Fragment>
                         ))}
