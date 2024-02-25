@@ -14,9 +14,11 @@ import FiltersEvents from './FiltersEvents';
 
 const MyEvents = () => {
     const { user } = useAuthStore(state => state)
-    const { eventList, fetchEventList, loading, groupList, fetchInvitesEventList, generateTotalReport, currentEventType } = useEventsStore(state => state)
+    const { eventList, fetchEventList, loading, groupList, fetchInvitesEventList, generateTotalReport, currentEventType, archivedEvent } = useEventsStore(state => state)
 
     const [eventType, setEventType] = useState<TEventType>("my")
+
+    const [showArchived,setShowArchived] = useState(false)
 
     const [showModal, setShowModal] = useState(false)
     const [modalTitle, setModalTitle] = useState("")
@@ -36,14 +38,13 @@ const MyEvents = () => {
         setEventType(currentEventType)
     }, [currentEventType])
 
-    const groupManipulationHandler = (type: "add" | "create") => {
-        const eventIds = []
+    const createArchivedHandler = () => {
+        const eventIds = eventsIsChecked()
+        archivedEvent({ events_ids: eventIds, name: '' })
+    }
 
-        for (const event of eventList) {
-            if (event.isChecked && !event.group) {
-                eventIds.push(event.id)
-            }
-        }
+    const groupManipulationHandler = (type: "add" | "create") => {
+        const eventIds = eventsIsChecked()
 
         if (type === "create") {
             if (eventIds.length > 1) {
@@ -60,6 +61,18 @@ const MyEvents = () => {
         }
     }
 
+    const eventsIsChecked = () => {
+        const eventIds = []
+
+        for (const event of eventList) {
+            if (event.isChecked && !event.group) {
+                eventIds.push(event.id)
+            }
+        }
+
+        return eventIds
+    }
+
     return (
         <main className={"myEvents-container"}>
             <div className={"page-head"}>
@@ -74,6 +87,8 @@ const MyEvents = () => {
                     }
                 </div>
                 <div className={"gropus-controls"}>
+                    {eventsIsChecked().length ? <Button variant={"success"} onClick={() => createArchivedHandler()}>{showArchived ? "Разархивировать" : "Архивировать"}</Button> : null }
+                    <Button variant={showArchived ? "primary" : "default"} onClick={() => setShowArchived(!showArchived)}>Архив</Button>
                     {user.role === 1
                         ? <>
                             <Button variant={"success"} onClick={() => groupManipulationHandler("create")}>Создать новую группу</Button>
@@ -111,9 +126,16 @@ const MyEvents = () => {
                                 )}
                             </div>
                             <div className={'eventsList'}>
-                                {eventList.map(event =>
-                                    <EventCard event={event} key={event.id} />
-                                )}
+                                {showArchived
+                                    ?
+                                    eventList.map(event =>
+                                        !event.archived ? null : <EventCard event={event} key={event.id} />
+                                    )
+                                    :
+                                    eventList.map(event =>
+                                        event.archived ? null : <EventCard event={event} key={event.id} />
+                                    )
+                                }
                             </div>
 
                         </>}

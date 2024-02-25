@@ -41,6 +41,7 @@ export interface IEvent {
     verified_date: string;
 
     isChecked: boolean;
+    archived: boolean;
 }
 
 export interface ICreateEvnet {
@@ -107,4 +108,6 @@ export interface IEventsStore {
     createGroup: (data: ICreateEventsGroup) => void;
     deleteGroup: (groupId: number) => void;
     updateGroup: (data: IUpdateEventsGroup, groupId: number) => void;
+
+    archivedEvent: (data: ICreateEventsGroup) => void;
 }

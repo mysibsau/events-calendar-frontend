@@ -414,6 +414,27 @@ export const useEventsStore = create<IEventsStore>()(
                     return resp
                 }
             },
+            archivedEvent: async (data) => {
+                const authStore = sessionStorage.getItem('authStore')
+                if (authStore) {
+                    set(state => {
+                        state.loading = true
+                    })
+                    const userToken = JSON.parse(authStore).state.user.token
+                    if (data.events_ids.length > 0) {
+                        console.log('archived')
+                        for (const id of data.events_ids) {
+                            console.log(id)
+                            await axios.post(`events/${id}/archived/`, data,{ headers: { Authorization: `Token ${userToken}` } })
+                        }
+                        get().fetchEventList()
+                    } else {
+                        set(state => {
+                            state.eventList = state.eventList.map(item => { return { ...item, isChecked: false } })
+                        })
+                    }
+                }
+            }
         })
     ))
 );
