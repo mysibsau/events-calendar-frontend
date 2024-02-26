@@ -63,6 +63,10 @@
         border-bottom: 2px solid $secondary-color;
         margin-bottom: 10px;
 
+        .event-sort{
+            cursor: pointer;
+        }
+
         >* {
             font-size: 18px;
             text-align: center;

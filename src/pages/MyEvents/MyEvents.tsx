@@ -26,6 +26,9 @@ const MyEvents = () => {
 
     const [searchParams, setSearchParams] = useSearchParams({});
 
+    const [sortDirection, setSortDirection] = useState('asc');
+    const [sortBy, setSortBy] = useState("");
+
     useEffect(() => {
         if (eventType === "my") {
             fetchEventList()
@@ -73,6 +76,52 @@ const MyEvents = () => {
         return eventIds
     }
 
+    const handleSortByResponsible = () => {
+        console.log('author_name')
+        if (sortBy === 'author_name') {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+        } else {
+            setSortBy('author_name')
+            setSortDirection('asc')
+        }
+    }
+
+        const handleSortByDate = () => {
+        console.log('date')
+        if (sortBy === 'date') {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+        } else {
+            setSortBy('date')
+            setSortDirection('asc')
+        }
+    }
+
+    const sortedEventList = [...eventList].sort((a, b) => {
+        if (sortBy === 'author_name') {
+            const nameA = a.author_name.toUpperCase()
+            const nameB = b.author_name.toUpperCase()
+            if (nameA < nameB) {
+                return sortDirection === 'asc' ? -1 : 1
+            }
+            if (nameA > nameB) {
+                return sortDirection === 'asc' ? 1 : -1
+            }
+            return 0
+        } else if (sortBy === 'date') {
+            const dateA = new Date(a.start_date).getTime()
+            const dateB = new Date(b.start_date).getTime()
+            return sortDirection === 'asc' ? dateA - dateB : dateB - dateA
+        }
+        return 0
+    });
+
+    const getSortIcon = (fieldName: string) => {
+        if (sortBy === fieldName) {
+            return sortDirection === 'asc' ? '↑' : '↓';
+        }
+        return null;
+    };
+
     return (
         <main className={"myEvents-container"}>
             <div className={"page-head"}>
@@ -110,8 +159,8 @@ const MyEvents = () => {
             <div className="events-table">
                 <div className='events-table-head'>
                     <div>Название</div>
-                    <div>Даты</div>
-                    <div>Ответственный</div>
+                    <div className='event-sort' onClick={handleSortByDate}>Даты {getSortIcon('date')}</div>
+                    <div className='event-sort' onClick={() => handleSortByResponsible()}>Ответственный {getSortIcon('author_name')}</div>
                     <div>Аудитория</div>
                     <div>Статус</div>
                     <div style={{ width: 25 }}></div>
@@ -128,11 +177,11 @@ const MyEvents = () => {
                             <div className={'eventsList'}>
                                 {showArchived
                                     ?
-                                    eventList.map(event =>
+                                    sortedEventList.map(event =>
                                         !event.archived ? null : <EventCard event={event} key={event.id} />
                                     )
                                     :
-                                    eventList.map(event =>
+                                    sortedEventList.map(event =>
                                         event.archived ? null : <EventCard event={event} key={event.id} />
                                     )
                                 }
